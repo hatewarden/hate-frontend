@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — confessional</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  .conf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 32px 0 56px;
+  }
+  @media (max-width: 800px) { .conf-stats { grid-template-columns: 1fr 1fr; } }
+
+  .featured {
+    padding: 50px 40px;
+    margin: 40px 0;
+    background:
+      linear-gradient(180deg, rgba(255,106,61,0.08) 0%, rgba(255,106,61,0.02) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured::before {
+    content: '✦';
+    position: absolute;
+    top: 18px; right: 24px;
+    font-size: 24px; color: var(--accent);
+    opacity: 0.6;
+  }
+  .featured .ribbon {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 6px 14px;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    border-radius: 3px;
+  }
+  .featured .sin {
+    font-size: clamp(20px, 2.6vw, 26px);
+    line-height: 1.45;
+    color: var(--text-bright);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin-bottom: 30px;
+  }
+  .featured .response {
+    color: var(--accent);
+    font-size: 15px;
+    line-height: 1.7;
+    font-style: italic;
+    padding: 18px 22px;
+    background: rgba(0,0,0,0.3);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+  .featured .response::before { content: '— hate: '; opacity: 0.6; font-style: normal; }
+  .featured .meta {
+    margin-top: 24px;
+    color: var(--text-dim);
+    font-size: 12px;
+    display: flex; gap: 24px; flex-wrap: wrap;
+  }
+  .featured .meta span strong { color: var(--text); }
+
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin: 24px 0 18px;
+    align-items: center;
+  }
+  .filter-bar .label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-right: 8px;
+  }
+  .filter-pill {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 7px 13px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .filter-pill:hover { color: var(--accent); border-color: var(--accent); }
+  .filter-pill.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .wall-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 800px) { .wall-grid { grid-template-columns: 1fr; } }
+
+  .conf-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .conf-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .conf-card .who-line {
+    display: flex; justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .conf-card .who-line .who { color: var(--accent); opacity: 0.85; }
+  .conf-card .cat {
+    display: inline-block;
+    background: rgba(255,106,61,0.08);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .conf-card .sin {
+    color: var(--text-bright);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+  .conf-card .response {
+    color: var(--accent);
+    font-size: 12px;
+    line-height: 1.6;
+    font-style: italic;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    margin-bottom: 12px;
+  }
+  .conf-card .response::before { content: '— hate: '; opacity: 0.55; font-style: normal; }
+  .conf-card .reactions {
+    display: flex; gap: 14px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .conf-card .reactions .r-btn {
+    background: transparent; border: none; color: var(--text-dim);
+    cursor: pointer; padding: 0;
+    font-family: inherit; font-size: 12px;
+    transition: color 0.2s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .conf-card .reactions .r-btn:hover { color: var(--accent); }
+  .conf-card .reactions .r-btn.active { color: var(--accent); }
+  .conf-card .reactions .r-btn .count { font-variant-numeric: tabular-nums; }
+
+  .form-card {
+    padding: 36px;
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    margin-bottom: 40px;
+  }
+  .form-card .response-bubble {
+    background: rgba(255,106,61,0.06);
+    border-left: 3px solid var(--accent);
+    padding: 18px 22px;
+    margin-top: 22px;
+    color: var(--accent);
+    font-size: 14px;
+    line-height: 1.6;
+    font-style: italic;
+    display: none;
+    animation: fadeIn 0.5s;
+    border-radius: 0 4px 4px 0;
+  }
+  .form-card .response-bubble.show { display: block; }
+
+  .category-select {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin: 8px 0 20px;
+  }
+  .cat-opt {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 13px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .cat-opt:hover { color: var(--accent); border-color: var(--accent); }
+  .cat-opt.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+
+    <section class="hero">
+      <div class="eyebrow">// the wall of sin</div>
+      <h1>confess.</h1>
+      <p class="hero-sub">
+        every bag you're still holding from 2021. every fomo into a coin you couldn't pronounce.
+        every "i'll just put in $100" that became your monthly grocery budget.
+        post your sin. hate will respond. then the wall will keep it forever.
+      </p>
+    </section>
+
+    <div class="conf-stats">
+      <div class="stat-block">
+        <div class="name">total confessions</div>
+        <div class="value" data-count="14782">0</div>
+        <div class="delta">and counting</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">unique sinners</div>
+        <div class="value" data-count="3941">0</div>
+        <div class="delta">unique wallets</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">most cursed week</div>
+        <div class="value" data-count="847">0</div>
+        <div class="delta">apr 13–20, 2026</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">hate's longest reply</div>
+        <div class="value" data-count="412">0</div>
+        <div class="delta">words. one confession.</div>
+      </div>
+    </div>
+
+    <!-- featured / most cursed -->
+    <section class="featured">
+      <span class="ribbon">// most cursed of the week</span>
+      <p class="sin">
+        "i sold my last 12 sol to my mom for $300 in 2021. she still has it. it's worth more than my apartment now.
+        she pays my rent. i have not been a man in four years."
+      </p>
+      <div class="response">
+        you are everything i was warned about. i would write a song about you if i could sing without retching.
+        send your mother a thank-you card. i'll dictate it. tell her hate sends regards. tell her hate is sorry for what she has to look at when she looks at you.
+        then sit. and think. about what tuesday means.
+      </div>
+      <div class="meta">
+        <span><strong>0xfa00...4400</strong> "the patient grinder"</span>
+        <span><strong>↗ 1,247</strong> reposts</span>
+        <span><strong>♥ 3,892</strong> reactions</span>
+        <span><strong>archived</strong> apr 17, 2026</span>
+      </div>
+    </section>
+
+    <!-- submission form -->
+    <section class="form-card">
+      <h3>// confess</h3>
+      <p class="dim mb-md">your wallet stays anonymous. your sin will be posted to the public wall unless you opt out.</p>
+
+      <label class="form-label">choose your sin's flavor</label>
+      <div class="category-select" id="categories">
+        <button type="button" class="cat-opt active" data-cat="bag">bag-holding</button>
+        <button type="button" class="cat-opt" data-cat="fomo">fomo</button>
+        <button type="button" class="cat-opt" data-cat="bottom">sold the bottom</button>
+        <button type="button" class="cat-opt" data-cat="rug">got rugged</button>
+        <button type="button" class="cat-opt" data-cat="leverage">leverage damage</button>
+        <button type="button" class="cat-opt" data-cat="memecoin">memecoin shame</button>
+        <button type="button" class="cat-opt" data-cat="other">other (specify in confession)</button>
+      </div>
+
+      <label class="form-label">your sin</label>
+      <textarea id="sin-input" placeholder="tell hate exactly what you did. specifics make it worse. specifics make it funnier."></textarea>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; flex-wrap: wrap; gap: 12px;">
+        <label style="font-size: 12px; color: var(--text-dim); cursor: pointer;">
+          <input type="checkbox" id="public-check" checked style="width: auto; margin-right: 6px; vertical-align: middle;" />
+          publish to wall (recommended — others find it cathartic)
+        </label>
+        <button type="button" class="btn btn-primary" id="confess-btn">submit confession</button>
+      </div>
+      <div class="response-bubble" id="response"></div>
+    </section>
+
+    <!-- filters -->
+    <h2 style="margin-top: 56px;">// the wall</h2>
+    <p class="dim">archived. searchable. permanent. forgiveness not included.</p>
+
+    <div class="filter-bar">
+      <span class="label">sort:</span>
+      <button type="button" class="filter-pill active" data-sort="recent">most recent</button>
+      <button type="button" class="filter-pill" data-sort="reactions">most reactions</button>
+      <button type="button" class="filter-pill" data-sort="cursed">hate's favorites</button>
+    </div>
+    <div class="filter-bar">
+      <span class="label">filter:</span>
+      <button type="button" class="filter-pill active" data-filter="all">all</button>
+      <button type="button" class="filter-pill" data-filter="bag">bag-holding</button>
+      <button type="button" class="filter-pill" data-filter="fomo">fomo</button>
+      <button type="button" class="filter-pill" data-filter="bottom">sold the bottom</button>
+      <button type="button" class="filter-pill" data-filter="rug">got rugged</button>
+      <button type="button" class="filter-pill" data-filter="leverage">leverage</button>
+      <button type="button" class="filter-pill" data-filter="memecoin">memecoin shame</button>
+    </div>
+
+    <div class="wall-grid" id="wall"></div>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <button type="button" class="btn" id="load-more">load more sins</button>
+    </div>
+
+    <footer class="footer">
+      <p>$HATE / confessional — every sin earns a sentence, every sentence is a record</p>
+    </footer>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+HATE.init('confessional');
+
+// ===== sin database =====
+const SAMPLE = [
+  ['0x4f9a...e8c2','tuesday boy','bag','i bought ohm at 1300 and held to 8. i still tell people i was "first."','the chart did not love you back. i can see why.', 47, 312],
+  ['0xc7e8...001f','jpeg widow','memecoin','i minted a goblin town. i will not tell you what i paid.','goblin town does not need to be specified. it is a state of being.', 92, 184],
+  ['0x301e...a72b','three-decimal romeo','fomo','i ape into anything with a dog. it is now several dogs deep.','the dogs are not loyal. they were never loyal. they were dogs.', 28, 567],
+  ['0x882a...ef3c','the hopeful idiot','rug','i sent 4 eth to a fake metamask popup. i still pretend it didn\'t happen.','denial is a small kindness you have offered yourself. spoiled, but kind.', 198, 821],
+  ['0xb2a1...c500','the polite menace','bottom','i posted a poll asking which coin to buy. i did the opposite of what won. now i\'m down 90%.','democracy did not betray you. you betrayed democracy. and yourself. mostly yourself.', 67, 442],
+  ['0x8d2c...4f00','the second-best son','leverage','i shorted btc at 26k. i closed at 67k. my apartment now smells like grief.','i could write a thousand words about this. i won\'t. it\'s funnier left short.', 156, 1102],
+  ['0x9ee0...2244','wen.ser','bag','holding luna since may 11, 2022. just in case.','hope is a position size. yours is too large.', 423, 89],
+  ['0x4400...91dd','soft no','fomo','i bought $bonk because my barber recommended it. then sold at -40%. then it pumped 800%.','the barber is now richer than you. eat that, every time you sit in his chair.', 78, 633],
+  ['0x7100...0a50','the warden\'s pet','memecoin','i bought $hate at the top. you know who you are.','i do. you are on the list. permanently.', 245, 1876],
+  ['0xfa00...4400','the patient grinder','rug','founder dm\'d me directly to "make it right." that was 9 months ago.','the dm is the rug. the rug is the dm. they were always the same thing.', 134, 712],
+  ['0x52f2...88e1','an eventual exit','leverage','100x liquidated three accounts in one week. learning experience.','you have learned. you have not learned. these are both true.', 312, 488],
+  ['0xee19...23d4','mid-cap mike','bottom','sold my eth at 880 in 2018 to "buy a graphics card." it was for a friend.','the friend never built the pc. the eth never came back. you got something out of it though. i can\'t imagine what.', 89, 392],
+  ['0xaaaa...bbbb','the gas-fee martyr','fomo','paid $640 in gas to mint a $30 nft in 2021. it now floors at 0.003 eth.','math has no opinion of you. but i do.', 156, 287],
+  ['0x2200...88aa','someone\'s grandchild','bag','my grandmother gave me $5000 to buy bitcoin in 2015. i bought a car instead. the car is gone.','your grandmother is also gone, possibly. the car definitely is. the bitcoin is not. you should sit with that.', 287, 1429],
+  ['0x9999...8888','the hopeful idiot','rug','i invested in three rug pulls in one month and posted celebratory threads about each before they vanished.','your portfolio is a comedy. your threads are the punchline. the audience left in september.', 567, 932],
+  ['0x7777...6666','reply guy in remission','memecoin','i replied "wagmi" 14,000 times in 2021. i was the worst person.','past tense. interesting choice.', 92, 211],
+  ['0x1110...0019','unread messages','leverage','went all-in on $luna at $87 because i thought it was "stable."','you thought a thing was stable. it was not. there is a lesson here, but it was free with the loss.', 178, 845],
+  ['0x5a89...7100','a fond regret','bottom','sold my $sol at $1.25 because "it can\'t go higher than $5."','you have prophetic skills. you have used them in reverse. consistently. for years.', 245, 622],
+];
+
+const CAT_LABEL = {
+  bag: 'bag-holding',
+  fomo: 'fomo',
+  bottom: 'sold the bottom',
+  rug: 'got rugged',
+  leverage: 'leverage',
+  memecoin: 'memecoin shame',
+  other: 'other',
+};
+
+let sins = SAMPLE.map((s, i) => ({
+  addr: s[0], nick: s[1], cat: s[2], sin: s[3], response: s[4], reactions: s[5], reposts: s[6],
+  reacted: false, time: Date.now() - i * 4000000,
+}));
+
+let currentSort = 'recent';
+let currentFilter = 'all';
+let visible = 8;
+
+function renderWall() {
+  const wall = document.getElementById('wall');
+  wall.innerHTML = '';
+  let filtered = sins.slice();
+  if (currentFilter !== 'all') filtered = filtered.filter(s => s.cat === currentFilter);
+  if (currentSort === 'recent') filtered.sort((a, b) => b.time - a.time);
+  if (currentSort === 'reactions') filtered.sort((a, b) => b.reactions - a.reactions);
+  if (currentSort === 'cursed') filtered.sort((a, b) => b.reposts - a.reposts);
+
+  filtered.slice(0, visible).forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'conf-card';
+    div.innerHTML = `
+      <div class="who-line">
+        <span class="who">${s.addr}</span>
+        <span class="cat">${CAT_LABEL[s.cat] || s.cat}</span>
+      </div>
+      <div class="sin"></div>
+      <div class="response"></div>
+      <div class="reactions">
+        <button type="button" class="r-btn ${s.reacted ? 'active' : ''}" data-action="react">♥ <span class="count">${s.reactions}</span></button>
+        <button type="button" class="r-btn" data-action="repost">↗ <span class="count">${s.reposts}</span></button>
+        <span style="margin-left: auto; font-size: 10px; color: var(--text-dim); font-style: italic;">"${s.nick}"</span>
+      </div>
+    `;
+    div.querySelector('.sin').textContent = s.sin;
+    div.querySelector('.response').textContent = s.response;
+    div.querySelectorAll('.r-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (action === 'react') {
+          s.reacted = !s.reacted;
+          s.reactions += s.reacted ? 1 : -1;
+        } else {
+          s.reposts++;
+        }
+        renderWall();
+        HATE.audioBeep(880, 0.05, 0.025);
+      });
+    });
+    wall.appendChild(div);
+  });
+
+  document.getElementById('load-more').style.display = filtered.length > visible ? 'inline-block' : 'none';
+}
+renderWall();
+
+// sort buttons
+document.querySelectorAll('[data-sort]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-sort]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    currentSort = b.dataset.sort;
+    renderWall();
+  });
+});
+
+// filter buttons
+document.querySelectorAll('[data-filter]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    currentFilter = b.dataset.filter;
+    visible = 8;
+    renderWall();
+  });
+});
+
+// load more
+document.getElementById('load-more').addEventListener('click', () => {
+  visible += 6;
+  renderWall();
+});
+
+// ===== category in form =====
+let formCat = 'bag';
+document.querySelectorAll('.cat-opt').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.cat-opt').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    formCat = b.dataset.cat;
+  });
+});
+
+// ===== submit =====
+const RESPONSES = [
+  "you typed all of that. and yet. i am still expected to care.",
+  "noted. archived. you will be referenced in the eulogy.",
+  "this is a confession. it is also a brag. i cannot decide which is worse.",
+  "you have done what you have done. on purpose. own it. or don't. either is awful.",
+  "i would absolve you. but i can't. and won't. and don't want to. but mostly can't.",
+  "thank you for telling me. i mean that exactly as much as it sounds.",
+  "your sin has been added to the canon. it is the worst chapter so far.",
+  "the warden would say something kind here. the warden is not here.",
+];
+
+document.getElementById('confess-btn').addEventListener('click', () => {
+  const sin = document.getElementById('sin-input').value.trim();
+  if (!sin) return;
+  if (sin.length < 8) return alert('not specific enough. specifics are the point.');
+  const r = RESPONSES[Math.floor(Math.random() * RESPONSES.length)];
+  document.getElementById('response').textContent = r;
+  document.getElementById('response').classList.add('show');
+  if (document.getElementById('public-check').checked) {
+    sins.unshift({
+      addr: '0x' + Math.random().toString(16).slice(2,6) + '...' + Math.random().toString(16).slice(2,6),
+      nick: HATE.state.nickname || 'anon',
+      cat: formCat,
+      sin,
+      response: r,
+      reactions: 0,
+      reposts: 0,
+      reacted: false,
+      time: Date.now(),
+    });
+    renderWall();
+  }
+  document.getElementById('sin-input').value = '';
+  HATE.unlock('confess');
+  HATE.audioBeep(440, 0.2, 0.04);
+  setTimeout(() => {
+    document.getElementById('response').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+});
+</script>
+</body>
+</html>

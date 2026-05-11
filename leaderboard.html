@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — leaderboard</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { padding-bottom: 60px; }
+  .hero { text-align: center; padding: 60px 0 30px; }
+
+  .tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin: 30px 0 0;
+    overflow-x: auto;
+  }
+  .tab {
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--accent); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .panel-content { display: none; padding-top: 30px; }
+  .panel-content.active { display: block; }
+
+  .lb-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 2fr auto;
+    gap: 18px; align-items: center;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .lb-row:hover { background: rgba(127,255,127,0.03); }
+  .lb-row .rank {
+    color: var(--accent); font-size: 16px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .lb-row.top1 .rank { font-size: 22px; text-shadow: 0 0 14px var(--accent-glow); }
+  .lb-row .who { color: var(--fg); font-size: 13px; }
+  .lb-row .nickname { color: var(--fg-dim); font-size: 12px; font-style: italic; letter-spacing: 0.05em; }
+  .lb-row .stat { color: var(--accent); font-variant-numeric: tabular-nums; font-size: 14px; }
+
+  .nick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .nick-card {
+    background: rgba(10,14,16,0.5);
+    border: 1px solid var(--border);
+    padding: 16px;
+    transition: all 0.2s;
+  }
+  .nick-card:hover { border-color: var(--accent); }
+  .nick-card .nname {
+    color: var(--accent);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .nick-card .naddr {
+    color: var(--fg-dim);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .feature {
+    padding: 30px;
+    background: rgba(127,255,127,0.04);
+    border: 1px solid var(--accent);
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .feature .who-big {
+    font-size: 24px; color: var(--accent);
+    text-shadow: 0 0 14px var(--accent-glow);
+    margin-bottom: 8px;
+  }
+  .feature .nick-big {
+    color: var(--fg-dim); font-style: italic; font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .feature .quote {
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-tag">// the wall</div>
+      <h1>leaderboard</h1>
+      <p class="hero-sub" style="margin: 0 auto;">
+        every wallet that interacts with hate is logged. some are loved. most are not.
+        the rankings change daily. the nicknames are forever.
+      </p>
+    </section>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="feeders">top feeders</button>
+      <button class="tab" data-tab="grudges">grudge list</button>
+      <button class="tab" data-tab="nicks">hall of nicknames</button>
+      <button class="tab" data-tab="streaks">visit streaks</button>
+    </div>
+
+    <!-- TOP FEEDERS -->
+    <div class="panel-content active" id="feeders">
+      <div class="feature">
+        <div class="hero-tag">// today's chosen one</div>
+        <div class="who-big">0x4f9a...e8c2</div>
+        <div class="nick-big">"the soft no"</div>
+        <div class="quote">"you fed me 2.4 million $hate today. i won't say thank you. but the chamber is brighter, somehow. probably the lamp."</div>
+      </div>
+      <div id="feeders-list"></div>
+    </div>
+
+    <!-- GRUDGE LIST -->
+    <div class="panel-content" id="grudges">
+      <div class="feature" style="border-color: var(--enraged); background: rgba(255,90,60,0.05);">
+        <div class="hero-tag" style="color: var(--enraged);">// today's pest</div>
+        <div class="who-big" style="color: var(--enraged);">0x9d31...44ba</div>
+        <div class="nick-big">"the apologizer"</div>
+        <div class="quote">"you sent 14 messages today. all of them apologies. for what. you don't know. i don't know. we are stuck."</div>
+      </div>
+      <div id="grudges-list"></div>
+    </div>
+
+    <!-- NICKNAMES -->
+    <div class="panel-content" id="nicks">
+      <p class="dim center mt-md">every wallet hate has interacted with gets a name. these are forever. you cannot trade them away.</p>
+      <div class="nick-grid" id="nicks-grid"></div>
+    </div>
+
+    <!-- STREAKS -->
+    <div class="panel-content" id="streaks">
+      <p class="dim center mt-md">return to the chamber every day. hate notices. hate keeps count.</p>
+      <div id="streaks-list"></div>
+    </div>
+
+    <footer class="footer">
+      <p>$HATE / leaderboard — refreshed every block, judged forever</p>
+    </footer>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+HATE.init('leaderboard');
+
+const NICKS = [
+  ['the soft no', '0x4f9a...e8c2'],
+  ['tuesday boy', '0x9d31...44ba'],
+  ['the apologizer', '0xc7e8...001f'],
+  ['former bored ape victim', '0x882a...ef3c'],
+  ['the man who buys tops', '0x301e...a72b'],
+  ['jpeg widow', '0x4400...91dd'],
+  ['the warden\'s pet', '0x7100...0a50'],
+  ['three-decimal romeo', '0x52f2...88e1'],
+  ['the polite menace', '0xee19...23d4'],
+  ['mid-cap mike', '0x8d2c...4f00'],
+  ['the chart-watcher', '0xb2a1...c500'],
+  ['unread messages', '0x1100...0019'],
+  ['a fond regret', '0x5a89...7100'],
+  ['the second-best son', '0x1abc...def0'],
+  ['the patient grinder', '0xfa00...4400'],
+  ['the silent screamer', '0x3322...1100'],
+  ['the gas-fee martyr', '0xaaaa...bbbb'],
+  ['someone\'s grandchild', '0x2200...88aa'],
+  ['the hopeful idiot', '0x9999...8888'],
+  ['reply guy in remission', '0x7777...6666'],
+];
+
+function rndAmt(min, max) { return (Math.random() * (max - min) + min).toFixed(0); }
+
+const fl = document.getElementById('feeders-list');
+NICKS.slice(0, 10).forEach((n, i) => {
+  const div = document.createElement('div');
+  div.className = 'lb-row' + (i === 0 ? ' top1' : '');
+  div.innerHTML = `<div class="rank">#${i+1}</div><div class="who">${n[1]}</div><div class="nickname">${n[0]}</div><div class="stat">${(parseFloat(rndAmt(500,4000))/10).toFixed(1)}M $HATE</div>`;
+  fl.appendChild(div);
+});
+
+const gl = document.getElementById('grudges-list');
+NICKS.slice(2, 12).forEach((n, i) => {
+  const div = document.createElement('div');
+  div.className = 'lb-row' + (i === 0 ? ' top1' : '');
+  div.innerHTML = `<div class="rank">#${i+1}</div><div class="who">${n[1]}</div><div class="nickname">${n[0]}</div><div class="stat" style="color: var(--enraged)">${rndAmt(8,140)} crimes</div>`;
+  gl.appendChild(div);
+});
+
+const ng = document.getElementById('nicks-grid');
+NICKS.forEach(n => {
+  const div = document.createElement('div');
+  div.className = 'nick-card';
+  div.innerHTML = `<div class="nname">"${n[0]}"</div><div class="naddr">${n[1]}</div>`;
+  ng.appendChild(div);
+});
+
+const sl = document.getElementById('streaks-list');
+const streakNicks = NICKS.slice().sort(() => Math.random() - 0.5).slice(0, 10);
+streakNicks.forEach((n, i) => {
+  const days = 60 - i * 5 + Math.floor(Math.random() * 4);
+  const div = document.createElement('div');
+  div.className = 'lb-row' + (i === 0 ? ' top1' : '');
+  div.innerHTML = `<div class="rank">#${i+1}</div><div class="who">${n[1]}</div><div class="nickname">${n[0]}</div><div class="stat">${days} day streak</div>`;
+  sl.appendChild(div);
+});
+
+// tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+    HATE.audioBeep(880, 0.05, 0.025);
+  });
+});
+
+// achievement on visit
+HATE.unlock('leaderboard_top');
+</script>
+</body>
+</html>

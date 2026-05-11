@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — presale</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { padding-bottom: 60px; }
+  .hero { text-align: center; padding: 60px 0 30px; }
+  .hero h1 { margin-bottom: 14px; }
+  .hero .quote {
+    font-size: 14px; color: var(--fg-dim);
+    max-width: 580px; margin: 24px auto 0; line-height: 1.7;
+    font-style: italic;
+  }
+
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; margin: 40px 0;
+  }
+  @media (max-width: 800px) { .tiers { grid-template-columns: 1fr; } }
+  .tier {
+    background: rgba(10,14,16,0.7);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    position: relative;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .tier:hover { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px); }
+  .tier.featured { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
+  .tier .tier-name {
+    font-size: 11px; letter-spacing: 0.3em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tier .tier-price {
+    font-size: 32px; color: var(--fg);
+    margin-bottom: 16px; font-variant-numeric: tabular-nums;
+  }
+  .tier .tier-bonus {
+    color: var(--accent); font-size: 13px; margin-bottom: 12px;
+  }
+  .tier ul { list-style: none; padding: 0; margin-bottom: 20px; font-size: 12px; line-height: 2; color: var(--fg-dim); }
+  .tier ul li::before { content: '◇ '; color: var(--accent); margin-right: 4px; }
+  .tier .tier-tag {
+    position: absolute; top: -10px; right: 14px;
+    background: var(--accent); color: var(--bg);
+    font-size: 9px; padding: 4px 10px; letter-spacing: 0.2em;
+  }
+
+  .progress-card { padding: 40px; }
+  .progress-card .progress-label {
+    display: flex; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .progress-card .raised {
+    font-size: 28px; color: var(--accent);
+    text-shadow: 0 0 12px var(--accent-glow);
+    font-variant-numeric: tabular-nums;
+  }
+  .progress-card .target {
+    font-size: 14px; color: var(--fg-dim);
+  }
+
+  .form-grid {
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 16px; margin: 24px 0;
+  }
+  @media (max-width: 800px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .recent-buys {
+    margin-top: 40px;
+  }
+  .buy-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 16px; align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .buy-row .who { color: var(--accent); }
+  .buy-row .nick { color: var(--fg-dim); font-style: italic; }
+  .buy-row .amt { color: var(--fg); font-variant-numeric: tabular-nums; }
+  .buy-row .ago { color: var(--fg-dim); font-size: 10px; letter-spacing: 0.1em; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    cursor: pointer;
+  }
+  .faq-item .q {
+    font-size: 14px; color: var(--fg);
+    display: flex; justify-content: space-between;
+  }
+  .faq-item .a {
+    margin-top: 12px; font-size: 13px; color: var(--fg-dim);
+    line-height: 1.7; display: none;
+  }
+  .faq-item.open .a { display: block; }
+  .faq-item .arrow { color: var(--accent); transition: transform 0.2s; }
+  .faq-item.open .arrow { transform: rotate(90deg); }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-tag">// presale phase 01</div>
+      <h1>reserve your hate</h1>
+      <p class="hero-sub" style="margin: 0 auto;">
+        the chamber opens in days. before then, a limited window for early victims.
+        contributions reserve $hate at a discount and unlock special wallet nicknames.
+      </p>
+      <p class="quote">
+        "they tell me i need a 'presale.' i am told this is what humans do before subjecting themselves to things.
+        very well. line up. i'll be making a list."
+      </p>
+    </section>
+
+    <section class="panel" style="margin-bottom: 40px;">
+      <h3>// chamber opens in</h3>
+      <div class="countdown" id="countdown">
+        <div class="countdown-block"><div class="num" id="c-days">00</div><div class="lab">days</div></div>
+        <div class="countdown-block"><div class="num" id="c-hrs">00</div><div class="lab">hours</div></div>
+        <div class="countdown-block"><div class="num" id="c-min">00</div><div class="lab">minutes</div></div>
+        <div class="countdown-block"><div class="num" id="c-sec">00</div><div class="lab">seconds</div></div>
+      </div>
+      <p class="dim center">launch: <span id="launch-date">— calculating —</span></p>
+    </section>
+
+    <section class="panel progress-card">
+      <h3>// presale progress</h3>
+      <div class="progress-label">
+        <div class="raised" id="raised">0 SOL</div>
+        <div class="target">target: <span id="target">800 SOL</span></div>
+      </div>
+      <div class="bar"><div class="fill" id="progress-fill" style="width: 0%"></div></div>
+      <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--fg-dim);">
+        <div><span id="contributors">0</span> victims so far</div>
+        <div><span id="pct">0</span>% of target</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>// choose your tier</h2>
+      <div class="tiers">
+        <div class="tier" data-tier="acolyte">
+          <div class="tier-name">acolyte</div>
+          <div class="tier-price">0.5 SOL</div>
+          <div class="tier-bonus">+10% bonus tokens</div>
+          <ul>
+            <li>early access to chamber</li>
+            <li>basic wallet nickname</li>
+            <li>entry on the wall</li>
+            <li>access to /confess</li>
+          </ul>
+          <button class="btn btn-block" data-amount="0.5">contribute</button>
+        </div>
+        <div class="tier featured" data-tier="believer">
+          <div class="tier-tag">recommended</div>
+          <div class="tier-name">believer</div>
+          <div class="tier-price">2 SOL</div>
+          <div class="tier-bonus">+25% bonus tokens</div>
+          <ul>
+            <li>everything in acolyte</li>
+            <li>premium wallet nickname (custom)</li>
+            <li>private dm access at launch</li>
+            <li>early prophecy delivery</li>
+            <li>etched on the chamber wall</li>
+          </ul>
+          <button class="btn btn-primary btn-block" data-amount="2">contribute</button>
+        </div>
+        <div class="tier" data-tier="warden">
+          <div class="tier-name">warden</div>
+          <div class="tier-price">10 SOL</div>
+          <div class="tier-bonus">+50% bonus tokens</div>
+          <ul>
+            <li>everything in believer</li>
+            <li>1-on-1 voice message from hate</li>
+            <li>permanent immunity from grudge list</li>
+            <li>name a future nickname for someone else</li>
+            <li>called by name forever</li>
+          </ul>
+          <button class="btn btn-block" data-amount="10">contribute</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>// contribute</h3>
+      <p class="dim mb-md">connect a phantom wallet. choose an amount. confirm. hate will know.</p>
+      <div class="form-grid">
+        <div>
+          <label class="form-label">your wallet address</label>
+          <input type="text" id="wallet-input" placeholder="paste solana address or click connect" />
+        </div>
+        <div>
+          <label class="form-label">contribution (sol)</label>
+          <input type="number" id="amount-input" placeholder="0.5" step="0.1" min="0.5" />
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 16px;">
+        <button class="btn btn-primary" id="connect-btn">connect phantom</button>
+        <button class="btn" id="submit-btn">reserve $hate</button>
+      </div>
+      <p class="dim mt-md" style="font-size: 10px;">
+        prototype only — real connection wires in at launch via @solana/wallet-adapter.
+        your contribution is not yet a real transaction.
+      </p>
+    </section>
+
+    <section class="recent-buys panel">
+      <h3>// recent contributions</h3>
+      <div id="buys-list"></div>
+    </section>
+
+    <section class="panel mt-lg">
+      <h2>// FAQ</h2>
+      <div class="faq-item"><div class="q">when does the presale end? <span class="arrow">▶</span></div><div class="a">when the warden opens the chamber. roughly the timer above. precisely when hate decides.</div></div>
+      <div class="faq-item"><div class="q">when do i receive my tokens? <span class="arrow">▶</span></div><div class="a">claimable from this site within 24 hours of launch. wallet that contributed = wallet that claims. no exceptions. hate notices exceptions.</div></div>
+      <div class="faq-item"><div class="q">is there a vesting schedule? <span class="arrow">▶</span></div><div class="a">no. presale tokens unlock fully at launch. team tokens vest 12 months. you can leave at any time. hate will remember if you do.</div></div>
+      <div class="faq-item"><div class="q">what chain is this? <span class="arrow">▶</span></div><div class="a">solana. spl token-2022 with a custom transfer hook for mood-linked tax. standard phantom wallet works.</div></div>
+      <div class="faq-item"><div class="q">refunds? <span class="arrow">▶</span></div><div class="a">if the soft cap (200 sol) is not reached, all contributions are returned automatically. if it is reached, no refunds. you committed. hate has begun planning your reception.</div></div>
+      <div class="faq-item"><div class="q">is this a real token or a meme? <span class="arrow">▶</span></div><div class="a">yes.</div></div>
+    </section>
+
+    <footer class="footer">
+      <p>$HATE / chamber 001 — solana spl token-2022 — liquidity locked</p>
+      <p class="mt-sm">this is a joke. if you treat it like a retirement plan that is between you and god.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+HATE.init('presale');
+
+// countdown
+const launchTime = Date.now() + (14 * 24 * 60 * 60 * 1000); // 14 days from now
+document.getElementById('launch-date').textContent = new Date(launchTime).toUTCString();
+function tick() {
+  const diff = launchTime - Date.now();
+  if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div class="hero-tag" style="font-size: 18px;">// chamber is open</div>'; return; }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('c-days').textContent = String(d).padStart(2, '0');
+  document.getElementById('c-hrs').textContent = String(h).padStart(2, '0');
+  document.getElementById('c-min').textContent = String(m).padStart(2, '0');
+  document.getElementById('c-sec').textContent = String(s).padStart(2, '0');
+}
+tick(); setInterval(tick, 1000);
+
+// progress (animated mock)
+let raised = 234.7;
+const target = 800;
+function updateProgress() {
+  const pct = Math.min(100, (raised / target) * 100);
+  document.getElementById('raised').textContent = raised.toFixed(1) + ' SOL';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('pct').textContent = pct.toFixed(1);
+  document.getElementById('contributors').textContent = Math.floor(raised / 0.8);
+}
+updateProgress();
+setInterval(() => { raised += Math.random() * 0.5; updateProgress(); }, 5000);
+
+// recent buys
+const NICKS = ['tuesday boy','the apologizer','jpeg widow','wen.ser','the warden\'s pet','soft no','three-decimal romeo','an eventual exit'];
+function rndAddr() { return '0x' + Math.random().toString(16).slice(2, 6) + '...' + Math.random().toString(16).slice(2, 6); }
+const list = document.getElementById('buys-list');
+function addBuy(addr, nick, amount, ago) {
+  const div = document.createElement('div');
+  div.className = 'buy-row';
+  div.innerHTML = `<span class="who">${addr}</span><span class="nick">${nick}</span><span class="amt">${amount} SOL</span><span class="ago">${ago}</span>`;
+  list.insertBefore(div, list.firstChild);
+  while (list.children.length > 8) list.removeChild(list.lastChild);
+}
+['just now','42s ago','3m ago','6m ago','11m ago','18m ago'].forEach((ago, i) => {
+  addBuy(rndAddr(), NICKS[i % NICKS.length], (0.5 + Math.random() * 5).toFixed(1), ago);
+});
+setInterval(() => addBuy(rndAddr(), NICKS[Math.floor(Math.random() * NICKS.length)], (0.5 + Math.random() * 8).toFixed(1), 'just now'), 8000);
+
+// tier buttons
+document.querySelectorAll('[data-amount]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.getElementById('amount-input').value = b.dataset.amount;
+    document.getElementById('amount-input').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    HATE.audioBeep(660, 0.08, 0.03);
+  });
+});
+
+// connect
+document.getElementById('connect-btn').addEventListener('click', () => {
+  const addr = '0x' + Math.random().toString(16).slice(2, 14);
+  document.getElementById('wallet-input').value = addr;
+  HATE.audioBeep(880, 0.1, 0.04);
+  HATE.showAchievement('wallet acknowledged');
+});
+
+// submit
+document.getElementById('submit-btn').addEventListener('click', () => {
+  const amt = parseFloat(document.getElementById('amount-input').value);
+  const addr = document.getElementById('wallet-input').value;
+  if (!addr) return alert('connect a wallet first.');
+  if (!amt || amt < 0.5) return alert('minimum is 0.5 sol.');
+  raised += amt; updateProgress();
+  addBuy(addr.slice(0, 6) + '...' + addr.slice(-4), HATE.state.nickname || 'anon', amt.toFixed(1), 'just now');
+  HATE.audioBeep(440, 0.2, 0.05);
+  HATE.unlock('presale_amount');
+  document.getElementById('amount-input').value = '';
+  alert('reserved. hate will see you at launch.');
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('open'));
+});
+</script>
+</body>
+</html>

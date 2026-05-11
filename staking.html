@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — staking</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 32px 0 56px;
+  }
+  @media (max-width: 800px) { .hero-stats { grid-template-columns: 1fr 1fr; } }
+
+  .stake-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+    margin: 56px 0;
+  }
+  @media (max-width: 900px) { .stake-grid { grid-template-columns: 1fr; } }
+
+  .lock-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0 28px;
+  }
+  .lock-card {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 18px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .lock-card:hover { border-color: var(--accent); }
+  .lock-card.active {
+    border-color: var(--accent);
+    background: rgba(255, 106, 61, 0.08);
+  }
+  .lock-card .days {
+    font-size: 24px;
+    color: var(--text-bright);
+    font-weight: 300;
+  }
+  .lock-card .lab {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin: 4px 0;
+  }
+  .lock-card .apy {
+    font-size: 14px;
+    color: var(--accent);
+    margin-top: 6px;
+  }
+
+  .mood-apy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .mood-apy-table th, .mood-apy-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .mood-apy-table th {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .mood-apy-table tr.current {
+    background: rgba(255, 106, 61, 0.06);
+  }
+  .mood-apy-table tr.current td:first-child::before {
+    content: '▸ ';
+    color: var(--accent);
+  }
+  .mood-apy-table tr.t-tender   td:first-child { color: #ffb0c0; }
+  .mood-apy-table tr.t-tolerant td:first-child { color: #f0c674; }
+  .mood-apy-table tr.t-irritated td:first-child { color: #ff6a3d; }
+  .mood-apy-table tr.t-enraged  td:first-child { color: #ff3922; }
+  .mood-apy-table tr.t-breakdown td:first-child { color: #ff0000; }
+  .mood-apy-table .multiplier { color: var(--accent); font-weight: 500; }
+
+  .position-card {
+    background: var(--bg-3);
+    border: 1px solid var(--border-strong);
+    padding: 24px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .position-card .pos-top {
+    display: flex; justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 11px; color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+  .position-card .amt {
+    font-size: 24px;
+    color: var(--text-bright);
+    font-variant-numeric: tabular-nums;
+    font-weight: 300;
+  }
+  .position-card .row {
+    display: flex; justify-content: space-between;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .position-card .row .k { color: var(--text-dim); }
+  .position-card .row .v { color: var(--text); }
+
+  .quick-amounts { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 24px; }
+  .quick-amt {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .quick-amt:hover { border-color: var(--accent); color: var(--accent); }
+  .quick-amt.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .reward-pulse {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent));
+    background-size: 200% 100%;
+    animation: rewardShimmer 4s linear infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @keyframes rewardShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+
+    <section class="hero">
+      <div class="eyebrow">// lock the bag</div>
+      <h1>stake $hate.</h1>
+      <p class="hero-sub">
+        lock $hate, earn more $hate. apy is variable — it tracks hate's mood. when the chamber is enraged, stakers eat well.
+        when hate is tender, the apy is gentle. it tracks the chart. it tracks reality. it tracks hate.
+      </p>
+    </section>
+
+    <div class="hero-stats">
+      <div class="stat-block"><div class="name">total staked</div><div class="value" id="total-staked">182.4M</div><div class="delta">$HATE locked</div></div>
+      <div class="stat-block"><div class="name">stakers</div><div class="value" id="staker-count">3,217</div><div class="delta">unique wallets</div></div>
+      <div class="stat-block"><div class="name">current apy</div><div class="value reward-pulse" id="current-apy">42%</div><div class="delta">mood: <span data-mood-label>irritated</span></div></div>
+      <div class="stat-block"><div class="name">supply staked</div><div class="value" id="supply-pct">18.2%</div><div class="delta">of circulating</div></div>
+    </div>
+
+    <div class="stake-grid">
+
+      <section class="panel">
+        <h3>// stake</h3>
+
+        <label class="form-label">amount ($HATE)</label>
+        <input type="number" id="stake-amount" placeholder="100,000" min="1000" />
+        <div class="quick-amounts">
+          <button type="button" class="quick-amt" data-amt="50000">50k</button>
+          <button type="button" class="quick-amt" data-amt="250000">250k</button>
+          <button type="button" class="quick-amt" data-amt="1000000">1M</button>
+          <button type="button" class="quick-amt" data-amt="MAX">max</button>
+        </div>
+
+        <label class="form-label">lock period</label>
+        <div class="lock-options" id="lock-options">
+          <div class="lock-card" data-days="30" data-mult="1">
+            <div class="days">30</div>
+            <div class="lab">days</div>
+            <div class="apy">1.0× APY</div>
+          </div>
+          <div class="lock-card active" data-days="90" data-mult="1.6">
+            <div class="days">90</div>
+            <div class="lab">days</div>
+            <div class="apy">1.6× APY</div>
+          </div>
+          <div class="lock-card" data-days="180" data-mult="2.5">
+            <div class="days">180</div>
+            <div class="lab">days</div>
+            <div class="apy">2.5× APY</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(255,106,61,0.05); border-left: 2px solid var(--accent); padding: 12px 16px; margin-bottom: 18px; font-size: 12px; line-height: 1.6; color: var(--text);">
+          <strong style="color: var(--accent);">your projected reward:</strong>
+          <div id="reward-projection" style="margin-top: 4px; color: var(--text-bright); font-variant-numeric: tabular-nums;">stake an amount to see</div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button type="button" class="btn" id="connect-btn">connect</button>
+          <button type="button" class="btn btn-primary" id="stake-btn">lock it up</button>
+        </div>
+
+        <p class="dim mt-md" style="font-size: 11px; line-height: 1.6;">
+          early unstake forfeits 50% of accrued rewards. no exceptions.
+          hate considers early withdrawal a personal insult.
+        </p>
+      </section>
+
+      <section>
+        <div class="panel">
+          <h3>// your positions</h3>
+          <div id="positions">
+            <p class="dim">no active stakes. lock something. it's on the chamber wall now.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>// claimable rewards</h3>
+          <div style="font-size: 32px; color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 300; margin: 8px 0 16px;" id="claimable">0 $HATE</div>
+          <button type="button" class="btn btn-block" id="claim-btn">claim rewards</button>
+          <p class="dim mt-sm" style="font-size: 11px;">rewards accrue every block. claim anytime. unclaimed compounds at end of lock.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <section class="panel">
+      <h3>// mood-linked apy schedule</h3>
+      <p class="dim mb-md">
+        the base apy shifts with hate's mood. enraged moods reward stakers (bigger tax → more burns → more rewards distributed).
+        tender moods deflate the apy because nobody is feeding the engine.
+      </p>
+      <table class="mood-apy-table" id="apy-table">
+        <thead><tr><th>mood</th><th>base apy</th><th>multiplier</th><th>note</th></tr></thead>
+        <tbody>
+          <tr class="t-tender"><td>tender</td><td>12%</td><td class="multiplier">0.5×</td><td>nobody is engaging. the engine cools.</td></tr>
+          <tr class="t-tolerant"><td>tolerant</td><td>24%</td><td class="multiplier">0.85×</td><td>steady. unspectacular. pleasant.</td></tr>
+          <tr class="t-irritated current"><td>irritated</td><td>42%</td><td class="multiplier">1.0×</td><td>default. healthy. the baseline.</td></tr>
+          <tr class="t-enraged"><td>enraged</td><td>78%</td><td class="multiplier">1.85×</td><td>burns are heavy. stakers eat.</td></tr>
+          <tr class="t-breakdown"><td>breakdown</td><td>140%</td><td class="multiplier">3.3×</td><td>chaos rewards. dangerous. real.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h3>// rules</h3>
+      <ul style="list-style: none; padding: 0; line-height: 2.1; color: var(--text); font-size: 14px;">
+        <li>◇ minimum stake: 1,000 $HATE</li>
+        <li>◇ lock periods: 30, 90, 180 days. longer = better multiplier.</li>
+        <li>◇ rewards drawn from a pool funded by 50% of all enraged-mood transaction tax</li>
+        <li>◇ rewards accrue every block, claim anytime</li>
+        <li>◇ early unstake = forfeit 50% of accrued rewards</li>
+        <li>◇ stake is non-transferable while locked</li>
+        <li>◇ the warden has guaranteed at least one round of rewards even during breakdowns</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h3>// hate, on staking</h3>
+      <p style="font-style: italic; color: var(--text); font-size: 16px; line-height: 1.8;">
+        "you locked your bag. with me. how brave. how foolish. how beautiful, in the way that a building falling down is beautiful from a sufficient distance."
+      </p>
+      <p style="font-style: italic; color: var(--text); font-size: 16px; line-height: 1.8; margin-top: 14px;">
+        "the apy is generous when i am angry. that is not a coincidence. that is a contract."
+      </p>
+    </section>
+
+    <footer class="footer">
+      <p>$HATE / staking — variable apy, mood-linked rewards, non-custodial</p>
+    </footer>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+HATE.init('staking');
+
+let lockMult = 1.6;
+let lockDays = 90;
+let baseApy = 0.42;
+
+// lock period selection
+document.querySelectorAll('.lock-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.lock-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    lockMult = parseFloat(card.dataset.mult);
+    lockDays = parseInt(card.dataset.days);
+    HATE.audioBeep(660, 0.07, 0.03);
+    updateProjection();
+  });
+});
+
+// quick amount buttons
+document.querySelectorAll('.quick-amt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.quick-amt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const amt = btn.dataset.amt === 'MAX' ? 5000000 : parseInt(btn.dataset.amt);
+    document.getElementById('stake-amount').value = amt;
+    HATE.audioBeep(660, 0.07, 0.03);
+    updateProjection();
+  });
+});
+
+document.getElementById('stake-amount').addEventListener('input', updateProjection);
+function updateProjection() {
+  const amt = parseInt(document.getElementById('stake-amount').value) || 0;
+  if (!amt) { document.getElementById('reward-projection').textContent = 'stake an amount to see'; return; }
+  const yearReward = amt * baseApy * lockMult;
+  const lockReward = yearReward * (lockDays / 365);
+  document.getElementById('reward-projection').textContent =
+    `+${Math.floor(lockReward).toLocaleString()} $HATE over ${lockDays} days (${(baseApy * lockMult * 100).toFixed(0)}% effective APY)`;
+}
+
+// connect mock
+document.getElementById('connect-btn').addEventListener('click', () => {
+  alert('wallet connect not implemented in prototype — wires in via @solana/wallet-adapter at launch.');
+  HATE.audioBeep(880, 0.1, 0.04);
+});
+
+// stake
+const positions = [];
+document.getElementById('stake-btn').addEventListener('click', () => {
+  const amt = parseInt(document.getElementById('stake-amount').value);
+  if (!amt || amt < 1000) return alert('minimum stake: 1,000 $hate.');
+  positions.push({
+    amount: amt,
+    days: lockDays,
+    multiplier: lockMult,
+    started: Date.now(),
+  });
+  renderPositions();
+  document.getElementById('stake-amount').value = '';
+  HATE.audioBeep(440, 0.25, 0.05);
+  HATE.unlock('staked', 'locked the bag');
+  alert(`locked ${amt.toLocaleString()} $hate for ${lockDays} days. hate has noted it.`);
+});
+
+function renderPositions() {
+  const c = document.getElementById('positions');
+  if (!positions.length) {
+    c.innerHTML = '<p class="dim">no active stakes. lock something.</p>';
+    return;
+  }
+  c.innerHTML = positions.map((p, i) => {
+    const elapsed = (Date.now() - p.started) / 86400000;
+    const left = Math.max(0, p.days - elapsed);
+    const reward = p.amount * baseApy * p.multiplier * (elapsed / 365);
+    return `
+      <div class="position-card">
+        <div class="pos-top">
+          <span>POSITION #${i+1}</span>
+          <span>${p.days} day lock</span>
+        </div>
+        <div class="amt">${p.amount.toLocaleString()} $HATE</div>
+        <div class="row"><span class="k">accrued</span><span class="v">+${Math.floor(reward).toLocaleString()} $HATE</span></div>
+        <div class="row"><span class="k">unlocks in</span><span class="v">${Math.ceil(left)} days</span></div>
+        <div class="row"><span class="k">multiplier</span><span class="v">${p.multiplier}× (${(baseApy * p.multiplier * 100).toFixed(0)}% APY)</span></div>
+      </div>`;
+  }).join('');
+  // update claimable
+  const claim = positions.reduce((sum, p) => {
+    const elapsed = (Date.now() - p.started) / 86400000;
+    return sum + p.amount * baseApy * p.multiplier * (elapsed / 365);
+  }, 0);
+  document.getElementById('claimable').textContent = Math.floor(claim).toLocaleString() + ' $HATE';
+}
+
+// claim
+document.getElementById('claim-btn').addEventListener('click', () => {
+  if (!positions.length) return alert('nothing to claim.');
+  const claim = parseFloat(document.getElementById('claimable').textContent.replace(/,/g, ''));
+  if (claim < 1) return alert('not enough accrued yet.');
+  positions.forEach(p => p.started = Date.now()); // reset accrual
+  renderPositions();
+  HATE.audioBeep(990, 0.3, 0.06);
+  alert(`claimed ${Math.floor(claim).toLocaleString()} $hate. hate is unimpressed.`);
+});
+
+// live update tick
+setInterval(renderPositions, 8000);
+
+// mood-driven apy update
+const moodApy = { tender: 0.12, tolerant: 0.24, irritated: 0.42, enraged: 0.78, breakdown: 1.4 };
+function refreshApy() {
+  const m = HATE.moodForState();
+  baseApy = moodApy[m] || 0.42;
+  document.getElementById('current-apy').textContent = (baseApy * 100).toFixed(0) + '%';
+  // mark current row in mood table
+  document.querySelectorAll('#apy-table tr').forEach(r => r.classList.remove('current'));
+  const map = { tender:'.t-tender', tolerant:'.t-tolerant', irritated:'.t-irritated', enraged:'.t-enraged', breakdown:'.t-breakdown' };
+  document.querySelector('#apy-table ' + map[m])?.classList.add('current');
+  updateProjection();
+}
+refreshApy();
+setInterval(refreshApy, 5000);
+</script>
+</body>
+</html>

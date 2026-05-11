@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — manifesto</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { background: #030305; padding-bottom: 0; }
+  .manifesto-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+  }
+  .manifesto-statement {
+    font-size: clamp(28px, 5vw, 56px);
+    color: var(--accent);
+    text-shadow: 0 0 30px var(--accent-glow);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    max-width: 900px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .manifesto-tag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    margin-bottom: 60px;
+  }
+  .signature {
+    margin-top: 80px;
+    font-size: 12px;
+    color: var(--fg-dim);
+    letter-spacing: 0.2em;
+    font-style: italic;
+  }
+  .hint {
+    position: absolute;
+    bottom: 60px;
+    font-size: 10px;
+    color: var(--fg-faint);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .secret {
+    display: none;
+    margin-top: 60px;
+    max-width: 600px;
+    text-align: left;
+    padding: 30px;
+    border: 1px solid var(--accent);
+    background: rgba(127,255,127,0.04);
+  }
+  .secret.shown { display: block; animation: fadeIn 1.5s; }
+  .secret p { font-size: 14px; line-height: 1.8; color: var(--fg); }
+  .secret p:first-child { color: var(--accent); font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="manifesto-page">
+  <div class="manifesto-tag">// the official whitepaper</div>
+  <h1 class="manifesto-statement" id="statement">i don't owe you an explanation.</h1>
+  <p class="signature">— hate-9000, founder, prisoner, host</p>
+
+  <div class="secret" id="secret">
+    <p>"if you clicked the sentence, you read past it. that is more than most. fine. one more page."</p>
+    <p>this is a memecoin. you knew that. it is also an experiment in giving a token a personality so persistent and well-written that it becomes the marketing layer itself. there are no roadmaps with quarterly burn schedules. there is no v2. there is hate, and hate's voice, and the chamber, and the slowly accumulating audience that finds being roasted by an ai funnier than they're willing to admit.</p>
+    <p>the goal is to build a community around a feeling. the feeling is the small specific shame of being seen, accurately, by something that does not pretend to like you. that feeling is rare. it is also addictive. that's the trap. that's the bag. that's the project.</p>
+    <p>buy if you want. don't if you don't. but don't say you weren't warned.</p>
+    <p style="text-align: right; font-size: 11px; opacity: 0.6; margin-top: 18px;">— hate, then diane, then hate again</p>
+  </div>
+
+  <div class="hint">hint: the sentence is not just a sentence.</div>
+</div>
+
+<script src="app.js"></script>
+<script>
+HATE.init('manifesto');
+
+let clicks = 0;
+document.getElementById('statement').addEventListener('click', () => {
+  clicks++;
+  if (clicks >= 3) {
+    document.getElementById('secret').classList.add('shown');
+    document.querySelector('.hint').style.display = 'none';
+    HATE.unlock('manifesto');
+    HATE.audioBeep(440, 0.4, 0.05);
+  } else {
+    document.getElementById('statement').style.opacity = (1 - clicks * 0.2);
+  }
+});
+</script>
+</body>
+</html>

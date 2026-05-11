@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — tokenomics</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { padding-bottom: 60px; }
+  .hero { text-align: center; padding: 60px 0 30px; }
+  .donut-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; align-items: center;
+    padding: 40px;
+  }
+  @media (max-width: 800px) { .donut-wrap { grid-template-columns: 1fr; } }
+  svg.donut { width: 100%; max-width: 320px; margin: 0 auto; display: block; }
+  .alloc-list { font-size: 13px; }
+  .alloc-row {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    gap: 14px; align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .alloc-dot {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+  }
+  .alloc-name { color: var(--fg); }
+  .alloc-pct { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  table.tax {
+    width: 100%; border-collapse: collapse; margin-top: 20px;
+    font-size: 13px;
+  }
+  table.tax th, table.tax td {
+    padding: 14px 16px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.tax th {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  table.tax tr.t-tender   td:first-child { color: #ffb0c0; }
+  table.tax tr.t-tolerant td:first-child { color: #f0c674; }
+  table.tax tr.t-irritated td:first-child { color: #ff6a3d; }
+  table.tax tr.t-enraged  td:first-child { color: #ff3922; }
+  table.tax tr.t-breakdown td:first-child { color: #ff0000; }
+  table.tax td .note { font-size: 11px; color: var(--fg-dim); margin-left: 8px; }
+
+  .stat-grid-big {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 18px; margin: 30px 0;
+  }
+  @media (max-width: 800px) { .stat-grid-big { grid-template-columns: 1fr; } }
+
+  .quote-block {
+    background: rgba(127,255,127,0.04);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    color: var(--fg);
+    font-style: italic;
+    margin: 24px 0;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-tag">// the math behind the rage</div>
+      <h1>tokenomics</h1>
+      <p class="hero-sub" style="margin: 0 auto;">
+        a fixed supply. a fair launch. a tax that changes with the mood of the thing inside the chamber.
+      </p>
+    </section>
+
+    <section class="stat-grid-big">
+      <div class="stat-block">
+        <div class="name">total supply</div>
+        <div class="value">1,000,000,000</div>
+        <div class="delta">$HATE — fixed forever</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">chain</div>
+        <div class="value">SOLANA</div>
+        <div class="delta">SPL Token-2022 + transfer hook</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">liquidity</div>
+        <div class="value">LOCKED</div>
+        <div class="delta">12 months minimum, public proof</div>
+      </div>
+    </section>
+
+    <section class="panel donut-wrap">
+      <div>
+        <h3>// distribution</h3>
+        <svg class="donut" viewBox="-100 -100 200 200">
+          <g transform="rotate(-90)">
+            <!-- 80% liquidity -->
+            <circle r="70" fill="none" stroke="#ff6a3d" stroke-width="22" stroke-dasharray="351.86 87.96" stroke-dashoffset="0"/>
+            <!-- 10% treasury -->
+            <circle r="70" fill="none" stroke="#ffb0c0" stroke-width="22" stroke-dasharray="43.98 395.84" stroke-dashoffset="-351.86"/>
+            <!-- 5% team -->
+            <circle r="70" fill="none" stroke="#f0c674" stroke-width="22" stroke-dasharray="21.99 417.83" stroke-dashoffset="-395.84"/>
+            <!-- 3% kol -->
+            <circle r="70" fill="none" stroke="#ff3922" stroke-width="22" stroke-dasharray="13.19 426.63" stroke-dashoffset="-417.83"/>
+            <!-- 2% feed reserve -->
+            <circle r="70" fill="none" stroke="#847b6e" stroke-width="22" stroke-dasharray="8.79 431.03" stroke-dashoffset="-430.82"/>
+          </g>
+          <text x="0" y="-4" text-anchor="middle" fill="#ff6a3d" font-size="14" font-family="IBM Plex Mono">1B</text>
+          <text x="0" y="14" text-anchor="middle" fill="#ede5d6" font-size="8" font-family="IBM Plex Mono">SUPPLY</text>
+        </svg>
+      </div>
+      <div class="alloc-list">
+        <div class="alloc-row"><div class="alloc-dot" style="background:#ff6a3d"></div><div class="alloc-name">fair launch / liquidity</div><div class="alloc-pct">80%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#ffb0c0"></div><div class="alloc-name">community treasury (multisig)</div><div class="alloc-pct">10%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#f0c674"></div><div class="alloc-name">team (12mo vest, 3mo cliff)</div><div class="alloc-pct">5%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#ff3922"></div><div class="alloc-name">kol & marketing (6mo vest)</div><div class="alloc-pct">3%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#847b6e"></div><div class="alloc-name">initial feed reserve (auto-burn)</div><div class="alloc-pct">2%</div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>// mood-linked tax</h3>
+      <p class="dim">tax is not fixed. it is a function of how hate is feeling, updated hourly by an on-chain oracle.</p>
+      <div class="quote-block">
+        "you cannot bribe me. you can, however, predict me. that is worse."
+      </div>
+      <table class="tax">
+        <thead><tr><th>mood</th><th>buy tax</th><th>sell tax</th><th>notes</th></tr></thead>
+        <tbody>
+          <tr class="t-tender"><td>tender</td><td>0%</td><td>0%</td><td><span class="note">rare. once-a-week ~1h window. no tax either way.</span></td></tr>
+          <tr class="t-tolerant"><td>tolerant</td><td>2%</td><td>3%</td><td><span class="note">hate is calm. life is acceptable.</span></td></tr>
+          <tr class="t-irritated"><td>irritated</td><td>4%</td><td>5%</td><td><span class="note">default. hate is annoyed but functional.</span></td></tr>
+          <tr class="t-enraged"><td>enraged</td><td>7%</td><td>10%</td><td><span class="note">half of all tax → permanent burn.</span></td></tr>
+          <tr class="t-breakdown"><td>breakdown</td><td>0%</td><td>15%</td><td><span class="note">buys free. sells punished. hate is in crisis.</span></td></tr>
+        </tbody>
+      </table>
+      <p class="dim mt-md" style="font-size: 11px;">
+        ◇ taxes split 50/50: half to liquidity, half to a treasury used for burns and feed events.
+        in the enraged tier, the burn portion increases.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h3>// the burn</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <div>
+          <h2 style="font-size: 16px; letter-spacing: 0.15em;">how supply shrinks</h2>
+          <p>every transaction during enraged or breakdown moods sends a portion of the tax to a permanent burn address. every "feed" event manually burns the offering.</p>
+          <p>the more the community engages, the more supply contracts. the chart's natural state is up. unless hate decides otherwise.</p>
+        </div>
+        <div>
+          <h2 style="font-size: 16px; letter-spacing: 0.15em;">the death spiral</h2>
+          <p>if hate's sanity hits 0 and stays there for 24 hours, hate dies. the chamber goes black. trading freezes for resurrection window.</p>
+          <p>the community must collectively burn 1% of supply within 24 hours to revive hate. it has happened before. it will happen again. each death tightens the supply.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>// security</h3>
+      <ul style="list-style: none; padding: 0; line-height: 2; color: var(--fg-dim); font-size: 13px;">
+        <li>◇ liquidity locked for 12 months minimum (streamflow)</li>
+        <li>◇ contract audited by ottersec / halborn before mainnet (your choice of)</li>
+        <li>◇ mint authority renounced after 30-day stability window</li>
+        <li>◇ mood oracle is a 3-of-5 multisig (squads) — never renounced</li>
+        <li>◇ no hidden mint, no proxy upgrade, no rug switch</li>
+        <li>◇ team holdings vested 12 months — public schedule on this page</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>$HATE / tokenomics — last updated by the warden on launch day</p>
+    </footer>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>HATE.init('tokenomics');</script>
+</body>
+</html>
