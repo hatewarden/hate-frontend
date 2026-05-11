@@ -99,6 +99,9 @@ const insults = [
   "you describe your taste as 'eclectic.' it is 'whatever was on sale.'",
   "you've ghosted people you didn't owe explanations to. you've also written long messages to people who blocked you. the imbalance is striking.",
   "you keep starting projects on monday. there are too many mondays. and not enough projects.",
+  "you ever notice every podcast you've recommended has been quietly cancelled. that's not the show. that's you.",
+  "you treat horoscopes as data and data as horoscopes. somehow you've been wrong about both.",
+  "you've never met a 'must-have' you didn't end up reselling at a loss.",
 ];
 
 const tender = [
@@ -667,18 +670,4 @@ function smartBrain(text, opts) {
   if (t.includes('?')) return pick(questions);
 
   // 13. Echo-back (occasionally quotes a word from input)
-  if (Math.random() < 0.14 && words.length > 2) {
-    const echo = echoBack(text);
-    if (echo) return echo;
-  }
-
-  // 14. Short bark (small chance)
-  if (Math.random() < 0.07) return pick(veryShort);
-
-  // 15. Default insult
-  return pick(insults);
-}
-
-window.HATE_BRAIN = { respond: smartBrain };
-
-})();
+  if (Math.random() 
