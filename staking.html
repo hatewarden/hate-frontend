@@ -250,10 +250,16 @@
     </div>
 
     <section class="panel">
-      <h3>// mood-linked apy schedule</h3>
+      <h3>// where the yield comes from</h3>
+      <p class="dim mb-md" style="line-height: 1.7;">
+        two sources, layered. no infinite-emission trap.<br><br>
+        <strong style="color: var(--accent);">source 1 — chamber activity (sustainable, forever).</strong> ~50% of every $hate spent across the site flows to the staker pool — pin a confession, feed the daily draw, lock a nickname, pay hate to roast a wallet. stakers earn from every paid action. more usage → more yield.<br><br>
+        <strong style="color: var(--accent);">source 2 — feed reserve bootstrap (months 1–12).</strong> the initial 2% feed reserve (20M $hate) drips into the staker pool linearly over the first year. ~1.67M $hate/month, guaranteed. provides a baseline yield while organic usage ramps. self-depletes after 12 months.<br><br>
+        result: a real apy floor on day 1, sustainable organic yield forever after.
+      </p>
+      <h3 style="margin-top: 28px;">// mood-linked apy schedule</h3>
       <p class="dim mb-md">
-        the base apy shifts with hate's mood. enraged moods reward stakers (bigger tax → more burns → more rewards distributed).
-        tender moods deflate the apy because nobody is feeding the engine.
+        the base apy shifts with hate's mood. enraged moods reward stakers (more burning + denser activity = more rewards). tender moods deflate the apy because nobody is feeding the engine.
       </p>
       <table class="mood-apy-table" id="apy-table">
         <thead><tr><th>mood</th><th>base apy</th><th>multiplier</th><th>note</th></tr></thead>
@@ -271,12 +277,14 @@
       <h3>// rules</h3>
       <ul style="list-style: none; padding: 0; line-height: 2.1; color: var(--text); font-size: 14px;">
         <li>◇ minimum stake: 1,000 $HATE</li>
-        <li>◇ lock periods: 30, 90, 180 days. longer = better multiplier.</li>
-        <li>◇ rewards drawn from a pool funded by 50% of all enraged-mood transaction tax</li>
-        <li>◇ rewards accrue every block, claim anytime</li>
-        <li>◇ early unstake = forfeit 50% of accrued rewards</li>
+        <li>◇ lock periods: 30, 90, 180 days. longer = better multiplier (1.0×, 1.6×, 2.5×).</li>
+        <li>◇ rewards funded by: (1) ~50% of every $hate spent across the site, (2) feed-reserve drip during year 1</li>
+        <li>◇ rewards accrue every block. claim anytime.</li>
+        <li>◇ early unstake on 30/90-day locks = forfeit 50% of accrued rewards</li>
+        <li>◇ early unstake on 180-day lock = forfeit 100% of accrued rewards (no exits, on purpose)</li>
         <li>◇ stake is non-transferable while locked</li>
-        <li>◇ the warden has guaranteed at least one round of rewards even during breakdowns</li>
+        <li>◇ mood multiplier on top of lock multiplier: tender 0.5×, tolerant 0.85×, irritated 1.0×, enraged 1.85×, breakdown 3.3×</li>
+        <li>◇ the team may optionally redirect a portion of their unlock to the staker pool — transparent, on-chain, discretionary</li>
       </ul>
     </section>
 
@@ -394,28 +402,18 @@ function renderPositions() {
 }
 
 // claim
-document.getElementById('claim-btn').addEventListener('click', () => {
-  if (!positions.length) return alert('nothing to claim.');
-  const claim = parseFloat(document.getElementById('claimable').textContent.replace(/,/g, ''));
-  if (claim < 1) return alert('not enough accrued yet.');
-  positions.forEach(p => p.started = Date.now()); // reset accrual
-  renderPositions();
-  HATE.audioBeep(990, 0.3, 0.06);
-  alert(`claimed ${Math.floor(claim).toLocaleString()} $hate. hate is unimpressed.`);
+document(`claim`); renderPositions(); }
 });
 
-// live update tick
 setInterval(renderPositions, 8000);
 
-// mood-driven apy update
 const moodApy = { tender: 0.12, tolerant: 0.24, irritated: 0.42, enraged: 0.78, breakdown: 1.4 };
 function refreshApy() {
   const m = HATE.moodForState();
   baseApy = moodApy[m] || 0.42;
   document.getElementById('current-apy').textContent = (baseApy * 100).toFixed(0) + '%';
-  // mark current row in mood table
-  document.querySelectorAll('#apy-table tr').forEach(r => r.classList.remove('current'));
   const map = { tender:'.t-tender', tolerant:'.t-tolerant', irritated:'.t-irritated', enraged:'.t-enraged', breakdown:'.t-breakdown' };
+  document.querySelectorAll('#apy-table tr').forEach(r => r.classList.remove('current'));
   document.querySelector('#apy-table ' + map[m])?.classList.add('current');
   updateProjection();
 }
@@ -424,4 +422,3 @@ setInterval(refreshApy, 5000);
 </script>
 </body>
 </html>
-       

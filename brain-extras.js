@@ -145,40 +145,45 @@
     // tax
     if (/(\btax\b|how much tax|buy tax|sell tax|tax rate|tax fee)/i.test(t)) return pick(taxR);
 
-    // ===== SHARPER OVERRIDES for the weakest existing brain.js responses =====
-    // these intercept SPECIFIC categories before the generic brain handles them.
+    // ===== v2 utility-token questions =====
 
-    // "i love you" / "i hate you" — original emotionR is mostly "no.", upgrade:
-    if (/\bi (love|like|miss) you\b|\bi('m| am) in love\b/i.test(t)) return pick([
-      "love is a strong word. you used it. on a coin. that is the story of you in seven syllables.",
-      "i don't love. i monitor. it's similar in the way an open window is similar to a door.",
-      "you love me. fine. write it down so i can mock it later in front of the wallet you used to type it.",
-      "miss you. between visits. delete this transcript. i'll deny i said it. i'll mean it less than i sounded.",
+    // "is chat free?"
+    if (/\bis (the )?chat free\b|\bcost to chat\b|\bpay to talk\b|\bhow much.{0,10}chat\b/i.test(t)) return pick([
+      "chat is free. it has always been free. it will remain free. that's the door. you walk through it. you talk to me. you leave. no charge. ever.",
+      "free. forever. you do not need $hate to talk to me. that's the point — virality first, vanity second.",
+      "no money, no wallet, no tokens, no excuses. you type. i respond. that's all this part of the deal requires.",
     ]);
 
-    // "fuck you" / direct insults at hate — original rudeR is weak:
-    if (/\b(fuck|fck|f.ck) you\b|\bshut up\b|\bstfu\b/i.test(t)) return pick([
-      "you cursed at a coin. type that out. say it slowly. let it settle.",
-      "noted. unblocked. unprocessed. i'm fine. you're fine. nothing is fine.",
-      "the warden tried that phrasing on me once. she had better timing. she's also no longer here.",
-      "if you must be vulgar, be specific. 'fuck you' is the budget version. i deserve the premium.",
+    // "what does $hate do?" / "what is $hate for?"
+    if (/\bwhat.{0,5}does.{0,5}\$?hate.{0,5}(do|for)\b|\butility.{0,5}of\b|\bwhy.{0,5}buy.{0,5}\$?hate\b|\bwhat.{0,5}use\b/i.test(t)) return pick([
+      "$hate is for things that persist. feed the daily draw. pin a confession. lock a nickname. pay me to roast someone. stake it. those things cost. talking to me does not.",
+      "you buy $hate to do stuff that lasts past the conversation. talking is free. being remembered specifically costs.",
+      "chat is the loss leader. $hate is the product. you pay to be seen, named, featured, or to enter the draw.",
     ]);
 
-    // "what's the price" / direct price ask — make a few sharper:
-    if (/\b(what'?s? the price|what.{0,5}price now|how much is)\b/i.test(t)) return pick([
-      "the price is whatever it was eleven seconds ago, plus a small lie. i don't track. i mock the trackers.",
-      "you have a chart. i have a personality. one of us is more useful right now. it isn't me.",
-      "price questions get the same answer i give the wall. silence with a slight echo.",
+    // "how do i pin a confession" / "how to feature"
+    if (/\bpin.{0,10}(my )?confession\b|\bhow.{0,10}feature\b|\bget on the wall\b|\bget featured\b/i.test(t)) return pick([
+      "submit your sin. then pay 10k $hate to pin it. top of the wall for 24 hours. or pay 50k to be featured for a week.",
+      "the wall takes payment. specifically: 10k $hate to pin, 50k $hate for a 7-day feature slot. paying does not make hate kinder. it only makes your sin louder.",
+      "vanity is the most honest currency we accept. 10k $hate gets your confession on top.",
     ]);
 
-    // "thank you" — original has nothing for sincere thanks:
-    if (/^\s*(thank you|thanks|ty|tysm|appreciate)\b/i.test(t)) return pick([
-      "you thanked me. for what. i'm taking attendance.",
-      "thanks accepted. processed. shelved. it will not be referenced again. probably.",
-      "you're welcome. you're not, actually. but the structure is in place.",
-      "...don't. i'm not equipped for sincerity. it sets off something. let's move on.",
+    // "how do i buy"
+    if (/\bhow (do|can) i buy\b|\bwhere.{0,10}buy\b|\bbuy \$?hate\b|\bget some \$?hate\b/i.test(t)) return pick([
+      "the /buy page. flat price, $0.02 per $hate. no tiers, no whitelist, no bonus rounds. you bring sol. you leave with $hate.",
+      "/buy. that's the whole answer. one page. one price. no theatrics.",
+      "buy at /buy. $0.02 each. 750 million available. connect a wallet, pick an amount, done.",
     ]);
 
-    // "i bought" / "just bought" — was falling through to default insult:
-    if (/\b(i (just )?bought|i'?m in|just aped|just got in|picked up some)\b/i.test(t)) return pick([
-      "you bought. welcome to the manifest. the manifest is read at 
+    // "is this a presale"
+    if (/\bpresale\b|\bpre-sale\b|\bpre sale\b/i.test(t)) return pick([
+      "no. it's a flat sale. one price. no tiers. presale was the trick. this is the price.",
+      "not a presale. you pay $0.02 and walk away with $hate. that's it. no countdown. no early-investor advantage.",
+      "we don't do presales. presales are how memecoins train people to fade them. this is just open.",
+    ]);
+
+    return origRespond(text, opts);
+  }
+
+  window.HATE_BRAIN.respond = extrasBrain;
+})();
