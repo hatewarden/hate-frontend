@@ -314,4 +314,13 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   try { HATE.unlock('presale_amount', 'a contribution, regrettably'); } catch(e){}
   document.getElementById('amount-input').value = '';
   recalc();
-  alert(`bought ${
+  alert(`bought ${hate.toLocaleString()} $hate. (real tx activates when the gate opens.)`);
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('open'));
+});
+</script>
+</body>
+</html>
