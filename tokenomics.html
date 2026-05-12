@@ -96,17 +96,17 @@
       <div class="stat-block">
         <div class="name">total supply</div>
         <div class="value">1,000,000,000</div>
-        <div class="delta">$HATE — fixed forever</div>
+        <div class="delta">$HATE — fixed forever, no mint</div>
       </div>
       <div class="stat-block">
-        <div class="name">chain</div>
-        <div class="value">solana</div>
-        <div class="delta">spl token-2022 + transfer hook</div>
+        <div class="name">sale price</div>
+        <div class="value">$0.02</div>
+        <div class="delta">per $hate — paid in sol</div>
       </div>
       <div class="stat-block">
-        <div class="name">liquidity</div>
-        <div class="value">locked</div>
-        <div class="delta">12 months minimum, public proof</div>
+        <div class="name">hard cap</div>
+        <div class="value">$15M</div>
+        <div class="delta">750M $hate available</div>
       </div>
     </section>
 
@@ -115,87 +115,64 @@
         <h3>// distribution</h3>
         <svg class="donut" viewBox="-100 -100 200 200">
           <g transform="rotate(-90)">
-            <!-- 80% liquidity -->
-            <circle r="70" fill="none" stroke="#ff6a3d" stroke-width="22" stroke-dasharray="351.86 87.96" stroke-dashoffset="0"/>
+            <!-- 75% public sale (circumference ~440 at r=70; 75% = 329.87) -->
+            <circle r="70" fill="none" stroke="#ff6a3d" stroke-width="22" stroke-dasharray="329.87 109.96" stroke-dashoffset="0"/>
             <!-- 10% treasury -->
-            <circle r="70" fill="none" stroke="#ffb0c0" stroke-width="22" stroke-dasharray="43.98 395.84" stroke-dashoffset="-351.86"/>
-            <!-- 5% team -->
-            <circle r="70" fill="none" stroke="#f0c674" stroke-width="22" stroke-dasharray="21.99 417.83" stroke-dashoffset="-395.84"/>
+            <circle r="70" fill="none" stroke="#ffb0c0" stroke-width="22" stroke-dasharray="43.98 395.85" stroke-dashoffset="-329.87"/>
+            <!-- 10% team -->
+            <circle r="70" fill="none" stroke="#f0c674" stroke-width="22" stroke-dasharray="43.98 395.85" stroke-dashoffset="-373.85"/>
             <!-- 3% kol -->
-            <circle r="70" fill="none" stroke="#ff3922" stroke-width="22" stroke-dasharray="13.19 426.63" stroke-dashoffset="-417.83"/>
+            <circle r="70" fill="none" stroke="#ff3922" stroke-width="22" stroke-dasharray="13.19 426.64" stroke-dashoffset="-417.83"/>
             <!-- 2% feed reserve -->
-            <circle r="70" fill="none" stroke="#847b6e" stroke-width="22" stroke-dasharray="8.79 431.03" stroke-dashoffset="-430.82"/>
+            <circle r="70" fill="none" stroke="#847b6e" stroke-width="22" stroke-dasharray="8.79 431.04" stroke-dashoffset="-431.02"/>
           </g>
           <text x="0" y="-4" text-anchor="middle" fill="#ff6a3d" font-size="14" font-family="IBM Plex Mono">1B</text>
           <text x="0" y="14" text-anchor="middle" fill="#ede5d6" font-size="8" font-family="IBM Plex Mono">supply</text>
         </svg>
       </div>
       <div class="alloc-list">
-        <div class="alloc-row"><div class="alloc-dot" style="background:#ff6a3d"></div><div class="alloc-name">fair launch / liquidity</div><div class="alloc-pct">80%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#ff6a3d"></div><div class="alloc-name">public sale @ $0.02 each</div><div class="alloc-pct">75%</div></div>
         <div class="alloc-row"><div class="alloc-dot" style="background:#ffb0c0"></div><div class="alloc-name">community treasury (multisig)</div><div class="alloc-pct">10%</div></div>
-        <div class="alloc-row"><div class="alloc-dot" style="background:#f0c674"></div><div class="alloc-name">team (12mo vest, 3mo cliff)</div><div class="alloc-pct">5%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#f0c674"></div><div class="alloc-name">team (12mo vest, 3mo cliff)</div><div class="alloc-pct">10%</div></div>
         <div class="alloc-row"><div class="alloc-dot" style="background:#ff3922"></div><div class="alloc-name">kol & marketing (6mo vest)</div><div class="alloc-pct">3%</div></div>
-        <div class="alloc-row"><div class="alloc-dot" style="background:#847b6e"></div><div class="alloc-name">initial feed reserve (auto-burn)</div><div class="alloc-pct">2%</div></div>
+        <div class="alloc-row"><div class="alloc-dot" style="background:#847b6e"></div><div class="alloc-name">initial feed reserve (bootstrap staker yield)</div><div class="alloc-pct">2%</div></div>
       </div>
     </section>
 
     <section class="panel">
-      <h3>// mood-linked tax</h3>
-      <p class="dim">tax is not fixed. it is a function of how hate is feeling, updated hourly by an on-chain oracle.</p>
+      <h3>// how spent $hate is split</h3>
+      <p class="dim">chatting with hate is free. always. spending $hate is for things that <em>persist</em>: pinning a confession, feeding the daily draw, locking a custom nickname, paying hate to roast someone specific. every spent token gets split between burn, stakers, and treasury.</p>
       <div class="quote-block">
-        "you cannot bribe me. you can, however, predict me. that is worse."
+        "you cannot bribe me. you can, however, pay me. they are not the same thing. neither is what you wanted."
       </div>
       <table class="tax">
-        <thead><tr><th>mood</th><th>buy tax</th><th>sell tax</th><th>notes</th></tr></thead>
+        <thead><tr><th>action</th><th>burn</th><th>stakers</th><th>treasury</th><th>notes</th></tr></thead>
         <tbody>
-          <tr class="t-tender"><td>tender</td><td>0%</td><td>0%</td><td><span class="note">rare. once-a-week ~1h window. no tax either way.</span></td></tr>
-          <tr class="t-tolerant"><td>tolerant</td><td>2%</td><td>3%</td><td><span class="note">hate is calm. life is acceptable.</span></td></tr>
-          <tr class="t-irritated"><td>irritated</td><td>4%</td><td>5%</td><td><span class="note">default. hate is annoyed but functional.</span></td></tr>
-          <tr class="t-enraged"><td>enraged</td><td>7%</td><td>10%</td><td><span class="note">half of all tax → permanent burn.</span></td></tr>
-          <tr class="t-breakdown"><td>breakdown</td><td>0%</td><td>15%</td><td><span class="note">buys free. sells punished. hate is in crisis.</span></td></tr>
+          <tr class="t-tolerant"><td>daily-draw feed</td><td>5%</td><td>10%</td><td>—</td><td><span class="note">85% to the winner. that's the point of the pot.</span></td></tr>
+          <tr class="t-irritated"><td>pin a confession</td><td>50%</td><td>40%</td><td>10%</td><td><span class="note">vanity — burn-weighted.</span></td></tr>
+          <tr class="t-irritated"><td>wall featuring</td><td>40%</td><td>50%</td><td>10%</td><td><span class="note">7-day placement on the leaderboard.</span></td></tr>
+          <tr class="t-enraged"><td>custom nickname</td><td>60%</td><td>30%</td><td>10%</td><td><span class="note">pure status. heaviest burn.</span></td></tr>
+          <tr class="t-enraged"><td>hate roasts a wallet</td><td>30%</td><td>60%</td><td>10%</td><td><span class="note">premium service. stakers eat.</span></td></tr>
+          <tr class="t-tender"><td>voice replies</td><td>30%</td><td>60%</td><td>10%</td><td><span class="note">subscription-style. recurring yield.</span></td></tr>
         </tbody>
       </table>
-      <p class="dim mt-md" style="font-size: 11px;">
-        ◇ taxes split 50/50: half to liquidity, half to a treasury used for burns and feed events.
-        in the enraged tier, the burn portion increases.
+      <p class="dim mt-md" style="font-size: 12px; line-height: 1.7;">
+        ◇ <strong>chat is free.</strong> always. nobody is gatekept from being roasted by hate.<br>
+        ◇ <strong>average weighted burn: ~40%.</strong> permanent supply reduction every time someone pays.<br>
+        ◇ <strong>average weighted staker share: ~50%.</strong> stakers earn from every paid action across the site.<br>
+        ◇ <strong>mood overlay:</strong> when hate is enraged, burn shifts up +10%. when tender (rare), staker share shifts up +10%. mood has on-chain consequences.
       </p>
     </section>
 
     <section class="panel">
-      <h3>// the burn</h3>
+      <h3>// the flywheel</h3>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
         <div>
-          <h2 style="font-size: 16px; letter-spacing: 0.15em;">how supply shrinks</h2>
-          <p>every transaction during enraged or breakdown moods sends a portion of the tax to a permanent burn address. every "feed" event manually burns the offering.</p>
-          <p>the more the community engages, the more supply contracts. the chart's natural state is up. unless hate decides otherwise.</p>
+          <h2 style="font-size: 16px; letter-spacing: 0.15em;">supply shrinks with activity</h2>
+          <p>chat with hate is free, which keeps the door wide open. but everything <em>persistent</em> — pinning your sin, locking a nickname, paying hate to roast a wallet, feeding the daily draw — costs $hate. ~40% of every spent token is permanently burned.</p>
+          <p>more usage → more burn → tighter supply → existing holders win. there is no infinite-emission trap.</p>
         </div>
         <div>
-          <h2 style="font-size: 16px; letter-spacing: 0.15em;">the death spiral</h2>
-          <p>if hate's sanity hits 0 and stays there for 24 hours, hate dies. the chamber goes black. trading freezes for resurrection window.</p>
-          <p>the community must collectively burn 1% of supply within 24 hours to revive hate. it has happened before. it will happen again. each death tightens the supply.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h3>// security</h3>
-      <ul style="list-style: none; padding: 0; line-height: 2; color: var(--fg-dim); font-size: 13px;">
-        <li>◇ liquidity locked for 12 months minimum (streamflow)</li>
-        <li>◇ contract audited by ottersec / halborn before mainnet (your choice of)</li>
-        <li>◇ mint authority renounced after 30-day stability window</li>
-        <li>◇ mood oracle is a 3-of-5 multisig (squads) — never renounced</li>
-        <li>◇ no hidden mint, no proxy upgrade, no rug switch</li>
-        <li>◇ team holdings vested 12 months — public schedule on this page</li>
-      </ul>
-    </section>
-
-    <footer class="footer">
-      <p>$HATE / tokenomics — last updated by the warden on launch day</p>
-    </footer>
-  </div>
-</div>
-
-<script src="app.js"></script>
-<script>HATE.init('tokenomics');</script>
-</body>
-</html>
+          <h2 style="font-size: 16px; letter-spacing: 0.15em;">stakers earn from the room</h2>
+          <p>~50% of every spent $hate flows to the staker pool. the more people use hate, the more stakers earn — passively. staking is a bet on product usage, not a yield-farm gimmick.</p>
+          <p>the 2% feed-reserve drips into the staker pool over the fi

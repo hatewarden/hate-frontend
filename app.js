@@ -178,9 +178,9 @@
   function buildNav(activePage) {
     const links = [
       { href: 'index.html', label: 'chamber', id: 'chamber' },
-      { href: 'presale.html', label: 'presale', id: 'presale' },
+      { href: 'presale.html', label: 'buy', id: 'presale' },
       { href: 'staking.html', label: 'stake', id: 'staking' },
-      { href: 'bribe.html', label: 'bribe', id: 'bribe' },
+      { href: 'bribe.html', label: 'feed draw', id: 'bribe' },
       { href: 'confessional.html', label: 'confess', id: 'confessional' },
       { href: 'leaderboard.html', label: 'wall', id: 'leaderboard' },
       { href: 'tokenomics.html', label: 'tokenomics', id: 'tokenomics' },

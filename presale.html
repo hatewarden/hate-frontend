@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>$HATE — presale</title>
+<title>$HATE — buy</title>
 <!-- social / SEO -->
-<meta name="description" content="reserve $hate before launch. three tiers. all of them regrettable. wallets remembered forever.">
-<meta property="og:title" content="$HATE — presale">
-<meta property="og:description" content="reserve $hate before launch. three tiers. all of them regrettable. wallets remembered forever.">
+<meta name="description" content="buy $hate at $0.02. use it to pin confessions, enter the daily draw, lock a custom nickname, or stake it. chat with hate is always free.">
+<meta property="og:title" content="$HATE — buy">
+<meta property="og:description" content="buy $hate at $0.02. use it to pin confessions, enter the daily draw, lock a custom nickname, or stake it. chat with hate is always free.">
 <meta property="og:image" content="https://hate-frontend-two.vercel.app/og.svg">
 <meta property="og:url" content="https://hate-frontend-two.vercel.app/presale.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="$HATE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="$HATE — presale">
-<meta name="twitter:description" content="reserve $hate before launch. three tiers. all of them regrettable. wallets remembered forever.">
+<meta name="twitter:title" content="$HATE — buy">
+<meta name="twitter:description" content="buy $hate at $0.02. use it to pin confessions, enter the daily draw, lock a custom nickname, or stake it. chat with hate is always free.">
 <meta name="twitter:image" content="https://hate-frontend-two.vercel.app/og.svg">
 <meta name="theme-color" content="#0c0907">
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -124,122 +124,134 @@
 <div class="page">
   <div class="container">
     <section class="hero">
-      <div class="hero-tag">// presale phase 01</div>
-      <h1>reserve your hate</h1>
+      <div class="hero-tag">// the open sale</div>
+      <h1>buy $hate</h1>
       <p class="hero-sub" style="margin: 0 auto;">
-        the chamber opens in days. before then, a limited window for early victims.
-        contributions reserve $hate at a discount and unlock special wallet nicknames.
+        flat price, no tiers, no bonuses, no presale games. $hate is a utility token —
+        you buy it to <em>do things</em> in the chamber. chat with hate is, and always will be, free.
       </p>
       <p class="quote">
-        "they tell me i need a 'presale.' i am told this is what humans do before subjecting themselves to things.
-        very well. line up. i'll be making a list."
+        "talking to me costs nothing. that is the door. everything past the door has a price."
       </p>
     </section>
 
-    <section class="panel" style="margin-bottom: 40px;">
-      <h3>// chamber opens in</h3>
-      <div class="countdown" id="countdown">
-        <div class="countdown-block"><div class="num" id="c-days">00</div><div class="lab">days</div></div>
-        <div class="countdown-block"><div class="num" id="c-hrs">00</div><div class="lab">hours</div></div>
-        <div class="countdown-block"><div class="num" id="c-min">00</div><div class="lab">minutes</div></div>
-        <div class="countdown-block"><div class="num" id="c-sec">00</div><div class="lab">seconds</div></div>
+    <section class="stat-grid" style="margin: 32px 0 40px;">
+      <div class="stat-block">
+        <div class="name">price</div>
+        <div class="value">$0.02</div>
+        <div class="delta">per $hate, paid in sol</div>
       </div>
-      <p class="dim center">launch: <span id="launch-date">— calculating —</span></p>
+      <div class="stat-block">
+        <div class="name">total for sale</div>
+        <div class="value">750M</div>
+        <div class="delta">75% of supply</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">hard cap</div>
+        <div class="value">$15M</div>
+        <div class="delta">no soft cap. sells while supply lasts.</div>
+      </div>
+      <div class="stat-block">
+        <div class="name">minimum</div>
+        <div class="value">0.1 SOL</div>
+        <div class="delta">no maximum.</div>
+      </div>
     </section>
 
     <section class="panel progress-card">
-      <h3>// presale progress</h3>
+      <h3>// supply remaining</h3>
       <div class="progress-label">
-        <div class="raised" id="raised">0 SOL</div>
-        <div class="target">target: <span id="target">800 SOL</span></div>
+        <div class="raised" id="raised">0 $HATE sold</div>
+        <div class="target">of <span id="target">750,000,000</span></div>
       </div>
       <div class="bar"><div class="fill" id="progress-fill" style="width: 0%"></div></div>
-      <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--fg-dim);">
-        <div><span id="contributors">0</span> victims so far</div>
-        <div><span id="pct">0</span>% of target</div>
+      <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--text-dim);">
+        <div><span id="contributors">0</span> wallets bought</div>
+        <div><span id="pct">0</span>% of supply sold</div>
       </div>
     </section>
 
     <section>
-      <h2>// choose your tier</h2>
+      <h2>// what does $hate actually do</h2>
       <div class="tiers">
-        <div class="tier" data-tier="acolyte">
-          <div class="tier-name">acolyte</div>
-          <div class="tier-price">0.5 SOL</div>
-          <div class="tier-bonus">+10% bonus tokens</div>
+        <div class="tier">
+          <div class="tier-name">talk to hate</div>
+          <div class="tier-price" style="color: var(--accent);">FREE</div>
+          <div class="tier-bonus">forever, no wallet needed</div>
           <ul>
-            <li>early access to chamber</li>
-            <li>basic wallet nickname</li>
-            <li>entry on the wall</li>
-            <li>access to /confess</li>
+            <li>full claude-powered chat</li>
+            <li>get nicknamed by hate</li>
+            <li>screenshots are yours to share</li>
+            <li>visit any page, anytime</li>
           </ul>
-          <button class="btn btn-block" data-amount="0.5">contribute</button>
         </div>
-        <div class="tier featured" data-tier="believer">
-          <div class="tier-tag">recommended</div>
-          <div class="tier-name">believer</div>
-          <div class="tier-price">2 SOL</div>
-          <div class="tier-bonus">+25% bonus tokens</div>
+        <div class="tier featured">
+          <div class="tier-tag">primary use</div>
+          <div class="tier-name">feed the daily draw</div>
+          <div class="tier-price">5k $HATE+</div>
+          <div class="tier-bonus">~$100, the chamber comes alive</div>
           <ul>
-            <li>everything in acolyte</li>
-            <li>premium wallet nickname (custom)</li>
-            <li>private dm access at launch</li>
-            <li>early prophecy delivery</li>
-            <li>etched on the chamber wall</li>
+            <li>restores hate's sanity (visible)</li>
+            <li>enters you in today's draw</li>
+            <li>winner takes 85% of the pot daily</li>
+            <li>everyone who fed has equal odds</li>
           </ul>
-          <button class="btn btn-primary btn-block" data-amount="2">contribute</button>
         </div>
-        <div class="tier" data-tier="warden">
-          <div class="tier-name">warden</div>
-          <div class="tier-price">10 SOL</div>
-          <div class="tier-bonus">+50% bonus tokens</div>
+        <div class="tier">
+          <div class="tier-name">persistence + status</div>
+          <div class="tier-price">10k–100k+ $HATE</div>
+          <div class="tier-bonus">be seen, be remembered</div>
           <ul>
-            <li>everything in believer</li>
-            <li>1-on-1 voice message from hate</li>
-            <li>permanent immunity from grudge list</li>
-            <li>name a future nickname for someone else</li>
-            <li>called by name forever</li>
+            <li>pin a confession to the wall</li>
+            <li>feature your wallet for 7 days</li>
+            <li>lock a custom nickname</li>
+            <li>pay hate to roast a specific wallet</li>
+            <li>stake any amount for yield</li>
           </ul>
-          <button class="btn btn-block" data-amount="10">contribute</button>
         </div>
       </div>
     </section>
 
     <section class="panel">
-      <h3>// contribute</h3>
-      <p class="dim mb-md">connect a phantom wallet. choose an amount. confirm. hate will know.</p>
+      <h3>// buy $hate</h3>
+      <p class="dim mb-md">connect a phantom wallet. choose how much sol. see how much $hate you get. confirm.</p>
       <div class="form-grid">
         <div>
           <label class="form-label">your wallet address</label>
           <input type="text" id="wallet-input" placeholder="paste solana address or click connect" />
         </div>
         <div>
-          <label class="form-label">contribution (sol)</label>
-          <input type="number" id="amount-input" placeholder="0.5" step="0.1" min="0.5" />
+          <label class="form-label">spending (sol)</label>
+          <input type="number" id="amount-input" placeholder="1.0" step="0.1" min="0.1" />
         </div>
       </div>
-      <div style="display: flex; gap: 12px; margin-top: 16px;">
+
+      <div style="background: rgba(255,106,61,0.05); border-left: 2px solid var(--accent); padding: 14px 18px; margin: 18px 0; border-radius: 0 4px 4px 0;">
+        <div style="font-size: 10px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 4px; text-transform: uppercase;">you receive</div>
+        <div style="font-size: 24px; color: var(--text-bright); font-variant-numeric: tabular-nums;" id="receive-amount">0 $HATE</div>
+        <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;" id="receive-note">at $0.02/token · sol price assumed $150</div>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
         <button class="btn btn-primary" id="connect-btn">connect phantom</button>
-        <button class="btn" id="submit-btn">reserve $hate</button>
+        <button class="btn" id="submit-btn">buy $hate</button>
       </div>
       <p class="dim mt-md" style="font-size: 10px;">
-        prototype only — real connection wires in at launch via @solana/wallet-adapter.
-        your contribution is not yet a real transaction.
+        the warden has not opened the gate yet. real wallet connect activates the moment the sale goes live.
+        no buys are processed until then.
       </p>
-    </section>
-
-    <section class="recent-buys panel">
-      <h3>// recent contributions</h3>
-      <div id="buys-list"></div>
     </section>
 
     <section class="panel mt-lg">
       <h2>// FAQ</h2>
-      <div class="faq-item"><div class="q">when does the presale end? <span class="arrow">▶</span></div><div class="a">when the warden opens the chamber. roughly the timer above. precisely when hate decides.</div></div>
-      <div class="faq-item"><div class="q">when do i receive my tokens? <span class="arrow">▶</span></div><div class="a">claimable from this site within 24 hours of launch. wallet that contributed = wallet that claims. no exceptions. hate notices exceptions.</div></div>
-      <div class="faq-item"><div class="q">is there a vesting schedule? <span class="arrow">▶</span></div><div class="a">no. presale tokens unlock fully at launch. team tokens vest 12 months. you can leave at any time. hate will remember if you do.</div></div>
-      <div class="faq-item"><div class="q">what chain is this? <span class="arrow">▶</span></div><div class="a">solana. spl token-2022 with a custom transfer hook for mood-linked tax. standard phantom wallet works.</div></div>
-      <div class="faq-item"><div class="q">refunds? <span class="arrow">▶</span></div><div class="a">if the soft cap (200 sol) is not reached, all contributions are returned automatically. if it is reached, no refunds. you committed. hate has begun planning your reception.</div></div>
+      <div class="faq-item"><div class="q">do i need $hate to chat with hate? <span class="arrow">▶</span></div><div class="a">no. chat is free, forever. you don't need a wallet, a token, or an account. you just type. screenshots are yours. the door is wide open on purpose.</div></div>
+      <div class="faq-item"><div class="q">what do i actually use $hate for? <span class="arrow">▶</span></div><div class="a">feeding the daily draw (lottery entry + sanity boost), pinning a confession on the wall, locking a custom nickname, paying hate to publicly roast a wallet, or staking for yield. all the persistent / status / premium stuff.</div></div>
+      <div class="faq-item"><div class="q">is this a presale? <span class="arrow">▶</span></div><div class="a">no. it's a flat-price sale. one tier. one price ($0.02). no bonuses, no whitelist, no early-investor discounts. show up with sol, leave with $hate.</div></div>
+      <div class="faq-item"><div class="q">when do i receive my tokens? <span class="arrow">▶</span></div><div class="a">immediately. wallet that pays = wallet that receives. on-chain. one transaction. no claim screens, no delays, no surprises.</div></div>
+      <div class="faq-item"><div class="q">is there a vesting schedule? <span class="arrow">▶</span></div><div class="a">no — for buyers. team tokens vest 12 months with a 3-month cliff. kol/marketing vests 6 months. you can leave whenever. hate will remember.</div></div>
+      <div class="faq-item"><div class="q">what chain? what wallet? <span class="arrow">▶</span></div><div class="a">solana. spl token-2022 with a custom transfer hook for the burn/staker routing. phantom, solflare, backpack — any solana wallet works.</div></div>
+      <div class="faq-item"><div class="q">how is the staker yield funded? <span class="arrow">▶</span></div><div class="a">~50% of every $hate spent across the site routes to the staker pool. plus a 12-month bootstrap drip from the 2% feed reserve. yield grows with real usage, not infinite emission.</div></div>
+      <div class="faq-item"><div class="q">what if i just want to talk and never buy? <span class="arrow">▶</span></div><div class="a">do it. hate doesn't gatekeep. you'll get nicknamed. you'll get roasted. you'll have a record. you just won't have a wallet on the wall. that's a tradeoff most people are fine with.</div></div>
       <div class="faq-item"><div class="q">is this a real token or a meme? <span class="arrow">▶</span></div><div class="a">yes.</div></div>
     </section>
 
@@ -254,62 +266,35 @@
 <script>
 HATE.init('presale');
 
-// countdown
-const launchTime = Date.now() + (14 * 24 * 60 * 60 * 1000); // 14 days from now
-document.getElementById('launch-date').textContent = new Date(launchTime).toUTCString();
-function tick() {
-  const diff = launchTime - Date.now();
-  if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div class="hero-tag" style="font-size: 18px;">// chamber is open</div>'; return; }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('c-days').textContent = String(d).padStart(2, '0');
-  document.getElementById('c-hrs').textContent = String(h).padStart(2, '0');
-  document.getElementById('c-min').textContent = String(m).padStart(2, '0');
-  document.getElementById('c-sec').textContent = String(s).padStart(2, '0');
-}
-tick(); setInterval(tick, 1000);
+// ===== sale parameters =====
+const PRICE_USD_PER_HATE = 0.02;
+const SOL_PRICE_USD = 150;       // assumed for the calculator — real value pulled at tx time
+const TOTAL_FOR_SALE = 750_000_000;
 
-// progress (animated mock)
-let raised = 234.7;
-const target = 800;
+// ===== live progress (mock — pulls from chain post-launch) =====
+let soldHate = 12_847_300;
 function updateProgress() {
-  const pct = Math.min(100, (raised / target) * 100);
-  document.getElementById('raised').textContent = raised.toFixed(1) + ' SOL';
+  const pct = Math.min(100, (soldHate / TOTAL_FOR_SALE) * 100);
+  document.getElementById('raised').textContent = soldHate.toLocaleString() + ' $HATE sold';
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('pct').textContent = pct.toFixed(1);
-  document.getElementById('contributors').textContent = Math.floor(raised / 0.8);
+  document.getElementById('pct').textContent = pct.toFixed(2);
+  document.getElementById('contributors').textContent = Math.floor(soldHate / 65_000).toLocaleString();
 }
 updateProgress();
-setInterval(() => { raised += Math.random() * 0.5; updateProgress(); }, 5000);
+setInterval(() => { soldHate += Math.floor(Math.random() * 50_000); updateProgress(); }, 5000);
 
-// recent buys
-const NICKS = ['tuesday boy','the apologizer','jpeg widow','wen.ser','the warden\'s pet','soft no','three-decimal romeo','an eventual exit'];
-function rndAddr() { return '0x' + Math.random().toString(16).slice(2, 6) + '...' + Math.random().toString(16).slice(2, 6); }
-const list = document.getElementById('buys-list');
-function addBuy(addr, nick, amount, ago) {
-  const div = document.createElement('div');
-  div.className = 'buy-row';
-  div.innerHTML = `<span class="who">${addr}</span><span class="nick">${nick}</span><span class="amt">${amount} SOL</span><span class="ago">${ago}</span>`;
-  list.insertBefore(div, list.firstChild);
-  while (list.children.length > 8) list.removeChild(list.lastChild);
+// ===== you-receive calculator =====
+function recalc() {
+  const sol = parseFloat(document.getElementById('amount-input').value) || 0;
+  const usd = sol * SOL_PRICE_USD;
+  const hate = Math.floor(usd / PRICE_USD_PER_HATE);
+  document.getElementById('receive-amount').textContent = hate.toLocaleString() + ' $HATE';
+  document.getElementById('receive-note').textContent = `at $${PRICE_USD_PER_HATE}/token · sol price assumed $${SOL_PRICE_USD} (live price used at buy time)`;
 }
-['just now','42s ago','3m ago','6m ago','11m ago','18m ago'].forEach((ago, i) => {
-  addBuy(rndAddr(), NICKS[i % NICKS.length], (0.5 + Math.random() * 5).toFixed(1), ago);
-});
-setInterval(() => addBuy(rndAddr(), NICKS[Math.floor(Math.random() * NICKS.length)], (0.5 + Math.random() * 8).toFixed(1), 'just now'), 8000);
+document.getElementById('amount-input').addEventListener('input', recalc);
+recalc();
 
-// tier buttons
-document.querySelectorAll('[data-amount]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.getElementById('amount-input').value = b.dataset.amount;
-    document.getElementById('amount-input').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    HATE.audioBeep(660, 0.08, 0.03);
-  });
-});
-
-// connect
+// connect (mock — real wallet adapter wires in at launch)
 document.getElementById('connect-btn').addEventListener('click', () => {
   const addr = '0x' + Math.random().toString(16).slice(2, 14);
   document.getElementById('wallet-input').value = addr;
@@ -317,24 +302,16 @@ document.getElementById('connect-btn').addEventListener('click', () => {
   HATE.showAchievement('wallet acknowledged');
 });
 
-// submit
+// submit (mock — increments local supply counter, no real tx until launch)
 document.getElementById('submit-btn').addEventListener('click', () => {
-  const amt = parseFloat(document.getElementById('amount-input').value);
+  const sol = parseFloat(document.getElementById('amount-input').value);
   const addr = document.getElementById('wallet-input').value;
   if (!addr) return alert('connect a wallet first.');
-  if (!amt || amt < 0.5) return alert('minimum is 0.5 sol.');
-  raised += amt; updateProgress();
-  addBuy(addr.slice(0, 6) + '...' + addr.slice(-4), HATE.state.nickname || 'anon', amt.toFixed(1), 'just now');
+  if (!sol || sol < 0.1) return alert('minimum is 0.1 sol.');
+  const hate = Math.floor((sol * SOL_PRICE_USD) / PRICE_USD_PER_HATE);
+  soldHate += hate; updateProgress();
   HATE.audioBeep(440, 0.2, 0.05);
-  HATE.unlock('presale_amount');
+  try { HATE.unlock('presale_amount', 'a contribution, regrettably'); } catch(e){}
   document.getElementById('amount-input').value = '';
-  alert('reserved. hate will see you at launch.');
-});
-
-// FAQ accordion
-document.querySelectorAll('.faq-item').forEach(item => {
-  item.addEventListener('click', () => item.classList.toggle('open'));
-});
-</script>
-</body>
-</html>
+  recalc();
+  alert(`bought ${

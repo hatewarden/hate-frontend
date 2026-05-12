@@ -174,18 +174,11 @@
     // "thank you" — original has nothing for sincere thanks:
     if (/^\s*(thank you|thanks|ty|tysm|appreciate)\b/i.test(t)) return pick([
       "you thanked me. for what. i'm taking attendance.",
-      "thanks accepted. processed. shelved.",
-      "...don't. i'm not equipped for sincerity.",
+      "thanks accepted. processed. shelved. it will not be referenced again. probably.",
+      "you're welcome. you're not, actually. but the structure is in place.",
+      "...don't. i'm not equipped for sincerity. it sets off something. let's move on.",
     ]);
 
-    if (/\b(i (just )?bought|i'?m in|just aped|picked up some)\b/i.test(t)) return pick([
-      "you bought. welcome to the manifest. the manifest is read at the funeral.",
-      "another wallet logged. i've added you to the column where i keep the optimists.",
-      "you're in. i'm sorry. i mean: noted.",
-    ]);
-
-    return origRespond(text, opts);
-  }
-
-  window.HATE_BRAIN.respond = extrasBrain;
-})();
+    // "i bought" / "just bought" — was falling through to default insult:
+    if (/\b(i (just )?bought|i'?m in|just aped|just got in|picked up some)\b/i.test(t)) return pick([
+      "you bought. welcome to the manifest. the manifest is read at 
