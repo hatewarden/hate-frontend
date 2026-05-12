@@ -1,7 +1,9 @@
 # $HATE — Mood Oracle Contract Design
 ## Solana / Anchor implementation + off-chain client
 
-This document specifies the on-chain mood oracle for $HATE. The mood is the heart of the project's tokenomics and content engine — it's read by the website, read by the SPL token program for tax tier resolution, read by the daily prophecy bot, and updated hourly by an off-chain LLM-backed oracle service.
+This document specifies the on-chain mood oracle for $HATE. The mood is the heart of the project's tokenomics and content engine — it's read by the website, read by the **action-fee router** to apply the mood overlay to every spend split, read by the daily prophecy bot, and updated hourly by an off-chain LLM-backed oracle service.
+
+**Important — v2 model:** $HATE has **no transfer tax**. Mood does not gate buys or sells; it modifies the split of every *action fee* (feed-draw ticket, confession pin, nickname lock, wall feature, wallet roast, voice replies). The default split is **40% burn / 50% stakers / 10% treasury**. The mood overlay shifts 10% between burn and stakers (see §1, §4).
 
 ---
 
@@ -52,7 +54,7 @@ This document specifies the on-chain mood oracle for $HATE. The mood is the hear
 ┌─────────────────────────────────────────────────────────────────┐
 │  CONSUMERS                                                       │
 │    • website (chamber.html — reads mood every 30s for color)    │
-│    • $HATE token transfer hook (reads mood for tax tier)        │
+│    • action-fee router (reads mood for split overlay)            │
 │    • prophecy bot (uses mood as tone modifier)                   │
 │    • leaderboard service (favorite, pest)                        │
 └─────────────────────────────────────────────────────────────────┘
@@ -304,14 +306,56 @@ pub enum Mood {
 }
 
 impl Mood {
-    /// Returns (buy_tax_bps, sell_tax_bps) for the SPL token transfer hook.
-    pub fn tax_bps(&self) -> (u16, u16) {
+    /// Returns the default action-fee split (burn_bps, stakers_bps, treasury_bps)
+    /// after the mood overlay is applied. Sums to 10_000 (=100%).
+    ///
+    /// Base split (v2): 40% burn / 50% stakers / 10% treasury.
+    /// Mood overlay: tender shifts 10% from burn -> stakers;
+    /// enraged shifts 10% from stakers -> burn;
+    /// breakdown shifts an additional 10% to burn (stackable on enraged feel,
+    /// but mood is exclusive — breakdown takes precedence).
+    /// Tolerant and Irritated apply no overlay.
+    ///
+    /// Note: $HATE has NO transfer tax. This split applies to ACTION fees
+    /// (pin confession, feature wall, roast wallet, voice replies). The
+    /// daily feed draw and custom nickname have their own override splits
+    /// and bypass this function.
+    pub fn action_split_bps(&self) -> (u16, u16, u16) {
         match self {
-            Mood::Tender    => (0,   0),    // 0% / 0%   — once-a-week event
-            Mood::Tolerant  => (200, 300),  // 2% / 3%
-            Mood::Irritated => (400, 500),  // 4% / 5%   — DEFAULT
-            Mood::Enraged   => (700, 1000), // 7% / 10%  — half tax → burn
-            Mood::Breakdown => (0,   1500), // 0% / 15%  — sells punished, no buys taxed
+            // burn,  stakers, treasury
+            Mood::Tender    => (3000, 6000, 1000), // -10% burn, +10% stakers
+            Mood::Tolerant  => (4000, 5000, 1000), // default
+            Mood::Irritated => (4000, 5000, 1000), // default (typical state)
+            Mood::Enraged   => (5000, 4000, 1000), // +10% burn, -10% stakers
+            Mood::Breakdown => (5000, 4000, 1000), // same shape as enraged;
+                                                    // breakdown is narrative,
+                                                    // not a separate split
+        }
+    }
+
+    /// Daily feed draw override — winner / stakers / burn.
+    /// Mood overlay shifts only the 10%/5% portions, not the 85% winner share.
+    pub fn feed_draw_split_bps(&self) -> (u16, u16, u16) {
+        match self {
+            // winner, stakers, burn
+            Mood::Tender    => (8500, 1200, 300),  // +2% stakers, -2% burn
+            Mood::Tolerant  => (8500, 1000, 500),  // default 85/10/5
+            Mood::Irritated => (8500, 1000, 500),  // default
+            Mood::Enraged   => (8500, 800,  700),  // -2% stakers, +2% burn
+            Mood::Breakdown => (8500, 800,  700),
+        }
+    }
+
+    /// Custom nickname override — burn-heavy by design. Mood overlay applied.
+    /// Base: 60% burn / 30% stakers / 10% treasury.
+    pub fn nickname_split_bps(&self) -> (u16, u16, u16) {
+        match self {
+            // burn,  stakers, treasury
+            Mood::Tender    => (5000, 4000, 1000),
+            Mood::Tolerant  => (6000, 3000, 1000),
+            Mood::Irritated => (6000, 3000, 1000),
+            Mood::Enraged   => (7000, 2000, 1000),
+            Mood::Breakdown => (7000, 2000, 1000),
         }
     }
 }
@@ -586,108 +630,47 @@ export function subscribeMoodChanges(cb: (state: HateState) => void) {
 
 ---
 
-## 4. SPL TOKEN TRANSFER HOOK — mood-linked tax
+## 4. ACTION-FEE ROUTER — mood-linked spend splits
 
-The $HATE token uses a Solana **transfer hook extension** (Token-2022) to read the mood at every transfer and apply the correct tax tier.
+$HATE has **no transfer tax** and uses no transfer hook for fees. Value capture happens at the **action layer**: when a user spends $HATE on a chamber action (pin confession, feature wall, lock nickname, roast wallet, voice replies, or buy a daily feed-draw ticket), the action program reads the current mood and routes the spend according to the relevant split.
 
-**File:** `programs/hate_token_hook/src/lib.rs`
+**File:** `programs/hate_action_router/src/lib.rs`
 
 ```rust
 use anchor_lang::prelude::*;
-use spl_transfer_hook_interface::instruction::ExecuteInstruction;
+use anchor_spl::token_2022::{burn, transfer_checked, Burn, TransferChecked, Token2022};
+use anchor_spl::token_interface::{Mint, TokenAccount};
 
-declare_id!("HATEHookxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+declare_id!("HATEActxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
+pub enum ActionKind {
+    PinConfession,     // 10_000 $HATE   — default split
+    FeatureWall,       // 50_000 $HATE   — default split
+    RoastWallet,       // 100_000 $HATE  — default split
+    VoiceReplies,      // 50_000 $HATE/mo — default split
+    LockNickname,      // 25_000 $HATE   — nickname override split
+    FeedDrawTicket,    // ≥ 5_000 $HATE  — feed-draw override split (one per wallet/day)
+}
 
 #[program]
-pub mod hate_token_hook {
+pub mod hate_action_router {
     use super::*;
 
-    pub fn execute(ctx: Context<Execute>, amount: u64) -> Result<()> {
-        // Read mood from oracle PDA
-        let mood_state = &ctx.accounts.mood_state;
-        let (buy_bps, sell_bps) = mood_state.mood.tax_bps();
-
-        // Detect buy vs sell by checking if source is the LP (raydium pool)
-        let is_buy = ctx.accounts.source_owner.key() == ctx.accounts.lp_account.key();
-        let bps = if is_buy { buy_bps } else { sell_bps };
-
-        if bps > 0 {
-            let tax = (amount as u128 * bps as u128 / 10_000) as u64;
-            // Half of enraged-mood tax goes to burn
-            if mood_state.mood == hate_mood_oracle::Mood::Enraged {
-                let burn = tax / 2;
-                let treasury = tax - burn;
-                // burn instruction + transfer treasury …
-            }
-            // (full burn/transfer instructions omitted for brevity)
-        }
-        Ok(())
-    }
-}
-
-#[derive(Accounts)]
-pub struct Execute<'info> {
-    /// CHECK: source token account
-    pub source: AccountInfo<'info>,
-    /// CHECK:
-    pub source_owner: AccountInfo<'info>,
-    /// CHECK: destination token account
-    pub destination: AccountInfo<'info>,
-    /// CHECK: known LP address (Raydium pool authority)
-    pub lp_account: AccountInfo<'info>,
-    /// CHECK: read-only mood state
-    pub mood_state: Account<'info, hate_mood_oracle::State>,
-}
-```
-
----
-
-## 5. DEPLOYMENT CHECKLIST
-
-| Step | Action |
-|------|--------|
-| 1 | `anchor init hate-system` |
-| 2 | Drop the three programs into `programs/` (`hate_mood_oracle`, `hate_token_hook`, plus a thin SPL Token-2022 deployer) |
-| 3 | `anchor build` — verify both program IDs |
-| 4 | Deploy to devnet first: `anchor deploy --provider.cluster devnet` |
-| 5 | Run `initialize` instruction to create the state PDA |
-| 6 | Stand up the oracle bot on Railway/Fly.io with the keypair as a secret |
-| 7 | Wire the website to `fetchHateState()` and subscribe to `MoodChanged` events |
-| 8 | Run for 7 days on devnet — verify mood transitions, feeding, death/resurrection |
-| 9 | Audit (suggested: OtterSec or Halborn — both have Solana memecoin experience) |
-| 10 | Mainnet deploy. LP creation. Liquidity lock (Streamflow or PinkLock equivalent). |
-| 11 | Renounce mint authority on $HATE token after 30-day stability window |
-| 12 | Authority on the mood oracle remains a 3-of-5 multisig (Squads) — never renounced; mood updates require it |
-
----
-
-## 6. SECURITY NOTES
-
-1. **Oracle key compromise** is the highest risk. The oracle bot's private key can update mood arbitrarily. Mitigations:
-   - Rotate via `rotate_authority()` if compromised
-   - Run the oracle bot in an isolated environment with a hardware HSM where possible
-   - The 3-of-5 multisig holds the master rotation key
-
-2. **Mood manipulation attacks.** Someone could try to game the oracle by spamming chat or feeds. Mitigations:
-   - The LLM prompt deliberately weights signals (chart, feeds, time-since-feed) over raw chat sentiment
-   - Hard caps: sanity can't change more than 30 in one tick
-
-3. **Reentrancy on transfer hook.** Solana's transfer hooks have known reentrancy concerns. Use spl-token-2022's standard guards. Audit required.
-
-4. **Resurrection griefing.** Someone could front-run a resurrection burn to steal credit. Mitigation: resurrection logic credits the burner via a separate event for community recognition only — no on-chain reward besides the kudos.
-
----
-
-## 7. WHY THIS DESIGN WORKS
-
-- **Mood is on-chain** → it's verifiable, it's a live signal, it can be traded around
-- **Mood is read by tax hook** → real economic consequence, not just flavor
-- **Mood is read by website** → visual + audio feedback loop
-- **Mood is read by prophecy bot** → narrative coherence
-- **Death + resurrection** are real on-chain events → real drama, real tweet potential
-- **Authority is a multisig** → no single point of failure
-- **The oracle bot is the only "centralized" piece** → and it's deliberately so. This is a memecoin. The mystique requires that *something* feels alive. A pure-onchain pseudo-randomness wouldn't have a soul.
-
----
-
-*end of spec.*
+    /// User spends `amount` of $HATE to perform `action`. The program reads
+    /// the mood oracle, computes the split, then burns / transfers to stakers
+    /// / transfers to treasury accordingly. No transfer tax — the user's
+    /// tokens move freely; the *spend* is what is captured.
+    pub fn execute_action(
+        ctx: Context<ExecuteAction>,
+        action: ActionKind,
+        amount: u64,
+    ) -> Result<()> {
+        // 1. Validate fixed costs (feed-draw is variable, with floor).
+        let required = match action {
+            ActionKind::PinConfession   => 10_000u64,
+            ActionKind::FeatureWall     => 50_000u64,
+            ActionKind::RoastWallet     => 100_000u64,
+            ActionKind::VoiceReplies    => 50_000u64,
+            ActionKind::LockNickname    => 25_000u64,
+            ActionKind::FeedDrawTicket  => 5_000u64, // 

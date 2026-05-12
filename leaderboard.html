@@ -118,6 +118,36 @@
     max-width: 480px;
     margin: 0 auto;
   }
+
+  /* narrow viewports — stop the tab row and rows from pushing horizontally */
+  @media (max-width: 400px) {
+    .tabs {
+      flex-wrap: wrap;
+      overflow-x: visible;
+      gap: 2px;
+    }
+    .tab {
+      padding: 10px 12px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      flex: 1 1 auto;
+      white-space: normal;
+      text-align: center;
+    }
+    .lb-row {
+      grid-template-columns: 36px 1fr auto;
+      gap: 10px;
+      padding: 12px 10px;
+      font-size: 12px;
+    }
+    .lb-row .nickname { grid-column: 1 / -1; padding-left: 46px; margin-top: -4px; font-size: 11px; }
+    .lb-row .who { font-size: 12px; word-break: break-all; min-width: 0; }
+    .lb-row .stat { font-size: 12px; white-space: nowrap; }
+    .lb-row.top1 .rank { font-size: 18px; }
+    .feature { padding: 18px 14px; }
+    .feature .who-big { font-size: 18px; word-break: break-all; }
+    .nick-grid { grid-template-columns: 1fr; gap: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -133,16 +163,16 @@
       </p>
     </section>
 
-    <div class="tabs">
-      <button class="tab active" data-tab="feeders">top feeders</button>
-      <button class="tab" data-tab="grudges">grudge list</button>
-      <button class="tab" data-tab="nicks">hall of nicknames</button>
-      <button class="tab" data-tab="paid">self-funded</button>
-      <button class="tab" data-tab="streaks">visit streaks</button>
+    <div class="tabs" role="tablist" aria-label="leaderboard categories">
+      <button class="tab active" data-tab="feeders" id="tab-feeders" role="tab" aria-selected="true" aria-controls="feeders">top feeders</button>
+      <button class="tab" data-tab="grudges" id="tab-grudges" role="tab" aria-selected="false" aria-controls="grudges">grudge list</button>
+      <button class="tab" data-tab="nicks" id="tab-nicks" role="tab" aria-selected="false" aria-controls="nicks">hall of nicknames</button>
+      <button class="tab" data-tab="paid" id="tab-paid" role="tab" aria-selected="false" aria-controls="paid">self-funded</button>
+      <button class="tab" data-tab="streaks" id="tab-streaks" role="tab" aria-selected="false" aria-controls="streaks">visit streaks</button>
     </div>
 
     <!-- TOP FEEDERS -->
-    <div class="panel-content active" id="feeders">
+    <div class="panel-content active" id="feeders" role="tabpanel" aria-labelledby="tab-feeders">
       <div class="feature">
         <div class="hero-tag">// today's chosen one</div>
         <div class="who-big">0x4f9a...e8c2</div>
@@ -153,7 +183,7 @@
     </div>
 
     <!-- GRUDGE LIST -->
-    <div class="panel-content" id="grudges">
+    <div class="panel-content" id="grudges" role="tabpanel" aria-labelledby="tab-grudges">
       <div class="feature" style="border-color: var(--enraged); background: rgba(255,90,60,0.05);">
         <div class="hero-tag" style="color: var(--enraged);">// today's pest</div>
         <div class="who-big" style="color: var(--enraged);">0x9d31...44ba</div>
@@ -164,13 +194,13 @@
     </div>
 
     <!-- NICKNAMES -->
-    <div class="panel-content" id="nicks">
+    <div class="panel-content" id="nicks" role="tabpanel" aria-labelledby="tab-nicks">
       <p class="dim center mt-md">every wallet hate has interacted with gets a name. these are forever. you cannot trade them away.</p>
       <div class="nick-grid" id="nicks-grid"></div>
     </div>
 
     <!-- SELF-FUNDED -->
-    <div class="panel-content" id="paid">
+    <div class="panel-content" id="paid" role="tabpanel" aria-labelledby="tab-paid">
       <p class="dim center mt-md">these wallets paid 50,000 $hate to be on this list. they did this voluntarily. these are the facts.</p>
       <div id="paid-list">
         <div class="lb-row top1"><div class="rank">#1</div><div class="who">0x4f9a...e8c2</div><div class="nickname">the soft no</div><div class="stat">50,000 $HATE <span style="color: var(--fg-dim); font-size: 11px;">/ 7d</span></div></div>
@@ -185,7 +215,7 @@
     </div>
 
     <!-- STREAKS -->
-    <div class="panel-content" id="streaks">
+    <div class="panel-content" id="streaks" role="tabpanel" aria-labelledby="tab-streaks">
       <p class="dim center mt-md">return to the chamber every day. hate notices. hate keeps count.</p>
       <div id="streaks-list"></div>
     </div>
@@ -235,43 +265,4 @@ NICKS.slice(0, 10).forEach((n, i) => {
 
 const gl = document.getElementById('grudges-list');
 NICKS.slice(2, 12).forEach((n, i) => {
-  const div = document.createElement('div');
-  div.className = 'lb-row' + (i === 0 ? ' top1' : '');
-  div.innerHTML = `<div class="rank">#${i+1}</div><div class="who">${n[1]}</div><div class="nickname">${n[0]}</div><div class="stat" style="color: var(--enraged)">${rndAmt(8,140)} crimes</div>`;
-  gl.appendChild(div);
-});
-
-const ng = document.getElementById('nicks-grid');
-NICKS.forEach(n => {
-  const div = document.createElement('div');
-  div.className = 'nick-card';
-  div.innerHTML = `<div class="nname">"${n[0]}"</div><div class="naddr">${n[1]}</div>`;
-  ng.appendChild(div);
-});
-
-const sl = document.getElementById('streaks-list');
-const streakNicks = NICKS.slice().sort(() => Math.random() - 0.5).slice(0, 10);
-streakNicks.forEach((n, i) => {
-  const days = 60 - i * 5 + Math.floor(Math.random() * 4);
-  const div = document.createElement('div');
-  div.className = 'lb-row' + (i === 0 ? ' top1' : '');
-  div.innerHTML = `<div class="rank">#${i+1}</div><div class="who">${n[1]}</div><div class="nickname">${n[0]}</div><div class="stat">${days} day streak</div>`;
-  sl.appendChild(div);
-});
-
-// tabs
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
-    HATE.audioBeep(880, 0.05, 0.025);
-  });
-});
-
-// achievement on visit
-HATE.unlock('leaderboard_top');
-</script>
-</body>
-</html>
+  const div = document.cre

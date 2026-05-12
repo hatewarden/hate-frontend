@@ -222,7 +222,7 @@
 
     <section class="stats-grid">
       <div class="stat-block"><div class="name">current pot</div><div class="value" id="s-pot">2,847,300</div><div class="delta">$HATE</div></div>
-      <div class="stat-block"><div class="name">total bribers</div><div class="value" id="s-bribers">412</div><div class="delta">this round</div></div>
+      <div class="stat-block"><div class="name">total feeders</div><div class="value" id="s-bribers">412</div><div class="delta">this round</div></div>
       <div class="stat-block"><div class="name">all-time burned</div><div class="value">94.2M</div><div class="delta">$HATE in pots</div></div>
       <div class="stat-block"><div class="name">all-time winners</div><div class="value">37</div><div class="delta">unfortunate souls</div></div>
     </section>
@@ -259,8 +259,8 @@
       </section>
 
       <section class="panel">
-        <h3>// live bribes</h3>
-        <p class="dim">incoming bribes from across the chamber, in real time.</p>
+        <h3>// live feeds</h3>
+        <p class="dim">incoming feeds from across the chamber, in real time.</p>
         <div class="live-feed" id="live-feed"></div>
       </section>
 
@@ -303,10 +303,10 @@
 </div>
 
 <!-- winner reveal modal -->
-<div class="winner-modal" id="winner-modal">
+<div class="winner-modal" id="winner-modal" role="dialog" aria-modal="true" aria-labelledby="winner-modal-title" aria-hidden="true">
   <div class="inner">
-    <div class="crown">✦</div>
-    <h2>you've been chosen.</h2>
+    <div class="crown" aria-hidden="true">✦</div>
+    <h2 id="winner-modal-title">you've been chosen.</h2>
     <div class="winner-addr" id="modal-addr"></div>
     <div class="winner-quote" id="modal-quote"></div>
     <button type="button" class="close-btn" id="close-modal">accept your fate</button>
@@ -364,7 +364,7 @@ document.getElementById('connect-btn').addEventListener('click', () => {
 const NICKS = ['tuesday boy','the apologizer','jpeg widow','three-decimal romeo','the soft no','wen.ser','former bored ape victim','mid-cap mike','the patient grinder','the hopeful idiot'];
 const REACTIONS = [
   "you didn't earn this. but you have it now. carry it badly.",
-  "you bribed the most. it worked. you should be ashamed. you aren't. that's the worst part.",
+  "you fed the most. it didn't help your odds. it still helped the pot. that is, somehow, the point.",
   "i was going to give it to someone else. then i looked at your wallet history and i changed my mind.",
   "congratulations. by which i mean i am sorry. for both of us.",
   "you won. now what. that's the question. you don't have an answer. i could have told you.",
@@ -449,7 +449,21 @@ function triggerWinReveal(addr, amt) {
   HATE.audioBeep(990, 0.4, 0.06);
 }
 document.getElementById('close-modal').addEventListener('click', () => {
-  document.getElementById('winner-modal').classList.remove('show');
+  const modal = document.getElementById('winner-modal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+});
+
+// Escape closes modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('winner-modal');
+    if (modal && modal.classList.contains('show')) {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
 });
 </script>
-</b
+</body>
+</html>

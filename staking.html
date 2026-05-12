@@ -264,11 +264,11 @@
       <table class="mood-apy-table" id="apy-table">
         <thead><tr><th>mood</th><th>base apy</th><th>multiplier</th><th>note</th></tr></thead>
         <tbody>
-          <tr class="t-tender"><td>tender</td><td>12%</td><td class="multiplier">0.5×</td><td>nobody is engaging. the engine cools.</td></tr>
-          <tr class="t-tolerant"><td>tolerant</td><td>24%</td><td class="multiplier">0.85×</td><td>steady. unspectacular. pleasant.</td></tr>
+          <tr class="t-tender"><td>tender</td><td>12%</td><td class="multiplier">0.29×</td><td>nobody is engaging. the engine cools.</td></tr>
+          <tr class="t-tolerant"><td>tolerant</td><td>24%</td><td class="multiplier">0.57×</td><td>steady. unspectacular. pleasant.</td></tr>
           <tr class="t-irritated current"><td>irritated</td><td>42%</td><td class="multiplier">1.0×</td><td>default. healthy. the baseline.</td></tr>
           <tr class="t-enraged"><td>enraged</td><td>78%</td><td class="multiplier">1.85×</td><td>burns are heavy. stakers eat.</td></tr>
-          <tr class="t-breakdown"><td>breakdown</td><td>140%</td><td class="multiplier">3.3×</td><td>chaos rewards. dangerous. real.</td></tr>
+          <tr class="t-breakdown"><td>breakdown</td><td>140%</td><td class="multiplier">3.33×</td><td>chaos rewards. dangerous. real.</td></tr>
         </tbody>
       </table>
     </section>
@@ -406,7 +406,6 @@ document.getElementById('claim-btn')?.addEventListener('click', () => {
   const claimable = document.getElementById('claimable').textContent;
   HATE.toast('claimed ' + claimable + '. the chain confirmed before you finished blinking.');
   HATE.unlock('staking_claim', 'claimed rewards');
-  // reset accrual timer on each position
   positions.forEach(p => p.started = Date.now());
   saveState();
   renderPositions();
@@ -419,4 +418,13 @@ function refreshApy() {
   const m = HATE.moodForState();
   baseApy = moodApy[m] || 0.42;
   document.getElementById('current-apy').textContent = (baseApy * 100).toFixed(0) + '%';
-  const map = { tender
+  const map = { tender:'.t-tender', tolerant:'.t-tolerant', irritated:'.t-irritated', enraged:'.t-enraged', breakdown:'.t-breakdown' };
+  document.querySelectorAll('#apy-table tr').forEach(r => r.classList.remove('current'));
+  document.querySelector('#apy-table ' + map[m])?.classList.add('current');
+  updateProjection();
+}
+refreshApy();
+setInterval(refreshApy, 5000);
+</script>
+</body>
+</html>

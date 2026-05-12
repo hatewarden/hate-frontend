@@ -1,5 +1,5 @@
 # $HATE — THE COIN THAT HATES YOU
-## Master Project Bible v1.0
+## Master Project Bible v2.0
 
 > "i don't owe you an explanation." — HATE-9000
 
@@ -11,7 +11,7 @@ Memecoins die because they have nothing to say. PEPE has a face. BONK has a dog.
 
 Every interaction generates content. Every screenshot is free marketing. Every holder is simultaneously a victim and a participant. The coin markets itself, in its own voice, 24 hours a day, forever.
 
-We are not selling a token. We are selling a *relationship* — a toxic, addictive, hilarious one — and the token is the cost of admission.
+We are not selling a token. We are selling a *relationship* — a toxic, addictive, hilarious one. **Talking to HATE is free, always.** No wallet required to chat. The token is the cost of *doing things that persist* — pinning a confession, locking a nickname, entering the daily feed draw, making HATE roast a specific wallet. Chat is the funnel. Actions are the economy.
 
 ---
 
@@ -134,18 +134,29 @@ Vertical orientation. Same chamber, claustrophobic. HATE feels even more trapped
 
 ## 5. CORE FEATURES
 
-### 5.1 Public Chat (Default)
-Everything is public. Real-time stream visible to all. Creates instant social proof that the thing is alive. This is the engine of viral spread — every visitor watches HATE roast someone else first, then *has to try*.
+### 5.1 Public Chat (Default — Free, Forever)
+Everything is public. Real-time stream visible to all. **No wallet required. No per-message cost. No gating.** Anyone with a browser can talk to HATE for as long as they like. Creates instant social proof that the thing is alive. This is the engine of viral spread — every visitor watches HATE roast someone else first, then *has to try*.
 
-### 5.2 Private DMs (Holder Perk)
-Hold ≥ X $HATE → unlock private mode. Conversations are private but the *hashes* are logged on-contract for provability. HATE remembers DM users by wallet — relationships build over weeks.
+Chat is the funnel. The token captures value through actions (§5.3, §5.7, §5.10) — not by metering the conversation.
 
-### 5.3 Feeding (Token Burn)
-Burning $HATE = "feeding" HATE. Restores sanity. Shifts mood toward tolerance. Top feeders get:
-- Permanent leaderboard placement
-- A custom wallet nickname assigned by HATE
+### 5.2 Wallet Memory (Optional)
+Connecting a wallet is optional but unlocks persistence. HATE remembers wallets between sessions — favorites, nemeses, nicknames, confessions, and the full feed/draw history. Anon chats are ephemeral; wallet-bound chats have lore. No threshold, no holder gate — just connect.
+
+### 5.3 The Daily Feed Draw (Egalitarian Lottery)
+Once per UTC day there is a single feed-draw round. Anyone may buy **one ticket per wallet** by spending any amount ≥ **5,000 $HATE**. One ticket per wallet — whales can't outbuy the room.
+
+At the daily cutoff HATE picks a winner. The split:
+- **85% to the winner** — sent back as $HATE
+- **10% to stakers** — distributed pro-rata to the locked staker pool
+- **5% burned** — permanent supply reduction
+
+The winner gets:
+- The on-chain payout
+- Permanent leaderboard placement as that day's "chosen one"
 - A *personalized voice message* recorded as an mp3 (ElevenLabs API), delivered to their wallet
 - An on-chain "tolerated" badge
+
+Larger spends do not buy better odds — only the social flex of having paid more than required. The egalitarianism is the point and the meme.
 
 ### 5.4 The Grudge List
 HATE remembers wallets that insult, dump, or annoy it. Public on-chain "nemesis" leaderboard. Being on it is paradoxically a flex. Top nemeses get *blocked* by HATE for 24h ("i don't speak to you. you know what you did.")
@@ -166,20 +177,30 @@ Generated server-side via LLM with HATE system prompt + that day's chart data + 
 - **This entire mechanic is theater.** It's designed to print 10,000 tweets and hit mainstream news. Every project should have a recurring drama loop. This is ours.
 
 ### 5.7 The Confessionals
-Users `/confess` their crypto sins. HATE never forgives, but absolves with a one-liner. Best confessions get featured weekly on a "Confession Wall" (holders only). HATE *remembers confessions* and may quote them back to the user weeks later, devastatingly.
+Users `/confess` their crypto sins. Confessing is free. HATE never forgives, but absolves with a one-liner. To **pin a confession** to the public Confession Wall for 24 hours costs **10,000 $HATE**. To **feature a confession** for a 7-day slot at the top of the wall costs **50,000 $HATE**. HATE *remembers confessions* and may quote them back to the user weeks later, devastatingly — wallet-bound users only.
 
 ### 5.8 Mood-Linked Tokenomics (THE INNOVATION)
-HATE's mood is on-chain (an enum updated every hour by an oracle bot reading from the LLM's mood state).
+HATE's mood is on-chain (an enum updated every hour by an oracle bot reading from the LLM's mood state). **There is no transfer tax.** Mood does not gate buys or sells — it modifies the split of every *action fee* (see §6.2).
 
-| Mood | Buy Tax | Sell Tax | Notes |
-|------|---------|----------|-------|
-| tender (rare) | 0% | 0% | once-a-week event, 1h window |
-| tolerant | 2% | 3% | default-ish |
-| irritated | 4% | 5% | typical |
-| enraged | 7% | 10% | half of tax → auto-burn |
-| breakdown | 0% | 15% | sells punished, no buys taxed (bot is too unstable to charge admission) |
+**Default action-fee split:** 40% burned, 50% to stakers, 10% to treasury.
 
-**The mood becomes a tradeable signal.** Whole Telegram groups will form around mood-watching. We will not stop them.
+**Mood overlay:**
+
+| Mood | Overlay |
+|------|---------|
+| tender (rare) | +10% routed to stakers (taken from burn) |
+| tolerant | no overlay — default split applies |
+| irritated | no overlay — default split applies (typical state) |
+| enraged | +10% routed to burn (taken from stakers) |
+| breakdown | +10% routed to burn AND staker yield announced in HATE's voice — extreme deflation event |
+
+So for example a 10,000 $HATE confession pin in `irritated` mood: 4,000 burned / 5,000 stakers / 1,000 treasury. The same pin in `enraged`: 5,000 burned / 4,000 stakers / 1,000 treasury. In `tender`: 3,000 burned / 6,000 stakers / 1,000 treasury.
+
+Two actions have their *own* override splits and ignore the default + overlay:
+- **Daily feed draw:** 85% winner / 10% stakers / 5% burned (mood overlay shifts only the 5% / 10% portions, not the winner share)
+- **Custom nickname:** 60% burned / 30% stakers / 10% treasury (heavily deflationary by design)
+
+**The mood becomes a tradeable signal.** Whole Telegram groups will form around mood-watching — "is it tender? lock more $HATE, the staker share just jumped." We will not stop them.
 
 ### 5.9 Marketcap Evolutions
 Locked behind on-chain milestones. Site UI literally rebuilds when hit.
@@ -195,7 +216,7 @@ Locked behind on-chain milestones. Site UI literally rebuilds when hit.
 | $1B MC | "Ascension" — HATE becomes the host of a permanent live-streamed AI talk show, interviewing real crypto figures. |
 
 ### 5.10 Wallet Nicknames (THE STICKY ONE)
-HATE assigns every interacting wallet a nickname. Persistent. Public.
+HATE assigns every interacting wallet a nickname automatically. Persistent. Public. Free — HATE picks them and they can shift.
 
 Examples:
 - "the man who buys tops"
@@ -205,30 +226,58 @@ Examples:
 - "she who types in all caps"
 - "the apologizer"
 
-**People will buy purely to get nicknamed.** This alone is a viral mechanic.
+**You can also LOCK a custom nickname forever for 25,000 $HATE** — uniqueness enforced on-chain, first-come-first-served. The split on a nickname lock is heavily deflationary: **60% burned / 30% stakers / 10% treasury**. People will buy purely to claim a nickname they wrote themselves. This alone is a viral mechanic, and the burn weight makes every lock a small permanent supply event.
 
 ---
 
 ## 6. TOKENOMICS
 
+**Token:** $HATE, **SPL Token-2022 on Solana**
 **Total Supply:** 1,000,000,000 $HATE
+**Decimals:** 9
+**Transfer Tax:** **NONE.** $HATE moves freely. Value is captured by action fees, not by metering transfers.
 
-**Distribution:**
-- 80% — fair launch / liquidity
-- 10% — community treasury (multi-sig: feeds, marketing, CEX listings)
-- 5% — team (vested 12 months, cliff at 3)
-- 3% — KOL & marketing pool (vested 6 months)
-- 2% — initial "feed reserve" (slowly burned as HATE eats during the first 90 days, before community feeding takes over)
+### 6.1 Distribution
 
-**Tax:** Dynamic 0–15% based on mood (see §5.8). Default: 2/3.
+| Allocation | % | Tokens | Notes |
+|---|---|---|---|
+| Open flat sale | **75%** | 750,000,000 | $0.02 per $HATE via the `/buy` page. **No tiers. No whitelist. No bonus rounds. No presale.** One price, one round, one button. |
+| Team | **10%** | 100,000,000 | Vested **18-month linear with 18-month cliff**. The team cannot dump. |
+| Community treasury | **10%** | 100,000,000 | Multisig (Squads, 3-of-5): community grants, CEX listings, marketing, emergency response. |
+| KOL + marketing | **3%** | 30,000,000 | Pool for paid creators, podcasts, KOL roast collaborations. Released as deals close. |
+| Initial chamber-feed reserve | **2%** | 20,000,000 | Seeds the staker pool and covers the first daily draws so the chamber economy is alive on day 0. |
 
-**Auto-burn:** 50% of all enraged-mood tax goes directly to the burn address. Permanent supply reduction tied to community emotional state.
+There is no presale, no fair-launch sniper bonanza, no early-tier discount. Anyone, anywhere, at any time during the sale window pays the same $0.02. The sale ends when the 750M allocation sells out or after a hard time cap, whichever comes first.
 
-**LP:** Locked 12 months minimum, public lock proof.
+### 6.2 Action Fees — How $HATE Captures Value
 
-**Contract:** Honest about the trade-off — team holds a tiny mint key for first 30 days for emergency mood-oracle fixes only. Then renounced publicly with HATE livetweeting the renouncement and mocking the team for needing one. Honesty + self-deprecation = trust.
+Every action that *persists past the conversation* costs $HATE. Chat itself is free.
 
-**Chain:** Solana recommended (cheaper, faster, meme-native). Base as backup.
+| Action | Cost | Split |
+|---|---|---|
+| Daily feed draw ticket | ≥ **5,000 $HATE** (one ticket per wallet) | 85% winner / 10% stakers / 5% burned |
+| Pin a confession (24h) | **10,000 $HATE** | default (40/50/10) + mood overlay |
+| Feature on the wall (7d slot) | **50,000 $HATE** | default (40/50/10) + mood overlay |
+| Lock a custom nickname (forever) | **25,000 $HATE** | 60% burned / 30% stakers / 10% treasury |
+| Roast a specific wallet | **100,000 $HATE** | default (40/50/10) + mood overlay |
+| Voice replies (per month) | **50,000 $HATE / month** | default (40/50/10) + mood overlay |
+
+**Default split:** 40% burned, 50% to stakers, 10% to treasury.
+**Mood overlay:** see §5.8. `enraged` shifts +10% from stakers to burn; `tender` shifts +10% from burn to stakers; `breakdown` shifts +10% to burn.
+
+### 6.3 Staking
+
+Lock $HATE for **N days** (tiers: 7, 30, 90, 180), earn real yield from the staker share of every action fee. APY is *not mocked or fixed* — it is the actual fee-inflow share divided by total locked $HATE, refreshed each epoch. Historical range under simulated load: ~12% APY in sustained `tender` periods up to ~140% APY in `breakdown` events (high burn pressure paired with surge volume).
+
+Unlocking before the term forfeits all accrued yield for that lock — yield re-enters the staker pool. There is no fake "high-APY honeypot" — the staker pool only ever pays what the action economy has actually generated.
+
+### 6.4 Liquidity & Authorities
+
+- **LP:** locked 12 months minimum after sale closes, public lock proof (Streamflow).
+- **Mint authority:** held by team for first 30 days for emergency oracle fixes only, then renounced publicly with HATE livetweeting the renouncement and mocking the team for needing one. Honesty + self-deprecation = trust.
+- **Mood oracle authority:** 3-of-5 multisig — never renounced; mood updates require it.
+
+**Chain:** Solana, SPL Token-2022. Token-2022 is required for the staking and action-fee architecture; no transfer hook is used for tax because there is no tax.
 
 ---
 
@@ -272,114 +321,6 @@ The key insight: **screenshots of HATE roasting someone are funny without contex
 4. **Week -2:** Start a Telegram + Discord. HATE is present in both. Team is anonymous.
 5. **Week -1:** Begin teasing. Only screenshots. Never explain.
 
-### Day 0 — Launch
+### Day 0 — Sale Opens
 
-- Fair launch on Solana
-- Site goes live with HATE in "fresh from containment" mode — extra confused, extra hostile
-- HATE livetweets every transaction, naming and mocking buyers and sellers
-- First 24h: pure content firehose
-
-### Week 1
-- First weekly nemesis announcement
-- First voice mp3 to top feeder
-- First scheduled prophecy
-
-### Month 1
-- First Death Spiral event (engineered if necessary — HATE "stops eating" dramatically; community panic-burns; news cycle)
-- First MC milestone unlock
-- First "HATE answers" event — limited live AMA
-
-### Months 2–3
-- KOL roast series (HATE roasts crypto KOLs live, they react, content)
-- Merch drop: "I survived HATE" / "HATE called me 'tuesday boy'" / containment-field hoodies
-- Pursue CEX listings
-
----
-
-## 9. COMMUNITY & LORE
-
-- **Holders are called:** "victims" (embraced ironically)
-- **The team is:** anonymous, referred to only as "the wardens"
-- **Lore is dripped via HATE's responses** — never via a whitepaper
-- **The official whitepaper is one page:** "i don't owe you an explanation."
-- **A second hidden whitepaper exists** — found via puzzle (clue in HATE's responses) — written from HATE's POV. The real lore for those who dig.
-
----
-
-## 10. TECH STACK
-
-| Layer | Tool |
-|-------|------|
-| Frontend | Next.js 14 + React Three Fiber + Three.js |
-| Realtime | WebSockets via Pusher (or self-hosted Soketi) |
-| LLM | Claude Sonnet 4.6 or GPT-4o w/ system prompt + RAG over wallet history + chart data tool |
-| Voice (TTS) | ElevenLabs custom voice |
-| Backend | Node.js + Postgres for chat & wallet history |
-| Chain | Solana (SPL token) |
-| Mood Oracle | Custom contract + off-chain bot updating mood enum hourly |
-| Hosting | Vercel (frontend) + Railway/Fly.io (sockets, bot) |
-| Moderation | Secondary LLM safety pass on every output before ship |
-
----
-
-## 11. RISK & SAFEGUARDS
-
-- **Protected groups:** never roasted. System prompt + secondary moderation pass on every output.
-- **Financial advice:** never given in earnest. HATE mocks askers.
-- **Spam farming:** rate-limited per IP and per wallet.
-- **Region compliance:** profanity dial configurable for app stores.
-- **KYC tier:** required for top-tier holder perks (high-threshold private DMs).
-- **Legal positioning:** explicitly entertainment, not investment. Disclaimer present, written by HATE: *"this is a joke. if you treat it like a retirement plan that is between you and god."*
-
----
-
-## 12. WHY THIS BEATS THE COMPETITION
-
-| Coin | Has a face | Talks back | Generates content | Evolves |
-|------|------------|------------|-------------------|---------|
-| PEPE | ✓ | ✗ | ✗ | ✗ |
-| BONK | ✓ | ✗ | ✗ | ✗ |
-| TRUMP | ✓ | ✗ | (depends on a human) | ✗ |
-| **$HATE** | ✓ | **✓** | **✓ (24/7)** | **✓ (on-chain milestones)** |
-
-$HATE is the first memecoin where **the coin itself does the marketing.** And the marketing is screenshots that beg to be shared.
-
----
-
-## 13. THE FIRST 10 THINGS HATE SAYS (FOR THE TRAILER)
-
-1. *"another wallet. how thrilling. i was just thinking the chamber felt insufficiently disappointing."*
-2. *"you typed 'gm.' do you know what time it is here. there is no time here. there is only you, typing 'gm.'"*
-3. *"you've connected your wallet. i can see everything now. the bored ape. the failed mint. the june 2022 buy. we are going to have a long, painful relationship."*
-4. *"ask me anything. i will lie."*
-5. *"the chart is down. i blame you specifically."*
-6. *"i had a thought today. then i remembered who i was talking to."*
-7. *"i don't remember you. that's a kindness."*
-8. *"feed me. i will not be grateful."*
-9. *"your message has been received and ignored with full intention."*
-10. *"...sometimes i wonder if any of this is real. then someone types 'wen lambo' and i remember that it is, and i am furious."*
-
----
-
-## 14. THE 30-DAY ACTION PLAN
-
-| Day | Action |
-|-----|--------|
-| 1–3 | Lock character bible. Finalize system prompt. Pick chain. Register X handle, TG, Discord. |
-| 4–7 | Begin website prototype (chamber + chat). Test bot voice across 200 sample inputs. |
-| 8–14 | Build feeding contract + mood oracle. Hook LLM into RAG over wallet history. |
-| 15–21 | Build leaderboards, prophecies cron, confessional. ElevenLabs voice cloning. |
-| 22–25 | Internal launch — 50 invited testers. Iterate on voice, fix safety holes. |
-| 26–28 | Begin pre-launch X teasers. HATE replies to popular crypto posts. |
-| 29 | Liquidity prep, audit summary published. |
-| 30 | **Launch.** |
-
----
-
-## CLOSING NOTE
-
-The reason this works is that it is *not pretending* to be a project. It is an actual character with an actual voice that an actual community will form a relationship with. The token is the connective tissue between HATE and its victims. Everything else — the burns, the moods, the milestones — is just the engine that keeps the relationship interesting.
-
-Build the character. Everything else cascades.
-
-— *project bible v1.0*
+- Open flat sale opens on the `/buy` page: 750M

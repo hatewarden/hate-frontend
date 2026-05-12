@@ -594,3 +594,41 @@ w)); }
 }
 #hate-eye:hover .eye-label { opacity: 1; }
 #hate-cursor, #hate-cursor-dot { display: none !important; }
+
+/* =============================================================================
+   FOCUS — keyboard users get clear rings, mouse users don't
+   ============================================================================= */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* =============================================================================
+   PREFERS-REDUCED-MOTION — calm the chamber for those who need calm
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  /* shorten or disable showy animations and transitions */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* the ticker is a long horizontal scroll — kill it entirely */
+  .ticker-track { animation: none !important; transform: none !important; }
+  /* nav pulse dot just sits there */
+  .nav-mood-dot { animation: none !important; }
+  /* fade-in body becomes instant */
+  body { transition: none !important; opacity: 1 !important; }
+  /* achievement still appears but without spring overshoot */
+  .achievement { transition: opacity 0.15s ease !important; transform: translateX(0) !important; opacity: 0; }
+  .achievement.show { opacity: 1; }
+  /* hate-eye no scale on hover */
+  #hate-eye:hover { transform: none !important; }
+  /* chat message slide-in becomes a soft fade */
+  .msg { animation: none !important; }
+  /* thinking dots stop animating */
+  #thinking::after { animation: none !important; content: '...' !important; }
+}

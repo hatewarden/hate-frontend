@@ -299,7 +299,7 @@
 </div>
 
 <div id="chat-panel">
-  <div id="chat-messages"></div>
+  <div id="chat-messages" role="log" aria-live="polite" aria-atomic="false" aria-label="hate's responses"></div>
 </div>
 <div id="thinking"></div>
 
@@ -326,6 +326,9 @@
 <script src="brain-extras.js"></script>
 <script src="brain-extras-2.js"></script>
 <script>
+// reduced-motion check (global)
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // =====================================================================
 // SHARED STATE
 // =====================================================================
@@ -993,4 +996,6 @@ try {
     document.head.appendChild(style);
   }
 }
-</script
+</script>
+</body>
+</html>

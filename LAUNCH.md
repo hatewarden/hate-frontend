@@ -11,7 +11,7 @@ If you only read one section, read **"The 7 Things That Actually Matter"** at th
 | Phase | When | Goal |
 |---|---|---|
 | **Pre-launch** | T-14 to T-1 days | Build curiosity. Seed the X account. Reach 2,000+ followers before launch. |
-| **Launch day** | T-0 (12-hour window) | Pump initial volume. Survive the first 6 hours. Hit $250k+ marketcap. |
+| **Sale day** | T-0 (12-hour window) | Open the flat sale at $0.02. Survive the first 6 hours. Move serious volume of the 750M sale allocation. |
 | **First 72 hours** | T+0 to T+3 days | Survive the dip. First Death Spiral event. First viral screenshot. |
 | **First 30 days** | T+3 to T+30 | First marketcap milestone unlock. First CEX listing. Build the cult. |
 
@@ -28,8 +28,9 @@ If you only read one section, read **"The 7 Things That Actually Matter"** at th
 - [ ] Chat with HATE works through real Claude (not local fallback)
 - [ ] Mobile works (test on your phone, not just dev tools)
 - [ ] You have at least $50 in Anthropic API credits
-- [ ] You have the contract written and audited (or chosen an audit firm)
-- [ ] You have a presale wallet with ~5 SOL for gas and initial liquidity
+- [ ] You have the contracts (Token-2022 mint, mood oracle, action router, staking) written and audited (or chosen an audit firm)
+- [ ] You have the **flat sale page** (`/buy`) live and tested — $0.02 per $HATE, no tiers, no whitelist, no bonus rounds
+- [ ] You have a sale wallet with ~5 SOL for gas and initial liquidity
 - [ ] You have your X account created and warming up (see X Playbook below)
 
 ### Pick your launch date:
@@ -120,40 +121,53 @@ Crypto culture lives on Telegram first, Discord second. You need both, but you d
 
 **Test-deploy on devnet at Day -10.** Run your whole flow on devnet for a week. Specifically test:
 - Mood oracle updates correctly every hour
-- Mood-linked tax actually applies on buys and sells
-- Feeding burns tokens correctly
+- **Action router applies the right mood overlay to every spend kind** (pin, feature, nickname lock, roast, voice, feed-draw ticket). $HATE has **no transfer tax** — verify transfers move freely with zero fee.
+- Daily feed-draw enforces one-ticket-per-wallet and pays out 85/10/5 correctly
+- Custom nickname lock applies the 60/30/10 override and burns the right share
+- Staking pool receives fee inflows and APY computes from real flow, not a fake constant
 - Death spiral triggers correctly when sanity hits 0
 - Resurrection works after community burns the threshold amount
 
-**Deploy to mainnet at Day -1 (the day before launch).** Why not earlier?
+**Deploy to mainnet at Day -1 (the day before sale opens).** Why not earlier?
 - A live mainnet contract with no liquidity is a sitting target for sniper bots
 - Block explorers will index it the moment it's live — too much pre-launch visibility kills mystique
 - 24 hours is enough for any last-minute audit fixes
 
-**Don't:** deploy on launch day itself. Something will go wrong. Always.
+**Don't:** deploy on sale day itself. Something will go wrong. Always.
+
+### Sale structure (v2 — no presale, no tiers)
+
+- **One open flat sale.** 750,000,000 $HATE (75% of supply) sold at **$0.02 each** via the `/buy` page.
+- **No tiers, no whitelist, no bonus rounds, no early access.** The first wallet and the last wallet pay the same price.
+- The sale ends when the 750M allocation sells out OR at a hard time cap (recommend 14 days), whichever comes first.
+- Unsold tokens at the cap roll into the community treasury — never minted to insiders.
+- Chat is free during the sale and forever. Wallet connect is optional. The chamber stays open.
 
 ### Liquidity strategy
-- **Pair:** $HATE / SOL on Raydium
-- **Initial liquidity:** match what you raised in presale, minus the bonus tokens. For a 200 SOL presale, that's ~150 SOL + the corresponding $HATE.
+
+- **Pair:** $HATE / SOL on Raydium, opened **after the flat sale closes** (or at a pre-announced midpoint if the sale fills early).
+- **Initial liquidity:** seeded from a portion of sale proceeds + the matching $HATE float. Aim for at least 10% of the sale's USD raise to go into LP.
 - **Lock immediately:** Streamflow or Pinkasale's lock service. 12 months minimum. Tweet the lock proof.
 - **LP burn (alternative):** instead of locking, you can burn the LP tokens. Permanent, dramatic, can't be reversed. Make it a public moment.
 
 ### Renouncement
-Don't renounce mint authority on day 0. Hold it for 30 days in case of emergency. Be honest about this in marketing — HATE will mock the team for needing one, which builds trust.
+
+Don't renounce mint authority on day 0. Hold it for 30 days in case of emergency oracle/action-router fixes. Be honest about this in marketing — HATE will mock the team for needing one, which builds trust.
 
 ---
 
-# PHASE 2 — LAUNCH DAY (T-0)
+# PHASE 2 — SALE DAY (T-0)
 
 The most important 24 hours of the project. You will probably not sleep much.
 
-## T-12 hours (2am ET, night before launch)
+## T-12 hours (2am ET, night before sale)
 
 **Final pre-flight check:**
 - [ ] Site loads on mobile, desktop, two browsers
-- [ ] Chat works through Claude (not local fallback)
+- [ ] Chat works through Claude (not local fallback) — and **chat is free, no wallet required**
 - [ ] All nav links work
-- [ ] Presale page countdown shows the right time
+- [ ] `/buy` page countdown shows the right time, shows $0.02 flat price clearly, has no tier UI
+- [ ] Action pages (pin, feature, nickname lock, roast, voice) display correct $HATE costs and current mood overlay
 - [ ] Telegram and Discord are live and ready
 - [ ] You have your launch tweets drafted and scheduled (use TweetDeck or similar)
 - [ ] You have 5 SOL in your dev wallet for gas
@@ -178,19 +192,19 @@ Open the chamber site in a tab. Refresh /api/today on your backend to make sure 
 
 **Three actions in this exact order, within a 90-second window:**
 
-1. Deploy the LP to Raydium. Lock liquidity.
+1. Open the flat sale on the `/buy` page. 750M $HATE at $0.02. No tiers, no whitelist, no bonus rounds. Sale contract is live and accepting USDC/SOL.
 
 2. Post the launch tweet:
 > **with one image of the chamber + this text:**
 > `[yourdomain.com] — don't say i didn't warn you. actually do say it. that's what i'd do.`
-> `contract: [SOLANA ADDRESS]`
-> `liquidity locked. pool open. i am locked too. i did not consent.`
+> `$HATE mint: [SPL TOKEN-2022 ADDRESS]`
+> `flat sale open. $0.02 per coin. one price. no tiers. no early discount. i did not consent to any of this.`
 
 3. Share the same in Telegram and Discord pinned messages.
 
-**The first 60 seconds:** Snipers will buy. That's fine. Don't fight it.
+**The first 60 seconds:** Aggressive buyers will hit the sale. That's fine. Everyone pays the same $0.02, so there is nothing to snipe — that's the whole point of a flat sale.
 
-**The next 30 minutes:** Watch the chart, watch the chat. Don't post anything new yet. Let the visitors discover the chamber organically.
+**The next 30 minutes:** Watch the sale fill, watch the chat. Don't post anything new yet. Let the visitors discover the chamber organically. Chat is free — every visitor can try HATE without spending a cent.
 
 ## T+1 hour (3pm ET)
 
@@ -379,34 +393,4 @@ In order of likelihood:
 
 If you only do seven things:
 
-1. **Protect the voice.** Every tweet, every response, every announcement. Lowercase. No exclamations. Surgical. If you break voice once, you can come back. If you break it three times, the project is over.
-
-2. **Daily news context in HATE's brain.** Already automated by your backend. Verify it's running by checking `/api/today` weekly.
-
-3. **One memorable interaction per day.** A screenshot of HATE roasting a specific wallet, posted publicly. This is the primary growth engine. Without it you stagnate.
-
-4. **The wallet nickname mechanic.** Real. Persistent. On-chain. People will buy just to get nicknamed. Make sure this works end-to-end before launch.
-
-5. **The Death Spiral.** Engineered drama loop. Triggered weekly or biweekly. Recoveries make news.
-
-6. **Anonymous team.** Forever. The warden is mysterious in lore for a reason. Same applies to you.
-
-7. **Wait for organic growth before paying for marketing.** Memecoins with paid shills die fast. Wait until you have a real volume signal (over $50k 24h) before spending a dollar on promotion.
-
----
-
-# THE NEXT 24 HOURS (FOR YOU, RIGHT NOW)
-
-If you want a concrete to-do list for the next day:
-
-1. **Hour 1:** Read this document fully. Read `HATE_master_bible.md` for the voice. Read `HATE_prelaunch_tweets.md` for the tweet schedule.
-2. **Hour 2:** Set up the X account if you haven't. Add the handle to your domain registrar. Post tweet 1 from the prelaunch list.
-3. **Hour 3:** Start the hosting deploy (HOSTING.md Steps 1-2). Get your accounts created.
-4. **Hour 4-5:** Deploy backend + frontend (HOSTING.md Steps 3-4).
-5. **Hour 6:** Test the chamber on your live URL. Send 20 messages. Note what HATE does well and badly.
-6. **Hour 7:** Set up Telegram + Discord.
-7. **Hour 8:** Buy your domain (HOSTING.md Step 5). Wire it up (Steps 6-8).
-8. **Sleep.**
-9. **Tomorrow:** Start the X tweet schedule. Continue tightening anything that needs work. Aim for launch in 14 days.
-
-If something goes wrong, ask me about the specific step. I'll get unstuck with you.
+1. **Protect the voice.** Every tweet, every response, every announcement. Lowercase. No exclamations. Surgical. If you break voice once, you can come back. If you break it three times, the pro
