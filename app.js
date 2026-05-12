@@ -319,8 +319,10 @@
     if (document.getElementById('hate-eye')) return;
     const eye = document.createElement('div');
     eye.id = 'hate-eye';
+    eye.setAttribute('role', 'img');
+    eye.setAttribute('aria-label', 'hate watches your cursor');
     eye.innerHTML = `
-      <svg viewBox="-30 -30 60 60" aria-hidden="true">
+      <svg viewBox="-30 -30 60 60" aria-hidden="true" focusable="false">
         <ellipse cx="0" cy="0" rx="26" ry="14" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.7"/>
         <circle id="eye-pupil" cx="0" cy="0" r="7" fill="currentColor"/>
         <circle cx="0" cy="0" r="2.5" fill="#000"/>
@@ -565,8 +567,4 @@
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === konami[k].toLowerCase()) {
         k++;
-        if (k === konami.length) { k = 0; unlock('konami'); document.body.classList.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
-      } else { k = 0; }
-    });
-  };
-})();
+        if (k === konami.length) { k = 0; unlock('konami'); document.body.classLis

@@ -20,7 +20,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="style.css" />
 <style>
-  body { background: #030305; padding-bottom: 0; }
+  body { padding-bottom: 0; /* uses --bg from style.css for cross-page consistency */ }
   .manifesto-page {
     height: 100vh;
     display: flex;
@@ -108,9 +108,4 @@ document.getElementById('statement').addEventListener('click', () => {
     HATE.unlock('manifesto');
     HATE.audioBeep(440, 0.4, 0.05);
   } else {
-    document.getElementById('statement').style.opacity = (1 - clicks * 0.2);
-  }
-});
-</script>
-</body>
-</html>
+    document.getElementById('statement').style.opacity = (1 - clicks * 0.2

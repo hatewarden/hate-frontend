@@ -145,9 +145,5 @@
     // tax
     if (/(\btax\b|how much tax|buy tax|sell tax|tax rate|tax fee)/i.test(t)) return pick(taxR);
 
-    // fall through to original smart brain
-    return origRespond(text, opts);
-  }
-
-  window.HATE_BRAIN.respond = extrasBrain;
-})();
+    // ===== SHARPER OVERRIDES for the weakest existing brain.js responses =====
+    // these intercept SPECIFIC categories before the

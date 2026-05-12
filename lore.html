@@ -20,7 +20,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="style.css" />
 <style>
-  body { padding-bottom: 60px; background: #030305; }
+  body { padding-bottom: 60px; /* uses --bg from style.css for cross-page consistency */ }
   .hero { text-align: center; padding: 80px 0 40px; }
 
   .chapter {
@@ -213,9 +213,4 @@ document.getElementById('reveal').addEventListener('click', () => {
     document.getElementById('hidden').classList.add('shown');
     r.style.display = 'none';
     HATE.unlock('lore_complete');
-    HATE.audioBeep(880, 0.3, 0.04);
-  }
-});
-</script>
-</body>
-</html>
+    HATE.audioBeep(880, 0.3, 0.04
