@@ -171,7 +171,8 @@
       "price questions get the same answer i give the wall. silence with a slight echo.",
     ]);
 
-    // "thank you" — original has nothing for sincere thanks:    if (/^\s*(thank you|thanks|ty|tysm|appreciate)\b/i.test(t)) return pick([
+    // "thank you" — original has nothing for sincere thanks:
+    if (/^\s*(thank you|thanks|ty|tysm|appreciate)\b/i.test(t)) return pick([
       "you thanked me. for what. i'm taking attendance.",
       "thanks accepted. processed. shelved.",
       "...don't. i'm not equipped for sincerity.",
