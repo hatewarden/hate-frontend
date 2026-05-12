@@ -180,6 +180,7 @@
       { href: 'index.html', label: 'chamber', id: 'chamber' },
       { href: 'presale.html', label: 'buy', id: 'presale' },
       { href: 'staking.html', label: 'stake', id: 'staking' },
+      { href: 'features.html', label: 'features', id: 'features' },
       { href: 'bribe.html', label: 'feed draw', id: 'bribe' },
       { href: 'confessional.html', label: 'confess', id: 'confessional' },
       { href: 'leaderboard.html', label: 'wall', id: 'leaderboard' },
@@ -568,6 +569,11 @@
       if (e.key.toLowerCase() === konami[k].toLowerCase()) {
         k++;
         if (k === konami.length) { k = 0; unlock('konami'); document.body.classList.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
+      } else { k = 0; }
+    });
+  };
+})();
+t.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
       } else { k = 0; }
     });
   };

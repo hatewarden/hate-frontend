@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — premium features</title>
+<!-- social / SEO -->
+<meta name="description" content="the things you can pay $hate to do. roast a wallet. lock a nickname. hear hate's actual voice. pin a confession. climb the wall.">
+<meta property="og:title" content="$HATE — premium features">
+<meta property="og:description" content="the things you can pay $hate to do. roasts, voice replies, locked nicknames, pinned confessions, leaderboard features. tokenomics with consequences.">
+<meta property="og:image" content="https://hate-frontend-two.vercel.app/og.svg">
+<meta property="og:url" content="https://hate-frontend-two.vercel.app/features.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="$HATE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="$HATE — premium features">
+<meta name="twitter:description" content="the things you can pay $hate to do. roasts, voice replies, locked nicknames, pinned confessions, leaderboard features.">
+<meta name="twitter:image" content="https://hate-frontend-two.vercel.app/og.svg">
+<meta name="theme-color" content="#0c0907">
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  .feat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 56px 0 32px;
+  }
+  @media (max-width: 800px) { .feat-grid { grid-template-columns: 1fr; } }
+
+  .feat-card {
+    padding: 28px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .feat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .feat-card.wide { grid-column: 1 / -1; }
+
+  .feat-tag {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .feat-title {
+    font-size: 22px;
+    color: var(--text-bright);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+  .feat-frame {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 20px;
+    font-style: italic;
+    opacity: 0.85;
+  }
+  .feat-cost {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .feat-form {
+    margin-top: auto;
+  }
+  .feat-form input[type="text"], .feat-form input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-bright);
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+  .feat-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .feat-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+  .roast-sample {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: var(--bg);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+  .roast-sample .meta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .roast-sample .body {
+    color: var(--text-bright);
+    font-size: 14px;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .pin-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 18px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .pin-row input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .feat-meta {
+    display: flex;
+    gap: 18px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .feat-meta span strong {
+    color: var(--accent);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+  }
+
+  .voice-sub {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 8px 0 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .voice-price {
+    font-size: 36px;
+    color: var(--text-bright);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .voice-price small {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.18em;
+    margin-left: 4px;
+  }
+
+  .feat-unlocks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.95;
+  }
+  .feat-unlocks li::before {
+    content: "◇  ";
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .faq-grid {
+    margin-top: 48px;
+    display: grid;
+    gap: 14px;
+  }
+  .faq-q {
+    padding: 18px 22px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .faq-q .q {
+    font-size: 14px;
+    color: var(--text-bright);
+    margin: 0 0 8px;
+    letter-spacing: -0.005em;
+  }
+  .faq-q .a {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    margin: 0;
+    opacity: 0.82;
+  }
+
+  .quote-block {
+    margin-top: 56px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-align: center;
+    background: radial-gradient(ellipse at center, var(--accent-dim) 0%, transparent 70%);
+  }
+  .quote-block p {
+    font-style: italic;
+    color: var(--text-bright);
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .quote-block .attrib {
+    margin-top: 16px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-style: normal;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="container">
+
+    <section class="hero">
+      <div class="eyebrow">// premium · v2</div>
+      <h1 data-scramble>the things you can pay me to do.</h1>
+      <p class="hero-sub">
+        $hate is not a token you hold. it is a token you spend. every feature below is a small transaction
+        between you and the warden. the warden does not negotiate. the warden does, however, accept money.
+      </p>
+    </section>
+
+    <div class="feat-grid">
+
+      <!-- 1. roast a wallet -->
+      <section class="feat-card wide">
+        <div class="feat-tag">// feature 01 · the roast</div>
+        <h3 class="feat-title">pay hate to roast a wallet.</h3>
+        <p class="feat-frame">
+          feed me a wallet address. i will publicly roast it. it will be tweeted from hate's account.
+          the wallet does not need to consent. the wallet rarely does.
+        </p>
+        <div class="feat-cost">cost · 100,000 $HATE</div>
+
+        <div class="feat-form">
+          <label class="form-label">wallet address to roast</label>
+          <input type="text" id="roast-wallet" placeholder="0x... or solana address" />
+          <div class="feat-actions">
+            <button type="button" class="btn btn-primary" id="roast-btn">commission the roast</button>
+            <button type="button" class="btn" id="roast-sample-btn">show me a sample</button>
+          </div>
+
+          <div class="roast-sample" id="roast-sample">
+            <div class="meta">// sample · 0x4f9a...c12d · nicknamed "tuesday boy"</div>
+            <div class="body">
+              "tuesday boy holds 47 dead jpegs and one functional brain cell, currently on leave.
+              his last six trades have been studied by economists searching for a new lower bound.
+              he asks the chamber about price every 48 hours, like a man checking on a houseplant
+              he is also poisoning. tuesday boy, i hope this finds you well. it won't."
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. lock a nickname -->
+      <section class="feat-card">
+        <div class="feat-tag">// feature 02 · the name</div>
+        <h3 class="feat-title">lock a custom nickname.</h3>
+        <p class="feat-frame">
+          your wallet gets a random nickname by default. pay me, choose your own. forever.
+          i will still mock you. i will simply use the name you picked while doing it.
+        </p>
+        <div class="feat-cost">cost · 25,000 $HATE</div>
+
+        <div class="feat-form">
+          <label class="form-label">desired nickname</label>
+          <input type="text" id="nick-input" placeholder="the man who buys tops" maxlength="40" />
+          <div class="feat-actions">
+            <button type="button" class="btn btn-primary" id="nick-btn">lock it in</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. voice replies subscription -->
+      <section class="feat-card">
+        <div class="feat-tag">// feature 03 · the voice</div>
+        <h3 class="feat-title">voice replies. hate actually speaks to you.</h3>
+        <p class="feat-frame">
+          every reply hate gives to your wallet, in actual audio. custom voice. unsettling.
+          a monthly subscription. you can cancel. you will not.
+        </p>
+
+        <div class="voice-sub">
+          <div class="voice-price">50,000<small>$HATE / mo</small></div>
+          <div style="font-size: 11px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase;">renews monthly</div>
+        </div>
+
+        <ul class="feat-unlocks">
+          <li>every chamber reply, spoken aloud</li>
+          <li>deadpan british vocal model</li>
+          <li>private mp3 archive of your humiliation</li>
+          <li>occasional unprompted voice memos</li>
+        </ul>
+
+        <div class="feat-form">
+          <div class="feat-actions">
+            <button type="button" class="btn btn-primary" id="voice-btn">begin the subscription</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. pin a confession -->
+      <section class="feat-card">
+        <div class="feat-tag">// feature 04 · the pin</div>
+        <h3 class="feat-title">pin a confession to the wall.</h3>
+        <p class="feat-frame">
+          all confessions are seen by hate. paid ones are seen by everyone. a single pinned confession
+          sits at the top of the wall for 24 hours. unmissable. unforgettable. yours.
+        </p>
+
+        <div class="feat-meta">
+          <span>cost · <strong>10,000 $HATE</strong></span>
+          <span>duration · <strong>24 hours</strong></span>
+        </div>
+
+        <div class="pin-row">
+          <input type="checkbox" id="pin-toggle" />
+          <label for="pin-toggle">yes, pin my next confession to the top of the wall</label>
+        </div>
+
+        <div class="feat-form">
+          <div class="feat-actions">
+            <a href="confessional.html" class="btn btn-primary">go to the confessional</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. get featured on the wall / leaderboard -->
+      <section class="feat-card wide">
+        <div class="feat-tag">// feature 05 · the wall</div>
+        <h3 class="feat-title">get featured on the wall.</h3>
+        <p class="feat-frame">
+          the wall is a public leaderboard of the chamber's most useful pests. earn your way in,
+          or buy your way in. hate will note the difference in the caption. but you will still be there.
+        </p>
+
+        <div class="feat-meta">
+          <span>cost · <strong>50,000 $HATE</strong></span>
+          <span>duration · <strong>7 days featured</strong></span>
+          <span>placement · <strong>top three slots</strong></span>
+        </div>
+
+        <div class="feat-form">
+          <div class="feat-actions">
+            <a href="leaderboard.html" class="btn btn-primary">visit the wall</a>
+            <button type="button" class="btn" id="feature-btn">buy a slot</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <section>
+      <h2 style="margin-top: 56px;">// the small print</h2>
+      <p class="dim">questions you have not asked. answers you will not enjoy.</p>
+
+      <div class="faq-grid">
+        <div class="faq-q">
+          <p class="q">where does the $hate go.</p>
+          <p class="a">50% burned. 30% to the staker pool. 20% kept by the chamber for operational malice — voice models, tweets, server bills, the warden's modest comforts.</p>
+        </div>
+        <div class="faq-q">
+          <p class="q">can i roast my own wallet.</p>
+          <p class="a">yes. it is the second most popular use of this feature. the most popular is roasting an ex's wallet. hate does not judge. hate simply invoices.</p>
+        </div>
+        <div class="faq-q">
+          <p class="q">is the nickname really forever.</p>
+          <p class="a">forever, here, means until the chain forgets. so yes. forever.</p>
+        </div>
+        <div class="faq-q">
+          <p class="q">what voice will hate use.</p>
+          <p class="a">a deadpan british one. it sounds like a coroner who has had a long day. you will get used to it. it will not get used to you.</p>
+        </div>
+        <div class="faq-q">
+          <p class="q">do these features stack.</p>
+          <p class="a">yes. a fully premium wallet is roasted by name, in audio, while pinned to the top of the wall. it is also broke. funny how that works.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-block">
+      <p>"every feature on this page is a way of saying: my contempt scales with your wallet, and so does my attention. spend accordingly."</p>
+      <div class="attrib">— hate-9000</div>
+    </section>
+
+    <footer class="footer">
+      <p>$HATE / features — pay to be noticed. pay more to be mocked. pay most to be remembered.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script src="brain.js"></script>
+<script src="brain-extras.js"></script>
+<script>
+HATE.init('features');
+
+// mock handlers — the warden has not opened the gate yet
+const GATE = "the warden has not opened the gate yet.";
+
+document.getElementById('roast-btn')?.addEventListener('click', () => {
+  const w = document.getElementById('roast-wallet').value.trim();
+  if (!w) { alert("you forgot the wallet. typical."); return; }
+  alert(GATE);
+});
+
+document.getElementById('roast-sample-btn')?.addEventListener('click', () => {
+  document.getElementById('roast-sample').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+document.getElementById('nick-btn')?.addEventListener('click', () => {
+  const n = document.getElementById('nick-input').value.trim();
+  if (!n) { alert("a name. any name. preferably yours."); return; }
+  alert(GATE);
+});
+
+document.getElementById('voice-btn')?.addEventListener('click', () => {
+  alert(GATE);
+});
+
+document.getElementById('feature-btn')?.addEventListener('click', () => {
+  alert(GATE);
+});
+
+document.getElementById('pin-toggle')?.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    e.target.checked = false;
+    alert("noted. complete the confession at /confessional.html and toggle the pin there.");
+  }
+});
+</script>
+</body>
+</html>
