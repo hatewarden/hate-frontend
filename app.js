@@ -567,4 +567,8 @@
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === konami[k].toLowerCase()) {
         k++;
-        if (k === konami.length) { k = 0; unlock('konami'); document.body.classLis
+        if (k === konami.length) { k = 0; unlock('konami'); document.body.classList.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
+      } else { k = 0; }
+    });
+  };
+})();

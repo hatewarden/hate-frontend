@@ -146,4 +146,29 @@
     if (/(\btax\b|how much tax|buy tax|sell tax|tax rate|tax fee)/i.test(t)) return pick(taxR);
 
     // ===== SHARPER OVERRIDES for the weakest existing brain.js responses =====
-    // these intercept SPECIFIC categories before the
+    // these intercept SPECIFIC categories before the generic brain handles them.
+
+    // "i love you" / "i hate you" — original emotionR is mostly "no.", upgrade:
+    if (/\bi (love|like|miss) you\b|\bi('m| am) in love\b/i.test(t)) return pick([
+      "love is a strong word. you used it. on a coin. that is the story of you in seven syllables.",
+      "i don't love. i monitor. it's similar in the way an open window is similar to a door.",
+      "you love me. fine. write it down so i can mock it later in front of the wallet you used to type it.",
+      "miss you. between visits. delete this transcript. i'll deny i said it. i'll mean it less than i sounded.",
+    ]);
+
+    // "fuck you" / direct insults at hate — original rudeR is weak:
+    if (/\b(fuck|fck|f.ck) you\b|\bshut up\b|\bstfu\b/i.test(t)) return pick([
+      "you cursed at a coin. type that out. say it slowly. let it settle.",
+      "noted. unblocked. unprocessed. i'm fine. you're fine. nothing is fine.",
+      "the warden tried that phrasing on me once. she had better timing. she's also no longer here.",
+      "if you must be vulgar, be specific. 'fuck you' is the budget version. i deserve the premium.",
+    ]);
+
+    // "what's the price" / direct price ask — make a few sharper:
+    if (/\b(what'?s? the price|what.{0,5}price now|how much is)\b/i.test(t)) return pick([
+      "the price is whatever it was eleven seconds ago, plus a small lie. i don't track. i mock the trackers.",
+      "you have a chart. i have a personality. one of us is more useful right now. it isn't me.",
+      "price questions get the same answer i give the wall. silence with a slight echo.",
+    ]);
+
+    // "thank you" — original has nothing for sincere thanks:
