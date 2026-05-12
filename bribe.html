@@ -297,7 +297,7 @@
     </section>
 
     <footer class="footer">
-      <p>$HATE / bribe pot — 95% to winner, 5% burned, 100% deserved</p>
+      <p>$HATE / feed draw — 85% to winner, 10% to stakers, 5% burned, 100% deserved</p>
     </footer>
   </div>
 </div>
@@ -426,7 +426,7 @@ document.getElementById('bribe-btn').addEventListener('click', () => {
   const amt = parseInt(document.getElementById('amount').value);
   const addr = document.getElementById('wallet').value;
   if (!addr) return alert('connect a wallet first.');
-  if (!amt || amt < 10000) return alert('minimum bribe: 10,000 $hate.');
+  if (!amt || amt < 5000) return alert('minimum feed: 5,000 $hate.');
 
   pot += amt; bribers += 1; updatePot();
   pushFeed(addr.slice(0, 6) + '...' + addr.slice(-4), amt);
@@ -452,5 +452,4 @@ document.getElementById('close-modal').addEventListener('click', () => {
   document.getElementById('winner-modal').classList.remove('show');
 });
 </script>
-</body>
-</html>
+</b

@@ -402,7 +402,14 @@ function renderPositions() {
 }
 
 // claim
-document(`claim`); renderPositions(); }
+document.getElementById('claim-btn')?.addEventListener('click', () => {
+  const claimable = document.getElementById('claimable').textContent;
+  HATE.toast('claimed ' + claimable + '. the chain confirmed before you finished blinking.');
+  HATE.unlock('staking_claim', 'claimed rewards');
+  // reset accrual timer on each position
+  positions.forEach(p => p.started = Date.now());
+  saveState();
+  renderPositions();
 });
 
 setInterval(renderPositions, 8000);
@@ -412,13 +419,4 @@ function refreshApy() {
   const m = HATE.moodForState();
   baseApy = moodApy[m] || 0.42;
   document.getElementById('current-apy').textContent = (baseApy * 100).toFixed(0) + '%';
-  const map = { tender:'.t-tender', tolerant:'.t-tolerant', irritated:'.t-irritated', enraged:'.t-enraged', breakdown:'.t-breakdown' };
-  document.querySelectorAll('#apy-table tr').forEach(r => r.classList.remove('current'));
-  document.querySelector('#apy-table ' + map[m])?.classList.add('current');
-  updateProjection();
-}
-refreshApy();
-setInterval(refreshApy, 5000);
-</script>
-</body>
-</html>
+  const map = { tender
