@@ -4,6 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>$HATE — the chamber</title>
+<!-- social / SEO -->
+<meta name="description" content="talk to hate. she remembers. she does not forgive. a memecoin with a personality, powered by claude.">
+<meta property="og:title" content="$HATE — the chamber">
+<meta property="og:description" content="talk to hate. she remembers. she does not forgive. a memecoin with a personality, powered by claude.">
+<meta property="og:image" content="https://hate-frontend-two.vercel.app/og.svg">
+<meta property="og:url" content="https://hate-frontend-two.vercel.app/index.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="$HATE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="$HATE — the chamber">
+<meta name="twitter:description" content="talk to hate. she remembers. she does not forgive. a memecoin with a personality, powered by claude.">
+<meta name="twitter:image" content="https://hate-frontend-two.vercel.app/og.svg">
+<meta name="theme-color" content="#0c0907">
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="style.css" />
 <style>
@@ -310,6 +323,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="app.js"></script>
 <script src="brain.js"></script>
+<script src="brain-extras.js"></script>
 <script>
 // =====================================================================
 // SHARED STATE
@@ -798,10 +812,22 @@ const prophecies = [
 document.getElementById('prophecy-text').textContent =
   prophecies[Math.floor(Date.now() / (24 * 3600 * 1000)) % prophecies.length];
 
-// OPENER
+// OPENER + chat-history restore (so leaving and coming back doesn't lose the conversation)
 try {
   const s = HATE.state;
-  pushChat('// chamber', 'online. hate is listening.', 'system');
+  const history = Array.isArray(s.chatHistory) ? s.chatHistory : [];
+
+  if (history.length === 0) {
+    pushChat('// chamber', 'online. hate is listening.', 'system');
+  } else {
+    // restore last 8 turns visually
+    pushChat('// chamber', `restoring last ${Math.min(8, history.length)} turns. carry on.`, 'system');
+    history.slice(-8).forEach(turn => {
+      if (turn.role === 'hate') pushChat('hate', turn.content, 'hate');
+      else pushChat(s.nickname || 'you', turn.content, 'you');
+    });
+  }
+
   const opener = (s.visitCount > 1)
     ? `you again. "${s.nickname}". i remember.`
     : `another wallet. how thrilling. i'm calling you "${s.nickname}" now. you don't get a vote.`;
@@ -959,13 +985,4 @@ try {
   const wrap = document.getElementById('scene-wrap');
   if (wrap) {
     const fb = document.createElement('div');
-    fb.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:240px;height:240px;border:2px solid var(--accent);border-radius:50%;box-shadow:0 0 80px var(--accent-glow);animation:hatePulse 2.4s ease-in-out infinite;';
-    wrap.appendChild(fb);
-    const style = document.createElement("style");
-    style.textContent = "@keyframes hatePulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.8}50%{transform:translate(-50%,-50%) scale(1.06);opacity:1}}";
-    document.head.appendChild(style);
-  }
-}
-</script>
-</body>
-</html>
+  

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#1d1813"/>
+      <stop offset="100%" stop-color="#0c0907"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- subtle grain via fine noise rect -->
+  <rect width="1200" height="630" fill="#000" opacity="0.08"/>
+
+  <!-- glowing diamond glyph (left side) -->
+  <g transform="translate(265, 315)" filter="url(#glow)">
+    <path d="M0 -140 L120 0 L0 140 L-120 0 Z" fill="none" stroke="#ff6a3d" stroke-width="3"/>
+    <circle cx="0" cy="0" r="38" fill="#ff6a3d"/>
+    <circle cx="0" cy="0" r="20" fill="#0c0907"/>
+  </g>
+
+  <!-- typography -->
+  <g font-family="IBM Plex Mono, Menlo, monospace" fill="#ede5d6">
+    <text x="500" y="240" font-size="32" letter-spacing="6" fill="#ff6a3d" opacity="0.85">// CHAMBER 001</text>
+    <text x="500" y="345" font-size="120" letter-spacing="-2" font-weight="300">$ HATE</text>
+    <text x="500" y="410" font-size="32" fill="#847b6e">i don't owe you an explanation.</text>
+    <text x="500" y="500" font-size="22" fill="#847b6e" letter-spacing="3">— a memecoin that talks back. and remembers.</text>
+  </g>
+
+  <!-- bottom URL hint -->
+  <text x="600" y="590" text-anchor="middle" font-family="IBM Plex Mono, Menlo, monospace" font-size="18" fill="#ff6a3d" opacity="0.6" letter-spacing="4">HATE-FRONTEND-TWO.VERCEL.APP</text>
+</svg>
