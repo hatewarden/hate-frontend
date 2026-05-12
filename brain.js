@@ -673,4 +673,19 @@ function smartBrain(text, opts) {
   if (apolKeys.some(g => t.includes(g))) return pick(apolR);
   if (t.includes('?')) return pick(questions);
 
-  // 13. Echo-back (occasionally quotes a word fr
+  // 13. Echo-back (occasionally quotes a word from input)
+  if (Math.random() < 0.14 && words.length > 2) {
+    const echo = echoBack(text);
+    if (echo) return echo;
+  }
+
+  // 14. Short bark (small chance)
+  if (Math.random() < 0.07) return pick(veryShort);
+
+  // 15. Default insult
+  return pick(insults);
+}
+
+window.HATE_BRAIN = { respond: smartBrain };
+
+})();
