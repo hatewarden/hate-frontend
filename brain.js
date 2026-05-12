@@ -159,7 +159,10 @@ const greetR = [
   "hello yourself. with feeling. i'll wait.",
 ];
 
-const priceKeys = ["price","moon","lambo","pump","dump","chart","buy","sell","wen","ath","mcap","floor","ceiling","top","bottom","candle","candles","green","red","up","down","ticker","mark","marketcap"];
+// Multi-character distinct phrases safe for substring match.
+const priceKeys = ["price","lambo","pump","dump","chart","wen","ath","mcap","floor","ceiling","candle","candles","ticker","marketcap","moon"];
+// Short common words that need word-boundary match — would otherwise match "stop", "laptop", "redact", "background", "marketing", etc.
+const priceKeysWord = ["buy","sell","top","bottom","green","red","up","down","mark"];
 const priceR = [
   "you ask me about price. you might as well ask the weather to apologize.",
   "wen lambo. wen anything. wen will you ask a question worth the keystrokes.",
@@ -665,23 +668,9 @@ function smartBrain(text, opts) {
   // 12. Category keywords
   if (greetings.some(g => new RegExp('\\b' + g + '\\b').test(t))) return pick(greetR);
   if (priceKeys.some(g => t.includes(g))) return pick(priceR);
+  if (priceKeysWord.some(g => new RegExp('\\b' + g + '\\b').test(t))) return pick(priceR);
   if (complKeys.some(g => t.includes(g))) return pick(complR);
   if (apolKeys.some(g => t.includes(g))) return pick(apolR);
   if (t.includes('?')) return pick(questions);
 
-  // 13. Echo-back (occasionally quotes a word from input)
-  if (Math.random() < 0.14 && words.length > 2) {
-    const echo = echoBack(text);
-    if (echo) return echo;
-  }
-
-  // 14. Short bark (small chance)
-  if (Math.random() < 0.07) return pick(veryShort);
-
-  // 15. Default insult
-  return pick(insults);
-}
-
-window.HATE_BRAIN = { respond: smartBrain };
-
-})();
+  // 13. Echo-back (occasionally quotes a word fr

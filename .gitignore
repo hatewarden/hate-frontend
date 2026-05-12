@@ -4,3 +4,8 @@ Thumbs.db
 .vscode/
 .idea/
 node_modules/
+
+# orphaned legacy files — kept out of the deploy
+HATE_chamber.html
+test.html
+

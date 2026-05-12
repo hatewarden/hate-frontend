@@ -706,7 +706,8 @@ function pushChat(who, text, type = 'normal') {
 async function send(text) {
   if (!text || !text.trim()) return;
   pushChat(HATE.state.nickname || 'you', text, 'you');
-  try { HATE.rememberTurn('user', text); } catch(e){}
+  // Note: do NOT push to chatHistory yet — callApi sends history alongside `message:`,
+  // and we don't want the current message duplicated as both `message` and the last history entry.
   thinking.classList.add('show');
   sendBtn.disabled = true;
   try {
@@ -717,6 +718,8 @@ async function send(text) {
     thinking.classList.remove('show');
     pushChat('hate', reply, 'hate');
     try { HATE.audioSay(); } catch(e){}
+    // Save both turns to history AFTER the API call — keeps `message` and `history` disjoint.
+    try { HATE.rememberTurn('user', text); } catch(e){}
     try { HATE.rememberTurn('hate', reply); } catch(e){}
     agitation = Math.min(1, agitation + 0.4);
   } catch (e) {
@@ -958,11 +961,3 @@ try {
     const fb = document.createElement('div');
     fb.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:240px;height:240px;border:2px solid var(--accent);border-radius:50%;box-shadow:0 0 80px var(--accent-glow);animation:hatePulse 2.4s ease-in-out infinite;';
     wrap.appendChild(fb);
-    const style = document.createElement('style');
-    style.textContent = '@keyframes hatePulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.8}50%{transform:translate(-50%,-50%) scale(1.06);opacity:1}}';
-    document.head.appendChild(style);
-  }
-}
-</script>
-</body>
-</html>
