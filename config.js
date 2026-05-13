@@ -38,4 +38,5 @@ window.HATE_CONFIG = {
   get LAUNCHED() {
     return this.CA !== 'PENDING_DEPLOY';
   },
-};
+
+  

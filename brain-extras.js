@@ -144,8 +144,20 @@
     // warden whereabouts
     if (/(where.{0,5}(is.{0,5})?(the )?warden|who.{0,5}(is.{0,5})?(the )?warden|warden.{0,5}where|warden.{0,5}who|wheres the warden)/i.test(t)) return pick(wardenWhereR);
 
-    // socials / links
-    if (/(telegram|\btg\b|\bdiscord\b|twitter link|x\.com|how do i join|where.{0,5}community|socials|social links|join.{0,5}(group|chat|community|discord|telegram))/i.test(t)) return pick(socialsR);
+    // socials / links — if config has real social URLs, return them directly with voice
+    if (/(telegram|\btg\b|\bdiscord\b|twitter link|x\.com|how do i join|where.{0,5}community|socials|social links|join.{0,5}(group|chat|community|discord|telegram))/i.test(t)) {
+      if (typeof window !== 'undefined' && window.HATE_CONFIG && window.HATE_CONFIG.SOCIALS) {
+        const s = window.HATE_CONFIG.SOCIALS;
+        const realLinks = [
+          "telegram chat: " + s.TELEGRAM_GROUP + ". don't lurk. people remember.",
+          "x is " + s.X_HANDLE + ". the announcements channel is " + s.TELEGRAM_CHANNEL + ". the chat is " + s.TELEGRAM_GROUP + ". now stop asking.",
+          "join the telegram: " + s.TELEGRAM_GROUP + ". it's louder than it should be. that's the point.",
+          "follow " + s.X_HANDLE + " on x. or don't. either way i'm there.",
+        ];
+        return pick(realLinks);
+      }
+      return pick(socialsR);
+    }
 
     // tax
     if (/(\btax\b|how much tax|buy tax|sell tax|tax rate|tax fee)/i.test(t)) return pick(taxR);

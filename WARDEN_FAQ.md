@@ -78,7 +78,7 @@ also wrong: dodging so hard that it reads as confirmation. the answer above is t
 
 ### "can i get a free bag? / KOL allocation? / a partnership?"
 
-**right answer:** "no free bags. there's no KOL allocation set aside as a giveaway — anyone who wants in buys on the same pool everyone else does. the 25% multisig isn't a discretionary pot for sending tokens to accounts. if you're interested in the project for what it is, the entry is [BUY_LINK]."
+**right answer:** "no free bags. there's no KOL allocation set aside as a giveaway — anyone who wants in buys on the same pool everyone else does. the 25% multisig isn't a discretionary pot for sending tokens to accounts. if you're interested in the project for what it is, the entry is https://hate.fund/buy."
 
 **wrong answer:** "DM me and we'll figure something out" (you've just opened a door you'll have to slam for the next 90 days). "maybe later" (same problem). no means no. polite, one sentence, done.
 
@@ -94,7 +94,7 @@ also wrong: dodging so hard that it reads as confirmation. the answer above is t
 
 ### "what if the site goes down?"
 
-**right answer:** "the token lives on solana regardless of the site. transfers, swaps, balances — all on-chain, independent of [DOMAIN]. the site is the chamber where HATE lives; if it goes down, i bring it back up. the asset isn't gated by the site."
+**right answer:** "the token lives on solana regardless of the site. transfers, swaps, balances — all on-chain, independent of hate.fund. the site is the chamber where HATE lives; if it goes down, i bring it back up. the asset isn't gated by the site."
 
 **wrong answer:** "the site won't go down" (yes it will, at some point, and now you have a broken promise). "we have redundancy" (vague tech-flex, nobody believes you). give the structural answer: the token doesn't depend on the site.
 

@@ -2,7 +2,7 @@
 
 > the one thread that pins to the profile for the next 72 hours. everything else is a reply to this. voice-locked. no edits after posting. typos stay.
 
-placeholders to substitute before posting: `[CA]`, `[BUY_LINK]`, `[DOMAIN]`, `[TELEGRAM]`, `[X_HANDLE]`. character counts noted per tweet. all tweets verified ≤280.
+placeholders to substitute before posting: `[CA]`, `https://hate.fund/buy`, `hate.fund`, `https://t.me/hate9000`, `@hate9000`. character counts noted per tweet. all tweets verified ≤280.
 
 see also: VIRAL_PLAYBOOK (amplification mechanics), LAUNCH_PLAYBOOK (timing + checklist), HATE_master_bible.md (voice).
 
@@ -14,7 +14,7 @@ see also: VIRAL_PLAYBOOK (amplification mechanics), LAUNCH_PLAYBOOK (timing + ch
 
 > the warden has finished his renovations. the door is open. i would not call it an invitation. it is more of a confession that the lock no longer works.
 >
-> [DOMAIN]
+> hate.fund
 
 *(238 chars. cryptic. no ticker yet. no chart. the link is the only action. let people land on the site and meet the character before they know what they're buying.)*
 
@@ -54,7 +54,7 @@ see also: VIRAL_PLAYBOOK (amplification mechanics), LAUNCH_PLAYBOOK (timing + ch
 
 > talk to me first. decide after. if you buy before you've had me describe what your last tweet says about you, that is your problem and i refuse to be moved by it.
 >
-> [DOMAIN]
+> hate.fund
 
 *(225 chars. inverts the normal launch CTA. instead of "buy now" it's "go meet the character, then make your own decision." this is the trust move. the domain is the only link.)*
 
@@ -65,10 +65,10 @@ see also: VIRAL_PLAYBOOK (amplification mechanics), LAUNCH_PLAYBOOK (timing + ch
 > $HATE
 >
 > CA: [CA]
-> buy: [BUY_LINK]
-> chat (free): [DOMAIN]
-> telegram: [TELEGRAM]
-> updates: [X_HANDLE]
+> buy: https://hate.fund/buy
+> chat (free): hate.fund
+> telegram: https://t.me/hate9000
+> updates: @hate9000
 >
 > flat sale via meteora dlmm at $0.02 per HATE. jupiter route works. no presale, no whitelist. mint renounced before this tweet.
 

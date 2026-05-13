@@ -200,6 +200,11 @@
           ${links.map(l => `<a href="${l.href}"${l.id === activePage ? ' class="active"' : ''}>${l.label}</a>`).join('')}
         </div>
         <div class="nav-status">
+          ${(window.HATE_CONFIG && window.HATE_CONFIG.SOCIALS) ? `
+            <a href="${window.HATE_CONFIG.SOCIALS.X}" target="_blank" rel="noopener" title="follow on x" style="color:var(--text-dim);text-decoration:none;font-size:14px;padding:0 4px;">𝕏</a>
+            <a href="${window.HATE_CONFIG.SOCIALS.TELEGRAM_GROUP}" target="_blank" rel="noopener" title="join telegram chat" style="color:var(--text-dim);text-decoration:none;font-size:11px;letter-spacing:0.1em;padding:0 4px;">tg</a>
+            <span style="opacity: 0.4">|</span>
+          ` : ''}
           <span class="nav-mood-dot"></span>
           <span data-mood-label>${moodForState()}</span>
           <span style="opacity: 0.4">|</span>
