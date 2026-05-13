@@ -5,13 +5,20 @@
     { "source": "/presale", "destination": "/buy", "permanent": true },
     { "source": "/presale.html", "destination": "/buy", "permanent": true }
   ],
+  "rewrites": [
+    { "source": "/", "destination": "/coming-soon.html" },
+    { "source": "/index.html", "destination": "/coming-soon.html" },
+    { "source": "/index", "destination": "/coming-soon.html" },
+    { "source": "/_warden", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
       ]
     }
   ]
