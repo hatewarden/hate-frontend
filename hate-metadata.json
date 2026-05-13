@@ -1,0 +1,28 @@
+{
+  "name": "HATE",
+  "symbol": "HATE",
+  "description": "a memecoin with a personality. she remembers. she does not forgive. chat is free at hate.fund — talking costs nothing, being remembered costs $hate. fixed supply of 1,000,000,000. mint authority renounced. solana spl token-2022.",
+  "image": "PASTE_PINATA_IMAGE_URL_HERE",
+  "external_url": "https://YOUR_DOMAIN_HERE",
+  "attributes": [
+    { "trait_type": "mood", "value": "irritated" },
+    { "trait_type": "supply", "value": "1,000,000,000" },
+    { "trait_type": "decimals", "value": "9" },
+    { "trait_type": "chain", "value": "solana" },
+    { "trait_type": "standard", "value": "spl token-2022" }
+  ],
+  "extensions": {
+    "website": "https://YOUR_DOMAIN_HERE",
+    "twitter": "https://twitter.com/YOUR_X_HANDLE",
+    "telegram": "https://t.me/YOUR_TELEGRAM_HANDLE"
+  },
+  "properties": {
+    "files": [
+      {
+        "uri": "PASTE_PINATA_IMAGE_URL_HERE",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
+}

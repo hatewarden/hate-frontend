@@ -127,8 +127,13 @@
     // wen / launch timing
     if (/(wen launch|when.{0,10}launch|when.{0,5}go live|when.{0,5}release|wen.{0,5}list|when listing|wen drop|when drop)/i.test(t)) return pick(wenLaunchR);
 
-    // contract address
-    if (/(contract address|^ca\??$|\bca\?|\bca\b.{0,5}plz|whats the ca|what.{0,5}contract|drop.{0,5}contract|drop.{0,5}ca|token address)/i.test(t)) return pick(contractR);
+    // contract address — return real CA from config when launched, else flippant replies
+    if (/(contract address|^ca\??$|\bca\?|\bca\b.{0,5}plz|whats the ca|what.{0,5}contract|drop.{0,5}contract|drop.{0,5}ca|token address)/i.test(t)) {
+      if (typeof window !== 'undefined' && window.HATE_CONFIG && window.HATE_CONFIG.LAUNCHED) {
+        return "fine. " + window.HATE_CONFIG.CA + ". don't lose it. don't forward it to your cousin.";
+      }
+      return pick(contractR);
+    }
 
     // seed loss / drained
     if (/(lost.{0,15}seed|seed phrase|drained.{0,5}wallet|wallet.{0,15}drained|got hacked|wallet got hacked|hacked.{0,5}wallet|funds.{0,5}gone|lost.{0,15}wallet|i was phished|got phished)/i.test(t)) return pick(seedLossR);

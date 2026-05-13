@@ -214,33 +214,61 @@
 
     <section class="panel">
       <h3>// buy $hate</h3>
-      <p class="dim mb-md">connect a phantom wallet. choose how much sol. see how much $hate you get. confirm.</p>
-      <div class="form-grid">
-        <div>
-          <label class="form-label">your wallet address</label>
-          <input type="text" id="wallet-input" placeholder="paste solana address or click connect" />
+      <p class="dim mb-md">swap sol → $hate via jupiter. price defends itself at $0.02 — meteora dlmm single-sided position.</p>
+
+      <!-- pre-launch placeholder (shown while config.CA is PENDING_DEPLOY) -->
+      <div id="presale-pending" style="background: rgba(255,106,61,0.05); border-left: 2px solid var(--accent); padding: 18px 22px; margin: 18px 0; border-radius: 0 4px 4px 0;">
+        <div style="font-size: 10px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 6px; text-transform: uppercase;">sale not open yet</div>
+        <div style="font-size: 14px; color: var(--text-bright); line-height: 1.6;">
+          the door isn't open. when it is, you'll know — the warden will speak. until then, talking to her is free.
         </div>
-        <div>
-          <label class="form-label">spending (sol)</label>
-          <input type="number" id="amount-input" placeholder="1.0" step="0.1" min="0.1" />
+        <div style="font-size: 11px; color: var(--text-dim); margin-top: 10px;">
+          contract address: <span id="ca-display" style="font-family: monospace;">not yet deployed</span>
         </div>
       </div>
 
-      <div style="background: rgba(255,106,61,0.05); border-left: 2px solid var(--accent); padding: 14px 18px; margin: 18px 0; border-radius: 0 4px 4px 0;">
-        <div style="font-size: 10px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 4px; text-transform: uppercase;">you receive</div>
-        <div style="font-size: 24px; color: var(--text-bright); font-variant-numeric: tabular-nums;" id="receive-amount">0 $HATE</div>
-        <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;" id="receive-note">at $0.02/token · sol price assumed $150</div>
+      <!-- live swap widget (shown after config.CA is set) -->
+      <div id="swap-live" style="display:none;">
+        <div id="integrated-terminal" style="min-height: 420px; border-radius: 8px; overflow: hidden;"></div>
+        <p class="dim mt-md" style="font-size: 11px;">
+          your sol goes into the meteora pool. you receive $hate at $0.02 each. on-chain in one transaction.
+          no claim screens. no delays. no surprises.
+        </p>
       </div>
-
-      <div style="display: flex; gap: 12px;">
-        <button class="btn btn-primary" id="connect-btn">connect phantom</button>
-        <button class="btn" id="submit-btn">buy $hate</button>
-      </div>
-      <p class="dim mt-md" style="font-size: 10px;">
-        the warden has not opened the gate yet. real wallet connect activates the moment the sale goes live.
-        no buys are processed until then.
-      </p>
     </section>
+
+    <!-- Jupiter Terminal v3 — preloaded; initialized only when config.LAUNCHED is true -->
+    <script src="https://terminal.jup.ag/main-v3.js" data-preload></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.HATE_CONFIG && window.HATE_CONFIG.LAUNCHED) {
+          document.getElementById('presale-pending').style.display = 'none';
+          document.getElementById('swap-live').style.display = 'block';
+          try {
+            window.Jupiter.init({
+              displayMode: 'integrated',
+              integratedTargetId: 'integrated-terminal',
+              endpoint: 'https://api.mainnet-beta.solana.com',
+              formProps: {
+                fixedOutputMint: true,
+                initialOutputMint: window.HATE_CONFIG.CA,
+                initialInputMint: 'So11111111111111111111111111111111111111112',
+                initialAmount: '1000000000',
+              },
+              strictTokenList: false,
+              defaultExplorer: 'Solscan',
+            });
+          } catch (e) {
+            console.warn('Jupiter init failed:', e);
+            document.getElementById('integrated-terminal').innerHTML =
+              '<a class="btn btn-primary" href="' + window.HATE_CONFIG.JUPITER_SWAP_URL +
+              '" target="_blank" rel="noopener">open in jupiter &uarr;</a>';
+          }
+        } else if (window.HATE_CONFIG && window.HATE_CONFIG.CA && window.HATE_CONFIG.CA !== 'PENDING_DEPLOY') {
+          document.getElementById('ca-display').textContent = window.HATE_CONFIG.CA;
+        }
+      });
+    </script>
 
     <section class="panel mt-lg">
       <h2>// FAQ</h2>
@@ -262,65 +290,42 @@
   </div>
 </div>
 
+<script src="config.js"></script>
 <script src="app.js"></script>
 <script>
 HATE.init('buy');
 
 // ===== sale parameters =====
-const PRICE_USD_PER_HATE = 0.02;
-const SOL_PRICE_USD = 150;       // assumed for the calculator — real value pulled at tx time
 const TOTAL_FOR_SALE = 750_000_000;
 
-// ===== live progress (mock — pulls from chain post-launch) =====
-let soldHate = 12_847_300;
+// ===== live progress (placeholder — pre-launch shows mock; post-launch we wire to on-chain reads) =====
+let soldHate = 0;
+if (window.HATE_CONFIG && window.HATE_CONFIG.LAUNCHED) {
+  // TODO: replace with real Meteora pool query for tokens-bought-so-far
+  // For now, leave the counter at zero on launch day — let real swaps populate it.
+} else {
+  soldHate = 0; // pre-launch displays "0 sold"
+}
 function updateProgress() {
   const pct = Math.min(100, (soldHate / TOTAL_FOR_SALE) * 100);
-  document.getElementById('raised').textContent = soldHate.toLocaleString() + ' $HATE sold';
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('pct').textContent = pct.toFixed(2);
-  document.getElementById('contributors').textContent = Math.floor(soldHate / 65_000).toLocaleString();
+  const raisedEl = document.getElementById('raised');
+  const fillEl = document.getElementById('progress-fill');
+  const pctEl = document.getElementById('pct');
+  const contribEl = document.getElementById('contributors');
+  if (raisedEl) raisedEl.textContent = soldHate.toLocaleString() + ' $HATE sold';
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct.toFixed(2);
+  if (contribEl) contribEl.textContent = Math.floor(soldHate / 65_000).toLocaleString();
 }
 updateProgress();
-setInterval(() => { soldHate += Math.floor(Math.random() * 50_000); updateProgress(); }, 5000);
-
-// ===== you-receive calculator =====
-function recalc() {
-  const sol = parseFloat(document.getElementById('amount-input').value) || 0;
-  const usd = sol * SOL_PRICE_USD;
-  const hate = Math.floor(usd / PRICE_USD_PER_HATE);
-  document.getElementById('receive-amount').textContent = hate.toLocaleString() + ' $HATE';
-  document.getElementById('receive-note').textContent = `at $${PRICE_USD_PER_HATE}/token · sol price assumed $${SOL_PRICE_USD} (live price used at buy time)`;
-}
-document.getElementById('amount-input').addEventListener('input', recalc);
-recalc();
-
-// connect (mock — real wallet adapter wires in at launch)
-document.getElementById('connect-btn').addEventListener('click', () => {
-  const addr = '0x' + Math.random().toString(16).slice(2, 14);
-  document.getElementById('wallet-input').value = addr;
-  HATE.audioBeep(880, 0.1, 0.04);
-  HATE.showAchievement('wallet acknowledged');
-});
-
-// submit (mock — increments local supply counter, no real tx until launch)
-document.getElementById('submit-btn').addEventListener('click', () => {
-  const sol = parseFloat(document.getElementById('amount-input').value);
-  const addr = document.getElementById('wallet-input').value;
-  if (!addr) return alert('connect a wallet first.');
-  if (!sol || sol < 0.1) return alert('minimum is 0.1 sol.');
-  const hate = Math.floor((sol * SOL_PRICE_USD) / PRICE_USD_PER_HATE);
-  soldHate += hate; updateProgress();
-  HATE.audioBeep(440, 0.2, 0.05);
-  try { HATE.unlock('buy_amount', 'a contribution, regrettably'); } catch(e){}
-  document.getElementById('amount-input').value = '';
-  recalc();
-  alert(`bought ${hate.toLocaleString()} $hate. (real tx activates when the gate opens.)`);
-});
 
 // FAQ accordion
 document.querySelectorAll('.faq-item').forEach(item => {
   item.addEventListener('click', () => item.classList.toggle('open'));
 });
+
+// Unlock visit achievement
+try { HATE.unlock('buy_visit', 'window shopper'); } catch(e) {}
 </script>
 </body>
 </html>
