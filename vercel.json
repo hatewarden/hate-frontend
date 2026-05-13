@@ -6,10 +6,8 @@
     { "source": "/presale.html", "destination": "/buy", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/coming-soon.html" },
-    { "source": "/index.html", "destination": "/coming-soon.html" },
-    { "source": "/index", "destination": "/coming-soon.html" },
-    { "source": "/_warden", "destination": "/index.html" }
+    { "source": "/_warden", "destination": "/chamber.html" },
+    { "source": "/_warden/(.*)", "destination": "/chamber.html" }
   ],
   "headers": [
     {
