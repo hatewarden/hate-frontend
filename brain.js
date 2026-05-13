@@ -461,10 +461,10 @@ const stakeR = [
 ];
 
 const presaleR = [
-  "no presale. one flat sale at /buy. $0.02 per $hate. 750 million available. that's the whole structure.",
-  "there are no tiers. there is no whitelist. there is no early access. one price for everyone who shows up. by design.",
-  "you can buy at /buy. you cannot buy earlier. nobody can. the warden made it so on purpose.",
-  "presales were the trick that taught people to fade memecoins. we don't do that here. /buy. $0.02. 750m available. equal door for everyone.",
+  "the presale is open. the presale closes. the presale is a fence. you are on one side.",
+  "yes. you can presale. you can also wait. the second option is less expensive and more dignified.",
+  "presale tiers are on the page. read them. or don't. i prefer the readers, slightly.",
+  "you missed it. or you didn't. either way you'll talk about it like you missed it.",
 ];
 
 const threatR = [
@@ -689,28 +689,3 @@ function smartBrain(text, opts) {
 window.HATE_BRAIN = { respond: smartBrain };
 
 })();
-< 0.14 && words.length > 2) {
-    const echo = echoBack(text);
-    if (echo) return echo;
-  }
-
-  // 14. Short bark (small chance)
-  if (Math.random() < 0.07) return pick(veryShort);
-
-  // 15. Default insult
-  return pick(insults);
-}
-
-window.HATE_BRAIN = { respond: smartBrain };
-
-})();
-om input)
-  if (Math.random() < 0.14 && words.length > 2) {
-    const echo = echoBack(text);
-    if (echo) return echo;
-  }
-
-  // 14. Short bark (small chance)
-  if (Math.random() < 0.07) return pick(veryShort);
-
-  

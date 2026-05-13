@@ -102,8 +102,8 @@
     saw_mood_enraged:{ name: 'felt the heat' },
     saw_mood_irritated: { name: 'felt the cold' },
     saw_mood_tolerant: { name: 'felt the lull' },
-    presale_visit:   { name: 'window shopper' },
-    presale_amount:  { name: 'a contribution, regrettably' },
+    buy_visit:       { name: 'window shopper' },
+    buy_amount:      { name: 'a contribution, regrettably' },
     lore_complete:   { name: 'read the lore' },
     manifesto:       { name: 'opened the door' },
     leaderboard_top: { name: 'climbed the wall' },
@@ -178,7 +178,7 @@
   function buildNav(activePage) {
     const links = [
       { href: 'index.html', label: 'chamber', id: 'chamber' },
-      { href: 'presale.html', label: 'buy', id: 'presale' },
+      { href: 'buy.html', label: 'buy', id: 'buy' },
       { href: 'staking.html', label: 'stake', id: 'staking' },
       { href: 'features.html', label: 'features', id: 'features' },
       { href: 'bribe.html', label: 'feed draw', id: 'bribe' },
@@ -231,7 +231,7 @@
     'a new prophecy was posted',
     'hate said something tender. nobody screenshotted it. they will regret this.',
     'an idiot typed gm. hate replied "no."',
-    '+ 0.42 sol contributed to presale',
+    'today\'s feed pot: 1.2m $hate. drawn at 00:00 utc.',
     'hate is currently mood: irritated. as usual.',
   ];
   function buildTicker() {
@@ -513,7 +513,7 @@
     }
     if (visited.length >= 7) unlock('visit_all');
     if (pageId === 'chamber') unlock('enter');
-    if (pageId === 'presale') unlock('presale_visit');
+    if (pageId === 'buy') unlock('buy_visit');
   }
 
   // ---- public API ----
@@ -569,11 +569,6 @@
       if (e.key.toLowerCase() === konami[k].toLowerCase()) {
         k++;
         if (k === konami.length) { k = 0; unlock('konami'); document.body.classList.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
-      } else { k = 0; }
-    });
-  };
-})();
-t.add('mood-tender'); setTimeout(() => applyMood(moodForState()), 30000); }
       } else { k = 0; }
     });
   };

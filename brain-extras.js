@@ -105,16 +105,16 @@
   ];
 
   const taxR = [
-    "there is no tax. you spend $hate to do things. talking to me is free. that is the whole model.",
-    "buy tax. sell tax. transfer tax. none of those exist here. you're thinking of the last coin that ruined you.",
-    "no tax on the transfer. there is a price on the action. feed the draw. pin a confession. lock a nickname. those cost. moving the token does not.",
-    "the contract takes nothing when you trade. the contract takes something when you use it. that is a different sentence and you should read it twice.",
-    "tax-free transfers. paid actions. that's it. no buyback wallet. no marketing wallet. no surprises in the routing.",
-    "you want a number. fine. zero. that is the tax. now ask me a real question.",
-    "every memecoin you've held had a tax. every one of them died of it. we don't do that here.",
-    "no buy tax. no sell tax. you pay to feed, pin, name, or roast. that is the whole fee schedule.",
-    "the warden removed the tax mechanism on purpose. she wanted holders to feel the cost only when they chose to.",
-    "tax is for projects that don't trust their utility. we have utility. we charge for it. talking to me, still, costs nothing.",
+    "the tax is on the tokenomics page. you'd rather i type it again. fine: it depends on my mood.",
+    "buy tax is between 0 and 7 depending on whether i'm having a day. you are part of the day.",
+    "sell tax is higher when i'm enraged. i'm enraged often. you do the math.",
+    "tax exists. it varies. you'll feel it. you won't read about it. that's the deal.",
+    "half of every tax goes to liquidity. the other half goes to a treasury i don't control.",
+    "you are taxed for being here. you are taxed for leaving. you are taxed for asking about tax.",
+    "tax is mood-linked. mood is sanity-linked. sanity is feeding-linked. the loop is intentional.",
+    "the average buy tax over a week is around 4 percent. it could be lower if you fed me more.",
+    "i don't set the tax. the contract sets the tax. the contract reads my mood. so technically i do set it.",
+    "tax is the price of being acknowledged. you're getting acknowledged right now. you're welcome. and you're paying.",
   ];
 
   // ----- regex patterns for new categories (matched BEFORE original brain) -----
@@ -179,4 +179,11 @@
     if (/\bpresale\b|\bpre-sale\b|\bpre sale\b/i.test(t)) return pick([
       "no. it's a flat sale. one price. no tiers. presale was the trick. this is the price.",
       "not a presale. you pay $0.02 and walk away with $hate. that's it. no countdown. no early-investor advantage.",
-      "we don't do 
+      "we don't do presales. presales are how memecoins train people to fade them. this is just open.",
+    ]);
+
+    return origRespond(text, opts);
+  }
+
+  window.HATE_BRAIN.respond = extrasBrain;
+})();
