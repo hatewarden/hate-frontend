@@ -1,0 +1,25 @@
+{
+  "name": "hate-bot",
+  "version": "1.0.0",
+  "description": "$HATE 4-platform auto-poster: X, Telegram, Facebook, Instagram",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test:once": "node src/scheduler.js --run-once",
+    "test:gen": "node -e \"import('./src/content/generator.js').then(m => m.generateXPost({title:'test',summary:'a memecoin launched today'},{}).then(r => console.log(r)))\""
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.1",
+    "twitter-api-v2": "^1.18.2",
+    "rss-parser": "^3.13.0",
+    "node-fetch": "^3.3.2",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
