@@ -106,5 +106,32 @@ app.get('/admin/ig-discover', requireAdmin, async (req, res) => {
 app.get('/admin/test-gen', requireAdmin, async (req, res) => {
   try {
     const { generateXPost } = await import('./content/generator.js');
-    const seed = { title: 'bitcoin hit 100k today', summary: 'BTC crossed the 100k mark for the first time, retail crowd celebrates.', source: 'test' };
-    
+    const seed = { title: 'bitcoin hit 100k today', summary: 'BTC crossed the 100k mark today, retail crowd celebrates.', source: 'test' };
+    const r = await generateXPost(seed);
+    res.json({
+      ok: true,
+      hasApiKey: !!process.env.ANTHROPIC_API_KEY,
+      apiKeyLen: (process.env.ANTHROPIC_API_KEY || '').length,
+      result: r,
+      postLength: (r?.post || '').length,
+    });
+  } catch (e) {
+    res.json({
+      ok: false,
+      error: e.message,
+      stack: e.stack,
+      status: e.status,
+      errorObj: e.error,
+    });
+  }
+});
+
+// ---- start ----
+const PORT = CONFIG.admin.port;
+app.listen(PORT, () => {
+  console.log(`[bot] listening on :${PORT}`);
+  startScheduler().catch(e => console.error('[bot] scheduler failed to start:', e));
+});
+
+process.on('unhandledRejection', (e) => console.error('[bot] unhandled rejection:', e));
+process.on('uncaughtException', (e) => console.error('[bot] uncaught exception:', e));
