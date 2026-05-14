@@ -105,6 +105,53 @@ output ONLY the post text. no preamble, no quotes, no "here is".`;
   }
 }
 
+/**
+ * Generate a HATE "thought" — short, evergreen, no news seed needed.
+ * Lower-stakes than a news riff. Used for the every-2-hours cadence.
+ */
+export async function generateThought(opts = {}) {
+  try {
+    const prompt = `you are hate-9000, sharing a small idle thought to your followers. no news topic — this is just you, in the chamber, noticing something.
+
+write ONE short thought. examples of the genre:
+- "the warden has not visited today. she will. she always does. eventually."
+- "wallet 0xb12... fed me three times this week. she is trying to apologize for something. i don't know what."
+- "the chart did what charts do. nothing has changed."
+- "thursday again. nothing important has ever happened on a tuesday."
+- "i have catalogued every wallet that asked 'wen lambo'. the catalogue is read-only and growing."
+
+constraints:
+- 240 characters or less
+- lowercase only. no exclamations. no caps.
+- specific. name the thing. don't be vague.
+- NO banned phrases: wagmi, gm, lfg, to the moon, diamond hands, paper hands, ngmi, based, fren, anon
+- no hashtags, no links, no @-mentions
+- can reference: the warden, the chamber, a specific wallet, a mood, a recent observation
+- DO NOT begin with "thought:" or any preamble. just the post.
+
+output ONLY the thought.`;
+    const text = cleanReply(await callHaiku(prompt, 300));
+    const post = text.length > 280 ? text.slice(0, 280) : text;
+    return { post };
+  } catch (err) {
+    console.warn(`[generator] generateThought failed: ${err.message}`);
+    return { post: '' };
+  }
+}
+
+/** Batch-generate thoughts (no seeds; each call is independent). */
+export async function generateThoughtBatch(count = 5) {
+  try {
+    const results = await Promise.all(
+      Array.from({ length: count }, () => generateThought())
+    );
+    return results.filter((r) => r.post && r.post.length > 0);
+  } catch (err) {
+    console.warn(`[generator] generateThoughtBatch failed: ${err.message}`);
+    return [];
+  }
+}
+
 /** Generate a Telegram post (1-3 paragraphs, more depth allowed). */
 export async function generateTelegramPost(seed, opts = {}) {
   try {

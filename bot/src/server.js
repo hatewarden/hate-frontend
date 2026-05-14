@@ -102,6 +102,28 @@ app.get('/admin/ig-discover', requireAdmin, async (req, res) => {
   res.json(result);
 });
 
+// ---- Manually run a thought cycle ----
+app.post('/run-thought', requireAdmin, async (req, res) => {
+  try {
+    const { runThoughtCycle } = await import('./scheduler.js');
+    const result = await runThoughtCycle();
+    res.json({ ok: true, result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ---- Diagnostic: generate sample thoughts (no posting) ----
+app.get('/admin/test-thought', requireAdmin, async (req, res) => {
+  try {
+    const { generateThoughtBatch } = await import('./content/generator.js');
+    const thoughts = await generateThoughtBatch(5);
+    res.json({ ok: true, count: thoughts.length, thoughts: thoughts.map(t => t.post) });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
 // ---- Diagnostic: directly call the X-post generator and return raw result + error ----
 app.get('/admin/test-gen', requireAdmin, async (req, res) => {
   try {

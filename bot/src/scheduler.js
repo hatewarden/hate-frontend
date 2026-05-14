@@ -10,7 +10,7 @@ import { loadState, getState, postsTodayCount, recordPost, isDuplicate } from '.
 import { fetchAllSources } from './content/sources.js';
 import {
   generateXPost, generateTelegramPost, generateFacebookPost, generateInstagramPost,
-  generateBatch,
+  generateBatch, generateThoughtBatch,
 } from './content/generator.js';
 import { rankPosts, pickTop } from './content/scorer.js';
 import { postTweet } from './posters/x.js';
@@ -22,10 +22,57 @@ import { postToInstagram } from './posters/instagram.js';
 //   1. Pull all sources (~30 sec)
 //   2. For each platform that's UNDER its daily cap and OUTSIDE quiet hours,
 //      generate 5 candidates, score them, post top 1
-const CYCLE_CRON = '5 * * * *'; // 5 min past every hour, UTC
+const CYCLE_CRON = '5 * * * *';      // hourly news-riff cycle
+const THOUGHTS_CRON = '17 */2 * * *'; // every 2 hours — idle thoughts
 
 let lastCycleAt = 0;
 let lastCycleResult = null;
+let lastThoughtAt = 0;
+let lastThoughtResult = null;
+
+/** Run one idle-thought cycle. Posts ONE evergreen thought to X + Telegram channel. */
+export async function runThoughtCycle() {
+  console.log('[scheduler] thought cycle start', new Date().toISOString());
+  lastThoughtAt = Date.now();
+  const results = {};
+
+  const candidates = (await generateThoughtBatch(4)).filter(c => c.post);
+  if (candidates.length === 0) {
+    lastThoughtResult = { at: new Date().toISOString(), skipped: 'no thought generated' };
+    return lastThoughtResult;
+  }
+  const pick = candidates[Math.floor(Math.random() * candidates.length)];
+  if (isDuplicate(pick.post)) {
+    lastThoughtResult = { at: new Date().toISOString(), skipped: 'duplicate' };
+    return lastThoughtResult;
+  }
+  const gate = shouldPost('x');
+  if (!gate.ok) {
+    lastThoughtResult = { at: new Date().toISOString(), skipped: gate.reason };
+    return lastThoughtResult;
+  }
+
+  try {
+    const res = await postTweet(pick.post);
+    await recordPost('x', pick.post, { url: res.url, id: res.id, kind: 'thought' });
+    results.x = { post: pick.post, ...res };
+  } catch (e) {
+    console.error('[thought:x] failed:', e.message);
+    results.x = { error: e.message };
+  }
+  try {
+    const res = await postToChannel(pick.post);
+    await recordPost('telegram', pick.post, { messageId: res.messageId, kind: 'thought' });
+    results.telegram = { post: pick.post, ...res };
+  } catch (e) {
+    console.error('[thought:telegram] failed:', e.message);
+    results.telegram = { error: e.message };
+  }
+
+  lastThoughtResult = { at: new Date().toISOString(), results };
+  console.log('[scheduler] thought cycle done:', JSON.stringify(results, null, 2));
+  return results;
+}
 
 /** Run one full cycle. Safe to call manually for testing. */
 export async function runCycle() {
@@ -128,9 +175,12 @@ async function tryPlatform(platform, capPerDay, doPost) {
 /** Start the cron loop. */
 export async function start() {
   await loadState();
-  console.log('[scheduler] state loaded. starting cron:', CYCLE_CRON);
+  console.log('[scheduler] state loaded. cycle:', CYCLE_CRON, '| thoughts:', THOUGHTS_CRON);
   cron.schedule(CYCLE_CRON, () => {
     runCycle().catch(e => console.error('[cycle] unhandled:', e));
+  }, { timezone: 'UTC' });
+  cron.schedule(THOUGHTS_CRON, () => {
+    runThoughtCycle().catch(e => console.error('[thought-cycle] unhandled:', e));
   }, { timezone: 'UTC' });
 }
 
