@@ -408,9 +408,10 @@ function renderWall() {
   filtered.slice(0, visible).forEach(s => {
     const div = document.createElement('div');
     div.className = 'conf-card';
+    // Build skeleton, then fill user-controlled fields via textContent (XSS-safe)
     div.innerHTML = `
       <div class="who-line">
-        <span class="who">${s.addr}</span>
+        <span class="who"></span>
         <span class="cat">${CAT_LABEL[s.cat] || s.cat}</span>
       </div>
       <div class="sin"></div>
@@ -418,11 +419,13 @@ function renderWall() {
       <div class="reactions">
         <button type="button" class="r-btn ${s.reacted ? 'active' : ''}" data-action="react">♥ <span class="count">${s.reactions}</span></button>
         <button type="button" class="r-btn" data-action="repost">↗ <span class="count">${s.reposts}</span></button>
-        <span style="margin-left: auto; font-size: 10px; color: var(--text-dim); font-style: italic;">"${s.nick}"</span>
+        <span class="nick-display" style="margin-left: auto; font-size: 10px; color: var(--text-dim); font-style: italic;"></span>
       </div>
     `;
+    div.querySelector('.who').textContent = s.addr;
     div.querySelector('.sin').textContent = s.sin;
     div.querySelector('.response').textContent = s.response;
+    div.querySelector('.nick-display').textContent = s.nick ? '"' + s.nick + '"' : '';
     div.querySelectorAll('.r-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const action = btn.dataset.action;

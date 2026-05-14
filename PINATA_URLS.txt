@@ -1,0 +1,9 @@
+# Pinata URLs — needed for tomorrow's mainnet deploy
+# DO NOT DELETE
+
+IMAGE_URL=https://gold-real-deer-10.mypinata.cloud/ipfs/bafkreif6ffco3g6g7gyzhcrg2ymsux65khlo7cbkamgiwvirood5hf5i2u
+
+METADATA_URL=https://gold-real-deer-10.mypinata.cloud/ipfs/bafkreiajaxikbmg6oii62wfovglp7n3q4xr4kcrvx24haav74sy5b7fgfe
+
+# When deploy.sh prompts for "metadata JSON URL", paste METADATA_URL.
+# The mint will then display the HATE logo and full metadata on Solscan and Phantom.

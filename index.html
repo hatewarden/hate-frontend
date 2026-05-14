@@ -7,7 +7,6 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0c0907">
-<!-- social preview (cryptic teaser while in stealth) -->
 <meta name="description" content="the door is closed. it will open. you'll know when.">
 <meta property="og:title" content="$HATE — chamber 001">
 <meta property="og:description" content="the door is closed. it will open. you'll know when.">
@@ -31,4 +30,42 @@
   body {
     display: flex;
     flex-direction: column;
- 
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .glyph {
+    font-size: 64px;
+    opacity: 0.4;
+    letter-spacing: 0.2em;
+    margin-bottom: 28px;
+    animation: pulse 3.5s ease-in-out infinite;
+  }
+  .line {
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    text-transform: lowercase;
+    opacity: 0.55;
+    line-height: 1.9;
+    color: #ede5d6;
+  }
+  .sub {
+    margin-top: 22px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.25;
+    color: #ff6a3d;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.15; }
+  }
+</style>
+</head>
+<body>
+  <div class="glyph">◇</div>
+  <div class="line">you weren't supposed to find this. yet.</div>
+  <div class="sub">// the door opens soon</div>
+</body>
+</html>

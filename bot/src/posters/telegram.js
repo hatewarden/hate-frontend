@@ -43,13 +43,13 @@ export async function postToChannel(text, opts = {}) {
         chat_id: CONFIG.telegram.channelId,
         photo: opts.imageUrl,
         caption: text.slice(0, 1024),
-        parse_mode: 'Markdown',
+        // no parse_mode — AI output may contain stray markdown chars
       });
     } else {
       result = await tgFetch('sendMessage', {
         chat_id: CONFIG.telegram.channelId,
         text: text.slice(0, 4000),
-        parse_mode: 'Markdown',
+        // no parse_mode — plain text safer for AI output
         disable_web_page_preview: false,
       });
     }
@@ -71,7 +71,7 @@ export async function postToGroup(text, opts = {}) {
   return tgFetch('sendMessage', {
     chat_id: CONFIG.telegram.groupId,
     text: text.slice(0, 4000),
-    parse_mode: 'Markdown',
+    // no parse_mode — plain text safer
   }).then(r => ({ ok: true, messageId: r.message_id }))
     .catch(e => { throw new Error('telegram group post failed: ' + e.message); });
 }

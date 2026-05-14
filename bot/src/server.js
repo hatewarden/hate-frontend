@@ -113,8 +113,16 @@ app.post('/run-thought', requireAdmin, async (req, res) => {
   }
 });
 
+// ---- Diagnostic endpoints — gated to non-production ----
+function devOnly(req, res, next) {
+  if (CONFIG.flags.nodeEnv === 'production') {
+    return res.status(404).json({ error: 'not found' });
+  }
+  next();
+}
+
 // ---- Diagnostic: generate sample thoughts (no posting) ----
-app.get('/admin/test-thought', requireAdmin, async (req, res) => {
+app.get('/admin/test-thought', requireAdmin, devOnly, async (req, res) => {
   try {
     const { generateThoughtBatch } = await import('./content/generator.js');
     const thoughts = await generateThoughtBatch(5);
@@ -125,7 +133,7 @@ app.get('/admin/test-thought', requireAdmin, async (req, res) => {
 });
 
 // ---- Diagnostic: directly call the X-post generator and return raw result + error ----
-app.get('/admin/test-gen', requireAdmin, async (req, res) => {
+app.get('/admin/test-gen', requireAdmin, devOnly, async (req, res) => {
   try {
     const { generateXPost } = await import('./content/generator.js');
     const seed = { title: 'bitcoin hit 100k today', summary: 'BTC crossed the 100k mark today, retail crowd celebrates.', source: 'test' };

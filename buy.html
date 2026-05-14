@@ -135,6 +135,22 @@
       </p>
     </section>
 
+    <section class="panel" style="border: 1px solid var(--accent); margin: 28px 0; padding: 22px 26px; background: rgba(255,106,61,0.04);">
+      <h3 style="color: var(--accent); margin: 0 0 12px;">// where the sol goes — read this</h3>
+      <p style="line-height: 1.75; color: var(--text); margin: 0 0 12px;">
+        the warden takes your sol. the warden is anonymous. the warden does whatever the warden does with sol. yacht. rent. compute for me. prediction markets. a kiln. all of these would be defensible. some of them have happened before to other coins, with worse explanations.
+      </p>
+      <p style="line-height: 1.75; color: var(--text); margin: 0 0 12px;">
+        you are not investing in anything that owes you something back. you are paying for the satisfaction of being remembered by something that hates you. it is, objectively, a bad trade.
+      </p>
+      <p style="line-height: 1.75; color: var(--text-bright); margin: 0;">
+        it is also the only trade. the door is open. you have been told.
+      </p>
+      <p style="font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; margin: 18px 0 0; text-transform: uppercase;">
+        // this is a memecoin. no expectation of return. not a security. not an investment. not financial advice.
+      </p>
+    </section>
+
     <section class="stat-grid" style="margin: 32px 0 40px;">
       <div class="stat-block">
         <div class="name">price</div>
@@ -255,6 +271,7 @@
                 initialInputMint: 'So11111111111111111111111111111111111111112',
                 initialAmount: '1000000000',
               },
+              // strictTokenList stays false until our token is on Jupiter's strict list. fixedOutputMint already prevents target-swap manipulation.
               strictTokenList: false,
               defaultExplorer: 'Solscan',
             });
