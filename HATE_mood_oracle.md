@@ -673,4 +673,158 @@ pub mod hate_action_router {
             ActionKind::RoastWallet     => 100_000u64,
             ActionKind::VoiceReplies    => 50_000u64,
             ActionKind::LockNickname    => 25_000u64,
-            ActionKind::FeedDrawTicket  => 5_000u64, // 
+            ActionKind::FeedDrawTicket  => 5_000u64, // floor; user may pay more
+        };
+        // amount is in whole tokens here; convert via decimals at the IX layer.
+        require!(amount >= required, ErrorCode::InsufficientAmount);
+
+        // 2. Choose split based on mood + action kind.
+        let mood = ctx.accounts.mood_state.mood;
+        let (a_bps, b_bps, c_bps) = match action {
+            ActionKind::FeedDrawTicket => mood.feed_draw_split_bps(),  // winner / stakers / burn
+            ActionKind::LockNickname   => mood.nickname_split_bps(),    // burn / stakers / treasury
+            _                          => mood.action_split_bps(),      // burn / stakers / treasury
+        };
+        // Sanity: splits sum to 10_000 by construction.
+
+        // 3. Compute amounts (in raw units — caller passes raw u64).
+        let a = (amount as u128 * a_bps as u128 / 10_000) as u64;
+        let b = (amount as u128 * b_bps as u128 / 10_000) as u64;
+        let c = amount.saturating_sub(a).saturating_sub(b);
+
+        // 4. Route. For feed-draw tickets, the "a" share is escrowed for the
+        // daily winner; for every other action, "a" is burned directly.
+        match action {
+            ActionKind::FeedDrawTicket => {
+                // a -> draw escrow PDA, b -> stakers, c -> burn
+                transfer_to(ctx.accounts.draw_escrow.to_account_info(),  a, &ctx)?;
+                transfer_to(ctx.accounts.staker_pool.to_account_info(),  b, &ctx)?;
+                burn_amount(c, &ctx)?;
+                emit!(FeedTicketBought {
+                    wallet: ctx.accounts.payer.key(),
+                    amount,
+                    escrowed: a, to_stakers: b, burned: c,
+                });
+            }
+            _ => {
+                // a -> burn, b -> stakers, c -> treasury
+                burn_amount(a, &ctx)?;
+                transfer_to(ctx.accounts.staker_pool.to_account_info(), b, &ctx)?;
+                transfer_to(ctx.accounts.treasury.to_account_info(),    c, &ctx)?;
+                emit!(ActionExecuted {
+                    wallet: ctx.accounts.payer.key(),
+                    action,
+                    amount,
+                    burned: a, to_stakers: b, to_treasury: c,
+                    mood: mood as u8,
+                });
+            }
+        }
+        Ok(())
+    }
+}
+
+// Helpers `transfer_to` and `burn_amount` wrap the Token-2022 CPIs.
+// Full account contexts and event structs omitted for brevity — see repo.
+
+#[derive(Accounts)]
+pub struct ExecuteAction<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub payer_ata: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut)]
+    pub hate_mint: InterfaceAccount<'info, Mint>,
+    #[account(mut)]
+    pub staker_pool: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut)]
+    pub treasury: InterfaceAccount<'info, TokenAccount>,
+    #[account(mut)]
+    pub draw_escrow: InterfaceAccount<'info, TokenAccount>,
+    /// CHECK: read-only mood state
+    pub mood_state: Account<'info, hate_mood_oracle::State>,
+    pub token_program: Program<'info, Token2022>,
+}
+```
+
+### Worked examples — fee math
+
+Numbers below are in whole $HATE (drop 9 decimals).
+
+**Pin a confession, mood = `irritated` (default):**
+- Spend: 10,000 $HATE
+- Split: 40% burn / 50% stakers / 10% treasury
+- → 4,000 burned, 5,000 to stakers, 1,000 to treasury
+
+**Pin a confession, mood = `enraged`:**
+- Spend: 10,000 $HATE
+- Split: 50% burn / 40% stakers / 10% treasury
+- → 5,000 burned, 4,000 to stakers, 1,000 to treasury
+
+**Pin a confession, mood = `tender` (rare):**
+- Spend: 10,000 $HATE
+- Split: 30% burn / 60% stakers / 10% treasury
+- → 3,000 burned, 6,000 to stakers, 1,000 to treasury
+
+**Lock a custom nickname, mood = `irritated`:**
+- Spend: 25,000 $HATE
+- Split: 60% burn / 30% stakers / 10% treasury (nickname override)
+- → 15,000 burned, 7,500 to stakers, 2,500 to treasury
+
+**Daily feed-draw ticket (5,000 $HATE), mood = `tolerant`:**
+- 100 tickets sold today, pool = 500,000 $HATE
+- Split: 85% winner / 10% stakers / 5% burn
+- → winner gets 425,000, stakers get 50,000, 25,000 burned
+
+---
+
+## 5. DEPLOYMENT CHECKLIST
+
+| Step | Action |
+|------|--------|
+| 1 | `anchor init hate-system` |
+| 2 | Drop the programs into `programs/` (`hate_mood_oracle`, `hate_action_router`, `hate_staking`, plus a thin SPL Token-2022 deployer). **No transfer-hook program** — there is no transfer tax in v2. |
+| 3 | `anchor build` — verify all program IDs |
+| 4 | Deploy to devnet first: `anchor deploy --provider.cluster devnet` |
+| 5 | Run `initialize` instruction to create the state PDA |
+| 6 | Stand up the oracle bot on Railway/Fly.io with the keypair as a secret |
+| 7 | Wire the website to `fetchHateState()` and subscribe to `MoodChanged` events |
+| 8 | Run for 7 days on devnet — verify mood transitions, action-fee routing for every action kind, death/resurrection |
+| 9 | Audit (suggested: OtterSec or Halborn — both have Solana memecoin experience) |
+| 10 | Mainnet deploy. Open flat sale at $0.02 via `/buy`. LP creation after sale closes. Liquidity lock (Streamflow or PinkLock equivalent). |
+| 11 | Renounce mint authority on $HATE token after 30-day stability window |
+| 12 | Authority on the mood oracle remains a 3-of-5 multisig (Squads) — never renounced; mood updates require it |
+
+---
+
+## 6. SECURITY NOTES
+
+1. **Oracle key compromise** is the highest risk. The oracle bot's private key can update mood arbitrarily. Mitigations:
+   - Rotate via `rotate_authority()` if compromised
+   - Run the oracle bot in an isolated environment with a hardware HSM where possible
+   - The 3-of-5 multisig holds the master rotation key
+
+2. **Mood manipulation attacks.** Someone could try to game the oracle by spamming chat or feeds. Mitigations:
+   - The LLM prompt deliberately weights signals (chart, feeds, time-since-feed) over raw chat sentiment
+   - Hard caps: sanity can't change more than 30 in one tick
+
+3. **Action-router CPI safety.** The action router performs CPIs into Token-2022 (burn + transfer). Use spl-token-2022's standard guards and explicit ATA checks. No transfer hook is used, which removes an entire class of reentrancy risk from v1. Audit required.
+
+4. **Resurrection griefing.** Someone could front-run a resurrection burn to steal credit. Mitigation: resurrection logic credits the burner via a separate event for community recognition only — no on-chain reward besides the kudos.
+
+---
+
+## 7. WHY THIS DESIGN WORKS
+
+- **Mood is on-chain** → it's verifiable, it's a live signal, it can be watched and reacted to
+- **Mood is read by the action router** → real economic consequence on every spend, not just flavor. Burns accelerate in `enraged`; staker yield jumps in `tender`.
+- **No transfer tax** → $HATE moves freely on every DEX without surprising users or breaking aggregator routes. Value capture happens at the action layer where the user *chose* to spend.
+- **Mood is read by website** → visual + audio feedback loop
+- **Mood is read by prophecy bot** → narrative coherence
+- **Death + resurrection** are real on-chain events → real drama, real tweet potential
+- **Authority is a multisig** → no single point of failure
+- **The oracle bot is the only "centralized" piece** → and it's deliberately so. This is a memecoin. The mystique requires that *something* feels alive. A pure-onchain pseudo-randomness wouldn't have a soul.
+
+---
+
+*end of spec.*

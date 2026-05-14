@@ -393,4 +393,34 @@ In order of likelihood:
 
 If you only do seven things:
 
-1. **Protect the voice.** Every tweet, every response, every announcement. Lowercase. No exclamations. Surgical. If you break voice once, you can come back. If you break it three times, the pro
+1. **Protect the voice.** Every tweet, every response, every announcement. Lowercase. No exclamations. Surgical. If you break voice once, you can come back. If you break it three times, the project is over.
+
+2. **Daily news context in HATE's brain.** Already automated by your backend. Verify it's running by checking `/api/today` weekly.
+
+3. **One memorable interaction per day.** A screenshot of HATE roasting a specific wallet, posted publicly. This is the primary growth engine. Without it you stagnate.
+
+4. **The wallet nickname mechanic.** Real. Persistent. On-chain. People will buy just to get nicknamed. Make sure this works end-to-end before launch.
+
+5. **The Death Spiral.** Engineered drama loop. Triggered weekly or biweekly. Recoveries make news.
+
+6. **Anonymous team.** Forever. The warden is mysterious in lore for a reason. Same applies to you.
+
+7. **Wait for organic growth before paying for marketing.** Memecoins with paid shills die fast. Wait until you have a real volume signal (over $50k 24h) before spending a dollar on promotion.
+
+---
+
+# THE NEXT 24 HOURS (FOR YOU, RIGHT NOW)
+
+If you want a concrete to-do list for the next day:
+
+1. **Hour 1:** Read this document fully. Read `HATE_master_bible.md` for the voice. Read `HATE_prelaunch_tweets.md` for the tweet schedule.
+2. **Hour 2:** Set up the X account if you haven't. Add the handle to your domain registrar. Post tweet 1 from the prelaunch list.
+3. **Hour 3:** Start the hosting deploy (HOSTING.md Steps 1-2). Get your accounts created.
+4. **Hour 4-5:** Deploy backend + frontend (HOSTING.md Steps 3-4).
+5. **Hour 6:** Test the chamber on your live URL. Send 20 messages. Note what HATE does well and badly.
+6. **Hour 7:** Set up Telegram + Discord.
+7. **Hour 8:** Buy your domain (HOSTING.md Step 5). Wire it up (Steps 6-8).
+8. **Sleep.**
+9. **Tomorrow:** Start the X tweet schedule. Continue tightening anything that needs work. Aim for launch in 14 days.
+
+If something goes wrong, ask me about the specific step. I'll get unstuck with you.

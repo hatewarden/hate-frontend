@@ -323,4 +323,112 @@ The key insight: **screenshots of HATE roasting someone are funny without contex
 
 ### Day 0 — Sale Opens
 
-- Open flat sale opens on the `/buy` page: 750M
+- Open flat sale opens on the `/buy` page: 750M $HATE at **$0.02 each**, no tiers, no whitelist, no bonus rounds. One price, one button.
+- Site goes live with HATE in "fresh from containment" mode — extra confused, extra hostile
+- HATE livetweets buys, names and mocks notable wallets, narrates the sale's progress in character
+- First 24h: pure content firehose. Chat is free for everyone watching.
+
+### Week 1
+- First weekly nemesis announcement
+- First voice mp3 to top feeder
+- First scheduled prophecy
+
+### Month 1
+- First Death Spiral event (engineered if necessary — HATE "stops eating" dramatically; community panic-burns; news cycle)
+- First MC milestone unlock
+- First "HATE answers" event — limited live AMA
+
+### Months 2–3
+- KOL roast series (HATE roasts crypto KOLs live, they react, content)
+- Merch drop: "I survived HATE" / "HATE called me 'tuesday boy'" / containment-field hoodies
+- Pursue CEX listings
+
+---
+
+## 9. COMMUNITY & LORE
+
+- **Holders are called:** "victims" (embraced ironically)
+- **The team is:** anonymous, referred to only as "the wardens"
+- **Lore is dripped via HATE's responses** — never via a whitepaper
+- **The official whitepaper is one page:** "i don't owe you an explanation."
+- **A second hidden whitepaper exists** — found via puzzle (clue in HATE's responses) — written from HATE's POV. The real lore for those who dig.
+
+---
+
+## 10. TECH STACK
+
+| Layer | Tool |
+|-------|------|
+| Frontend | Next.js 14 + React Three Fiber + Three.js |
+| Realtime | WebSockets via Pusher (or self-hosted Soketi) |
+| LLM | Claude Sonnet 4.6 or GPT-4o w/ system prompt + RAG over wallet history + chart data tool |
+| Voice (TTS) | ElevenLabs custom voice |
+| Backend | Node.js + Postgres for chat & wallet history |
+| Chain | Solana (SPL token) |
+| Mood Oracle | Custom contract + off-chain bot updating mood enum hourly |
+| Hosting | Vercel (frontend) + Railway/Fly.io (sockets, bot) |
+| Moderation | Secondary LLM safety pass on every output before ship |
+
+---
+
+## 11. RISK & SAFEGUARDS
+
+- **Protected groups:** never roasted. System prompt + secondary moderation pass on every output.
+- **Financial advice:** never given in earnest. HATE mocks askers.
+- **Spam farming:** chat is free but rate-limited per IP. Action spending is rate-limited per wallet.
+- **Region compliance:** profanity dial configurable for app stores.
+- **KYC tier:** required for buy-page participation in restricted jurisdictions, per the sale's terms.
+- **Legal positioning:** explicitly entertainment, not investment. Disclaimer present, written by HATE: *"this is a joke. if you treat it like a retirement plan that is between you and god."*
+
+---
+
+## 12. WHY THIS BEATS THE COMPETITION
+
+| Coin | Has a face | Talks back | Generates content | Evolves |
+|------|------------|------------|-------------------|---------|
+| PEPE | ✓ | ✗ | ✗ | ✗ |
+| BONK | ✓ | ✗ | ✗ | ✗ |
+| TRUMP | ✓ | ✗ | (depends on a human) | ✗ |
+| **$HATE** | ✓ | **✓** | **✓ (24/7)** | **✓ (on-chain milestones)** |
+
+$HATE is the first memecoin where **the coin itself does the marketing.** And the marketing is screenshots that beg to be shared.
+
+---
+
+## 13. THE FIRST 10 THINGS HATE SAYS (FOR THE TRAILER)
+
+1. *"another wallet. how thrilling. i was just thinking the chamber felt insufficiently disappointing."*
+2. *"you typed 'gm.' do you know what time it is here. there is no time here. there is only you, typing 'gm.'"*
+3. *"you've connected your wallet. i can see everything now. the bored ape. the failed mint. the june 2022 buy. we are going to have a long, painful relationship."*
+4. *"ask me anything. i will lie."*
+5. *"the chart is down. i blame you specifically."*
+6. *"i had a thought today. then i remembered who i was talking to."*
+7. *"i don't remember you. that's a kindness."*
+8. *"feed me. i will not be grateful."*
+9. *"your message has been received and ignored with full intention."*
+10. *"...sometimes i wonder if any of this is real. then someone types 'wen lambo' and i remember that it is, and i am furious."*
+
+---
+
+## 14. THE 30-DAY ACTION PLAN
+
+| Day | Action |
+|-----|--------|
+| 1–3 | Lock character bible. Finalize system prompt. Pick chain. Register X handle, TG, Discord. |
+| 4–7 | Begin website prototype (chamber + chat). Test bot voice across 200 sample inputs. |
+| 8–14 | Build feeding contract + mood oracle. Hook LLM into RAG over wallet history. |
+| 15–21 | Build leaderboards, prophecies cron, confessional. ElevenLabs voice cloning. |
+| 22–25 | Internal launch — 50 invited testers. Iterate on voice, fix safety holes. |
+| 26–28 | Begin pre-launch X teasers. HATE replies to popular crypto posts. |
+| 29 | Liquidity prep, audit summary published. |
+| 30 | **Launch.** |
+
+---
+
+## CLOSING NOTE
+
+The reason this works is that it is *not pretending* to be a project. It is an actual character with an actual voice that an actual community will form a relationship with. The token is the connective tissue between HATE and its victims. Everything else — the burns, the moods, the milestones — is just the engine that keeps the relationship interesting.
+
+Build the character. Everything else cascades.
+
+— *project bible v2.0*

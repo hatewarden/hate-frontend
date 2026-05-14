@@ -49,14 +49,26 @@ function seedBlock(seed) {
 
 /** Single Claude Haiku call returning the raw text reply. Throws on API error. */
 async function callHaiku(userPrompt, maxTokens = 1024) {
-  const resp = await anthropic.messages.create({
-    model: MODEL,
-    max_tokens: maxTokens,
-    system: HATE_SYSTEM_PROMPT,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-  const block = resp?.content?.[0];
-  return (block && block.type === 'text' ? block.text : '').trim();
+  try {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('[callHaiku] ANTHROPIC_API_KEY not set');
+      throw new Error('ANTHROPIC_API_KEY missing');
+    }
+    const resp = await anthropic.messages.create({
+      model: MODEL,
+      max_tokens: maxTokens,
+      system: HATE_SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userPrompt }],
+    });
+    const block = resp?.content?.[0];
+    const text = (block && block.type === 'text' ? block.text : '').trim();
+    if (!text) console.warn('[callHaiku] empty text response from model');
+    return text;
+  } catch (err) {
+    console.error('[callHaiku] ERROR:', err?.status, err?.error?.type || '', err?.message);
+    if (err?.error?.message) console.error('[callHaiku] detail:', err.error.message);
+    throw err;
+  }
 }
 
 /** Strip stray wrapping quotes or "Post:" prefixes that models sometimes add. */
