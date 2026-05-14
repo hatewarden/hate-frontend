@@ -48,7 +48,7 @@ export async function runCycle() {
   results.x = await tryPlatform('x', CONFIG.x.postsPerDay, async () => {
     const candidates = await generateBatch(seeds, 'x', 5);
     const ranked = await rankPosts(candidates.filter(c => c.post), 'x');
-    const top = pickTop(ranked, 'x', 1)[0];
+    const top = (await pickTop(ranked, 'x', 1))[0];
     if (!top || !top.post) return { skipped: true, reason: 'no candidate' };
     if (isDuplicate(top.post)) return { skipped: true, reason: 'duplicate' };
     const res = await postTweet(top.post);
@@ -59,7 +59,7 @@ export async function runCycle() {
   results.telegram = await tryPlatform('telegram', CONFIG.telegram.postsPerDay, async () => {
     const candidates = await generateBatch(seeds, 'telegram', 5);
     const ranked = await rankPosts(candidates.filter(c => c.post), 'telegram');
-    const top = pickTop(ranked, 'telegram', 1)[0];
+    const top = (await pickTop(ranked, 'telegram', 1))[0];
     if (!top || !top.post) return { skipped: true, reason: 'no candidate' };
     if (isDuplicate(top.post)) return { skipped: true, reason: 'duplicate' };
     const res = await postToChannel(top.post);
@@ -70,7 +70,7 @@ export async function runCycle() {
   results.facebook = await tryPlatform('facebook', CONFIG.facebook.postsPerDay, async () => {
     const candidates = await generateBatch(seeds, 'facebook', 4);
     const ranked = await rankPosts(candidates.filter(c => c.post), 'facebook');
-    const top = pickTop(ranked, 'facebook', 1)[0];
+    const top = (await pickTop(ranked, 'facebook', 1))[0];
     if (!top || !top.post) return { skipped: true, reason: 'no candidate' };
     if (isDuplicate(top.post)) return { skipped: true, reason: 'duplicate' };
     const res = await postToPage(top.post, { link: 'https://hate.fund' });
@@ -81,7 +81,7 @@ export async function runCycle() {
   results.instagram = await tryPlatform('instagram', CONFIG.instagram.postsPerDay, async () => {
     const candidates = await generateBatch(seeds, 'instagram', 4);
     const ranked = await rankPosts(candidates.filter(c => c.post), 'instagram');
-    const top = pickTop(ranked, 'instagram', 1)[0];
+    const top = (await pickTop(ranked, 'instagram', 1))[0];
     if (!top || !top.post) return { skipped: true, reason: 'no candidate' };
     if (isDuplicate(top.post)) return { skipped: true, reason: 'duplicate' };
     const imageUrl = 'https://hate.fund/hate-logo.png';
@@ -145,5 +145,4 @@ export function getSchedulerStatus() {
 
 // CLI: bash scripts/test-cycle: `node src/scheduler.js --run-once`
 if (process.argv.includes('--run-once')) {
-  (async () => { await loadState(); await runCycle(); process.exit(0); })();
-}
+  (async () => { await loadState(); await runCy
