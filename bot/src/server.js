@@ -102,12 +102,9 @@ app.get('/admin/ig-discover', requireAdmin, async (req, res) => {
   res.json(result);
 });
 
-// ---- start ----
-const PORT = CONFIG.admin.port;
-app.listen(PORT, () => {
-  console.log(`[bot] listening on :${PORT}`);
-  startScheduler().catch(e => console.error('[bot] scheduler failed to start:', e));
-});
-
-process.on('unhandledRejection', (e) => console.error('[bot] unhandled rejection:', e));
-process.on('uncaughtException', (e) => console.error('[bot] uncaught exception:', e));
+// ---- Diagnostic: directly call the X-post generator and return raw result + error ----
+app.get('/admin/test-gen', requireAdmin, async (req, res) => {
+  try {
+    const { generateXPost } = await import('./content/generator.js');
+    const seed = { title: 'bitcoin hit 100k today', summary: 'BTC crossed the 100k mark for the first time, retail crowd celebrates.', source: 'test' };
+    
