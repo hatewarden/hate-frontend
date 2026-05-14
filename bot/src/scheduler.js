@@ -145,4 +145,5 @@ export function getSchedulerStatus() {
 
 // CLI: bash scripts/test-cycle: `node src/scheduler.js --run-once`
 if (process.argv.includes('--run-once')) {
-  (async () => { await loadState(); await runCy
+  (async () => { await loadState(); await runCycle(); process.exit(0); })();
+}
