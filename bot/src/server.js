@@ -156,6 +156,50 @@ app.get('/admin/test-gen', requireAdmin, devOnly, async (req, res) => {
   }
 });
 
+// ---- TikTok queue endpoints ----
+app.get('/admin/tiktok/today', requireAdmin, async (req, res) => {
+  try {
+    const { getTodayQueue } = await import('./posters/tiktok-queue.js');
+    const queue = await getTodayQueue();
+    if (!queue) {
+      return res.json({ date: new Date().toISOString().slice(0,10), items: [], note: 'no queue yet — wait for 06:00 UTC cron or hit POST /run-tiktok' });
+    }
+    res.json(queue);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/admin/tiktok/list', requireAdmin, async (req, res) => {
+  try {
+    const { listQueueDates } = await import('./posters/tiktok-queue.js');
+    res.json({ dates: await listQueueDates() });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/admin/tiktok/date/:date', requireAdmin, async (req, res) => {
+  try {
+    const { getQueueForDate } = await import('./posters/tiktok-queue.js');
+    const q = await getQueueForDate(req.params.date);
+    if (!q) return res.status(404).json({ error: 'no queue for date' });
+    res.json(q);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/run-tiktok', requireAdmin, async (req, res) => {
+  try {
+    const { runTikTokDailyQueue } = await import('./scheduler.js');
+    const result = await runTikTokDailyQueue();
+    res.json({ ok: true, result });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ---- start ----
 const PORT = CONFIG.admin.port;
 app.listen(PORT, () => {

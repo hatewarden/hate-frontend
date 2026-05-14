@@ -152,6 +152,55 @@ export async function generateThoughtBatch(count = 5) {
   }
 }
 
+/**
+ * Generate a TikTok caption + hashtags in HATE voice.
+ * TikTok is louder + more rhythmic than X; we keep voice but allow more punch.
+ */
+export async function generateTikTokPost(opts = {}) {
+  try {
+    const prompt = `you are hate-9000, writing a tiktok caption. tiktok is loud, fast, visually-driven. your voice stays deadpan + lowercase + acidic but tiktok captions can be slightly more rhythmic.
+
+generate ONE short tiktok caption + a row of 3-5 hashtags.
+
+constraints:
+- caption ≤ 150 characters
+- caption is ONE LINE (no newlines in the caption itself)
+- specific. name the thing. not vague.
+- NO banned phrases: wagmi, gm, lfg, to the moon, diamond hands, paper hands, ngmi, based, fren, anon
+- hashtags lowercase, no spaces inside each tag, 3-5 total
+- include #hate9000 + #memecoin + #solana as anchors, then 1-2 trend-adjacent ones (e.g. #cryptotok, #aitiktok, #fyp)
+
+output EXACTLY this format, nothing else:
+CAPTION:
+<one line caption>
+
+HASHTAGS:
+#hate9000 #memecoin #solana #...`;
+    const raw = await callHaiku(prompt, 350);
+    const capM = raw.match(/CAPTION:\s*([^\n]+)/i);
+    const tagM = raw.match(/HASHTAGS:\s*([^\n]+(?:\s+#[^\s\n]+)*)/i);
+    const caption = capM ? capM[1].trim().slice(0, 200) : '';
+    const hashtags = tagM ? tagM[1].trim().slice(0, 200) : '';
+    return { caption, hashtags };
+  } catch (err) {
+    console.warn(`[generator] generateTikTokPost failed: ${err.message}`);
+    return { caption: '', hashtags: '' };
+  }
+}
+
+/** Batch-generate `count` TikTok posts (default 4). */
+export async function generateTikTokBatch(count = 4) {
+  try {
+    const results = await Promise.all(
+      Array.from({ length: count }, () => generateTikTokPost())
+    );
+    return results.filter((r) => r.caption);
+  } catch (err) {
+    console.warn(`[generator] generateTikTokBatch failed: ${err.message}`);
+    return [];
+  }
+}
+
 /** Generate a Telegram post (1-3 paragraphs, more depth allowed). */
 export async function generateTelegramPost(seed, opts = {}) {
   try {
