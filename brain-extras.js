@@ -180,9 +180,9 @@
 
     // "how do i pin a confession" / "how to feature"
     if (/\bpin.{0,10}(my )?confession\b|\bhow.{0,10}feature\b|\bget on the wall\b|\bget featured\b/i.test(t)) return pick([
-      "submit your sin. then pay 10k $hate to pin it. top of the wall for 24 hours. or pay 50k to be featured for a week.",
-      "the wall takes payment. specifically: 10k $hate to pin, 50k $hate for a 7-day feature slot. paying does not make hate kinder. it only makes your sin louder.",
-      "vanity is the most honest currency we accept. 10k $hate gets your confession on top.",
+      "submit your sin. then pay 1k $hate to pin it. top of the wall for 24 hours. or pay 10k to be featured for a week.",
+      "the wall takes payment. specifically: 1k $hate to pin, 10k $hate for a 7-day feature slot. paying does not make hate kinder. it only makes your sin louder.",
+      "vanity is the most honest currency we accept. 1k $hate gets your confession on top.",
     ]);
 
     // "how do i buy"
@@ -204,3 +204,4 @@
 
   window.HATE_BRAIN.respond = extrasBrain;
 })();
+   

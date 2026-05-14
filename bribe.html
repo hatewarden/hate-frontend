@@ -234,14 +234,14 @@
         <p class="dim mb-md">one ticket per wallet per round. feed any amount above the minimum to enter. the prize pot grows with every feed.</p>
 
         <label class="form-label">amount ($HATE)</label>
-        <input type="number" id="amount" placeholder="5,000" min="5000" />
+        <input type="number" id="amount" placeholder="500" min="500" />
 
         <div class="quick-amounts">
+          <button type="button" class="quick-amt" data-amt="500">500</button>
+          <button type="button" class="quick-amt" data-amt="1000">1k</button>
           <button type="button" class="quick-amt" data-amt="5000">5k</button>
           <button type="button" class="quick-amt" data-amt="25000">25k</button>
           <button type="button" class="quick-amt" data-amt="100000">100k</button>
-          <button type="button" class="quick-amt" data-amt="500000">500k</button>
-          <button type="button" class="quick-amt" data-amt="1000000">1M</button>
         </div>
 
         <label class="form-label">your wallet</label>
@@ -254,7 +254,7 @@
 
         <p class="dim mt-md" style="font-size: 11px; line-height: 1.6;">
           one ticket per wallet, regardless of feed amount. equal odds. no whales.
-          minimum: 5,000 $hate (~$100). next draw at 00:00 utc.
+          minimum: 500 $hate (~$10). next draw at 00:00 utc.
         </p>
       </section>
 
@@ -275,7 +275,7 @@
     <section class="panel mt-lg">
       <h3>// the rules, such as they are</h3>
       <ul style="list-style: none; padding: 0; line-height: 2.1; color: var(--text); font-size: 14px;">
-        <li>◇ minimum feed: 5,000 $hate. no maximum.</li>
+        <li>◇ minimum feed: 500 $hate. no maximum.</li>
         <li>◇ <strong>one ticket per wallet per round.</strong> feeding more does not increase your odds. it does increase hate's sanity. and it does increase the prize pot.</li>
         <li>◇ each round runs 24 hours. winner drawn at 00:00 utc.</li>
         <li>◇ winner takes 85% of the pot. 5% burned. 10% to staker pool.</li>
@@ -427,7 +427,7 @@ document.getElementById('bribe-btn').addEventListener('click', () => {
   const amt = parseInt(document.getElementById('amount').value);
   const addr = document.getElementById('wallet').value;
   if (!addr) return alert('connect a wallet first.');
-  if (!amt || amt < 5000) return alert('minimum feed: 5,000 $hate.');
+  if (!amt || amt < 500) return alert('minimum feed: 500 $hate.');
 
   pot += amt; bribers += 1; updatePot();
   pushFeed(addr.slice(0, 6) + '...' + addr.slice(-4), amt);
@@ -468,3 +468,4 @@ document.addEventListener('keydown', (e) => {
 </script>
 </body>
 </html>
+                  

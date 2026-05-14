@@ -752,29 +752,29 @@ pub struct ExecuteAction<'info> {
 Numbers below are in whole $HATE (drop 9 decimals).
 
 **Pin a confession, mood = `irritated` (default):**
-- Spend: 10,000 $HATE
+- Spend: 1,000 $HATE
 - Split: 40% burn / 50% stakers / 10% treasury
-- → 4,000 burned, 5,000 to stakers, 1,000 to treasury
+- → 400 burned, 500 to stakers, 100 to treasury
 
 **Pin a confession, mood = `enraged`:**
-- Spend: 10,000 $HATE
+- Spend: 1,000 $HATE
 - Split: 50% burn / 40% stakers / 10% treasury
-- → 5,000 burned, 4,000 to stakers, 1,000 to treasury
+- → 500 burned, 400 to stakers, 100 to treasury
 
 **Pin a confession, mood = `tender` (rare):**
-- Spend: 10,000 $HATE
+- Spend: 1,000 $HATE
 - Split: 30% burn / 60% stakers / 10% treasury
-- → 3,000 burned, 6,000 to stakers, 1,000 to treasury
+- → 300 burned, 600 to stakers, 100 to treasury
 
 **Lock a custom nickname, mood = `irritated`:**
-- Spend: 25,000 $HATE
+- Spend: 5,000 $HATE
 - Split: 60% burn / 30% stakers / 10% treasury (nickname override)
-- → 15,000 burned, 7,500 to stakers, 2,500 to treasury
+- → 3,000 burned, 1,500 to stakers, 500 to treasury
 
-**Daily feed-draw ticket (5,000 $HATE), mood = `tolerant`:**
-- 100 tickets sold today, pool = 500,000 $HATE
+**Daily feed-draw ticket (500 $HATE), mood = `tolerant`:**
+- 100 tickets sold today, pool = 50,000 $HATE
 - Split: 85% winner / 10% stakers / 5% burn
-- → winner gets 425,000, stakers get 50,000, 25,000 burned
+- → winner gets 42,500, stakers get 5,000, 2,500 burned
 
 ---
 
@@ -828,3 +828,4 @@ Numbers below are in whole $HATE (drop 9 decimals).
 ---
 
 *end of spec.*
+                               

@@ -143,7 +143,7 @@ Chat is the funnel. The token captures value through actions (§5.3, §5.7, §5.
 Connecting a wallet is optional but unlocks persistence. HATE remembers wallets between sessions — favorites, nemeses, nicknames, confessions, and the full feed/draw history. Anon chats are ephemeral; wallet-bound chats have lore. No threshold, no holder gate — just connect.
 
 ### 5.3 The Daily Feed Draw (Egalitarian Lottery)
-Once per UTC day there is a single feed-draw round. Anyone may buy **one ticket per wallet** by spending any amount ≥ **5,000 $HATE**. One ticket per wallet — whales can't outbuy the room.
+Once per UTC day there is a single feed-draw round. Anyone may buy **one ticket per wallet** by spending any amount ≥ **500 $HATE**. One ticket per wallet — whales can't outbuy the room.
 
 At the daily cutoff HATE picks a winner. The split:
 - **85% to the winner** — sent back as $HATE
@@ -177,7 +177,7 @@ Generated server-side via LLM with HATE system prompt + that day's chart data + 
 - **This entire mechanic is theater.** It's designed to print 10,000 tweets and hit mainstream news. Every project should have a recurring drama loop. This is ours.
 
 ### 5.7 The Confessionals
-Users `/confess` their crypto sins. Confessing is free. HATE never forgives, but absolves with a one-liner. To **pin a confession** to the public Confession Wall for 24 hours costs **10,000 $HATE**. To **feature a confession** for a 7-day slot at the top of the wall costs **50,000 $HATE**. HATE *remembers confessions* and may quote them back to the user weeks later, devastatingly — wallet-bound users only.
+Users `/confess` their crypto sins. Confessing is free. HATE never forgives, but absolves with a one-liner. To **pin a confession** to the public Confession Wall for 24 hours costs **1,000 $HATE**. To **feature a confession** for a 7-day slot at the top of the wall costs **10,000 $HATE**. HATE *remembers confessions* and may quote them back to the user weeks later, devastatingly — wallet-bound users only.
 
 ### 5.8 Mood-Linked Tokenomics (THE INNOVATION)
 HATE's mood is on-chain (an enum updated every hour by an oracle bot reading from the LLM's mood state). **There is no transfer tax.** Mood does not gate buys or sells — it modifies the split of every *action fee* (see §6.2).
@@ -194,7 +194,7 @@ HATE's mood is on-chain (an enum updated every hour by an oracle bot reading fro
 | enraged | +10% routed to burn (taken from stakers) |
 | breakdown | +10% routed to burn AND staker yield announced in HATE's voice — extreme deflation event |
 
-So for example a 10,000 $HATE confession pin in `irritated` mood: 4,000 burned / 5,000 stakers / 1,000 treasury. The same pin in `enraged`: 5,000 burned / 4,000 stakers / 1,000 treasury. In `tender`: 3,000 burned / 6,000 stakers / 1,000 treasury.
+So for example a 1,000 $HATE confession pin in `irritated` mood: 400 burned / 500 stakers / 100 treasury. The same pin in `enraged`: 500 burned / 400 stakers / 100 treasury. In `tender`: 300 burned / 600 stakers / 100 treasury.
 
 Two actions have their *own* override splits and ignore the default + overlay:
 - **Daily feed draw:** 85% winner / 10% stakers / 5% burned (mood overlay shifts only the 5% / 10% portions, not the winner share)
@@ -226,7 +226,7 @@ Examples:
 - "she who types in all caps"
 - "the apologizer"
 
-**You can also LOCK a custom nickname forever for 25,000 $HATE** — uniqueness enforced on-chain, first-come-first-served. The split on a nickname lock is heavily deflationary: **60% burned / 30% stakers / 10% treasury**. People will buy purely to claim a nickname they wrote themselves. This alone is a viral mechanic, and the burn weight makes every lock a small permanent supply event.
+**You can also LOCK a custom nickname forever for 5,000 $HATE** — uniqueness enforced on-chain, first-come-first-served. The split on a nickname lock is heavily deflationary: **60% burned / 30% stakers / 10% treasury**. People will buy purely to claim a nickname they wrote themselves. This alone is a viral mechanic, and the burn weight makes every lock a small permanent supply event.
 
 ---
 
@@ -255,12 +255,12 @@ Every action that *persists past the conversation* costs $HATE. Chat itself is f
 
 | Action | Cost | Split |
 |---|---|---|
-| Daily feed draw ticket | ≥ **5,000 $HATE** (one ticket per wallet) | 85% winner / 10% stakers / 5% burned |
-| Pin a confession (24h) | **10,000 $HATE** | default (40/50/10) + mood overlay |
-| Feature on the wall (7d slot) | **50,000 $HATE** | default (40/50/10) + mood overlay |
-| Lock a custom nickname (forever) | **25,000 $HATE** | 60% burned / 30% stakers / 10% treasury |
-| Roast a specific wallet | **100,000 $HATE** | default (40/50/10) + mood overlay |
-| Voice replies (per month) | **50,000 $HATE / month** | default (40/50/10) + mood overlay |
+| Daily feed draw ticket | ≥ **500 $HATE** (one ticket per wallet) | 85% winner / 10% stakers / 5% burned |
+| Pin a confession (24h) | **1,000 $HATE** | default (40/50/10) + mood overlay |
+| Feature on the wall (7d slot) | **10,000 $HATE** | default (40/50/10) + mood overlay |
+| Lock a custom nickname (forever) | **5,000 $HATE** | 60% burned / 30% stakers / 10% treasury |
+| Roast a specific wallet | **25,000 $HATE** | default (40/50/10) + mood overlay |
+| Voice replies (per month) | **10,000 $HATE / month** | default (40/50/10) + mood overlay |
 
 **Default split:** 40% burned, 50% to stakers, 10% to treasury.
 **Mood overlay:** see §5.8. `enraged` shifts +10% from stakers to burn; `tender` shifts +10% from burn to stakers; `breakdown` shifts +10% to burn.
@@ -432,3 +432,4 @@ The reason this works is that it is *not pretending* to be a project. It is an a
 Build the character. Everything else cascades.
 
 — *project bible v2.0*
+                            

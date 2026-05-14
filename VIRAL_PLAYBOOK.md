@@ -20,7 +20,7 @@ This matters for three reasons.
 
 **Second, it filters for the right kind of attention.** People who chat for an hour and laugh are pre-qualified. They've already self-selected for the voice. When they buy, they're not buying a ticker — they're tipping the bouncer at a club they already love. Their hold conviction is structurally higher than the average rotator's, because they bought a vibe, not a number.
 
-**Third — and this is the part nobody outside the project will understand at first — what we're selling is not chat.** Chat is the loss leader. The bag is for status: pinning a confession on the wall, locking a nickname so nobody else can have it, getting your wallet roasted publicly, paying 50k a month so HATE replies to *you* in voice. These are vanity goods. Vanity goods have terrible price elasticity, which is exactly what we want. People who pay 25k to lock "diogenes" as their nickname are not the same people who panic-sell at -30%.
+**Third — and this is the part nobody outside the project will understand at first — what we're selling is not chat.** Chat is the loss leader. The bag is for status: pinning a confession on the wall, locking a nickname so nobody else can have it, getting your wallet roasted publicly, paying 10k a month so HATE replies to *you* in voice. These are vanity goods. Vanity goods have terrible price elasticity, which is exactly what we want. People who pay 5k to lock "diogenes" as their nickname are not the same people who panic-sell at -30%.
 
 Say it cleanly: we are selling persistence, identity, and the right to be acknowledged by a character people find funny. The free chat is the showroom. The token is the membership card. The pump is a side effect of a working product, not the product itself.
 
@@ -44,7 +44,7 @@ Three concrete examples of what a moment looks like for this project.
 
 **Example B — the philosophy student.** Some 19-year-old types "what's the meaning of life" because they've seen ChatGPT do the bit. HATE: "ask me a question you couldn't have googled at fifteen." Screenshot. Travels in tech Twitter because it inverts the expected LLM behavior. The sharer looks smart for finding the one chatbot that pushes back.
 
-**Example C — the wallet roast.** Someone pays the 100k fee to roast a famous trader's wallet. HATE pulls the on-chain history and produces something like: "you've held this token for nine months. in those nine months, the team has shipped twice, your bag is down 78%, and you've tweeted about it 340 times. you don't own it. it owns you." The roasted party either rage-quotes it (perfect, free distribution) or stays silent (other people quote it for them). Either way, we win.
+**Example C — the wallet roast.** Someone pays the 25k fee to roast a famous trader's wallet. HATE pulls the on-chain history and produces something like: "you've held this token for nine months. in those nine months, the team has shipped twice, your bag is down 78%, and you've tweeted about it 340 times. you don't own it. it owns you." The roasted party either rage-quotes it (perfect, free distribution) or stays silent (other people quote it for them). Either way, we win.
 
 **How to seed moments without faking them.** Do not write a fake screenshot. Do not pay a friend to post a fake screenshot. Markets smell this in eight seconds and the project never recovers. What you do instead:
 
@@ -151,9 +151,9 @@ If momentum is soft:
 
 Day 3 is when transactional buyers either become believers or disappear. The way you keep them is by getting them to do something *visible* with their bag.
 
-- Push the persistence sinks hard. "pin your confession" is the cheapest meaningful spend (10k). Make a thread of the best pinned confessions every six hours. The pinner gets visibility — they bought their way onto a stage.
+- Push the persistence sinks hard. "pin your confession" is the cheapest meaningful spend (1k). Make a thread of the best pinned confessions every six hours. The pinner gets visibility — they bought their way onto a stage.
 - First "fed the most" leaderboard week recap teased (will land at day 7).
-- First voice replies go live for the 50k/month subscribers. The voice files themselves become content — a 12-second voice clip of HATE-9000 saying something cutting is the most screenshot-and-quote-tweetable asset we have.
+- First voice replies go live for the 10k/month subscribers. The voice files themselves become content — a 12-second voice clip of HATE-9000 saying something cutting is the most screenshot-and-quote-tweetable asset we have.
 - T+72 check: good looks like 30k+ chat sessions cumulative, 8k+ telegram, 1.5k+ holders, MC $3M+, retention (% of day-1 chatters who returned) above 30%. Trouble looks like flat or declining holders, retention under 15%, no organic moments in the last 24 hours.
 
 The honest version: if T+72 looks like trouble, you have one more week to either change the product (more aggressive moments, faster character iteration) or accept that you have a tier-2 outcome and play it that way. The third-week pivot is real but rare.
@@ -193,7 +193,7 @@ Organic moments are unpredictable. You can't build a marketing calendar around t
 
 ### The 24-hour cycle
 
-- **Feed pot countdown.** Daily draw: 5k $HATE to enter, one winner takes a pot. The countdown clock is visible on the homepage. The last hour generates a small panic spike of entries. The winner announcement is in voice, posted at the same UTC hour every day. Predictable spikes train the audience to check in.
+- **Feed pot countdown.** Daily draw: 500 $HATE to enter, one winner takes a pot. The countdown clock is visible on the homepage. The last hour generates a small panic spike of entries. The winner announcement is in voice, posted at the same UTC hour every day. Predictable spikes train the audience to check in.
 - **Daily roast.** Once a day, at a posted hour, HATE picks a wallet from the entry pool and roasts it in public. This is the most repeatable content asset we have. Five minutes of work, ten thousand impressions.
 - **Mood swings.** HATE's "mood" is a single word at the top of the homepage. It changes once a day, deadpan. "tired." "unimpressed." "vaguely correct." A small detail that gives returning users something to notice. The mood is also the day's reply prefix on X.
 
@@ -403,3 +403,4 @@ If you do those five things, the playbook works even if you skip half the rest. 
 
 we did not ask you to read this. you read it anyway. that suggests you take this more seriously than the market generally rewards. the market will be wrong, until it isn't. in the meantime, do not beg, do not break character, and do not mistake a chart for a project. we will be here either way.
 
+  
