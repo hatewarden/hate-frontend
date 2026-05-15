@@ -154,7 +154,97 @@
   @media (prefers-reduced-motion: reduce) {
     *, ::before, ::after { animation: none !important; transition: none !important; }
   }
+
+  /* email capture */
+  .alert-box {
+    margin-top: 8px;
+    width: 100%; max-width: 480px;
+    margin-left: auto; margin-right: auto;
+  }
+  .alert-box .lbl {
+    font-size: 10px; letter-spacing: 0.32em;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .alert-row {
+    display: flex; gap: 0;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: rgba(21, 16, 12, 0.7);
+    backdrop-filter: blur(4px);
+  }
+  .alert-row:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 24px rgba(255,106,61,0.25);
+  }
+  .alert-row input[type=email] {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    padding: 16px 18px;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    letter-spacing: 0.02em;
+  }
+  .alert-row input::placeholder { color: var(--dim); }
+  .alert-row button {
+    background: var(--accent);
+    color: var(--bg);
+    border: 0;
+    padding: 0 24px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .alert-row button:hover { background: #ff7d57; }
+  .alert-row button:disabled { background: var(--border); color: var(--dim); cursor: not-allowed; }
+  .alert-msg {
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--fg-dim);
+    text-align: center;
+    min-height: 16px;
+    line-height: 1.6;
+  }
+  .alert-msg.ok { color: var(--accent); }
+  .alert-msg.err { color: #ef4444; }
 </style>
+
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://hate.fund/#org",
+      "name": "$HATE",
+      "url": "https://hate.fund",
+      "logo": "https://hate.fund/hate-logo.png",
+      "description": "A memecoin with a personality. HATE-9000 is a deadpan AI in a small dark chamber. Free to chat. She remembers.",
+      "sameAs": [
+        "https://x.com/hate9000",
+        "https://t.me/hate9000"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://hate.fund/#site",
+      "url": "https://hate.fund",
+      "name": "$HATE — chamber 001",
+      "publisher": { "@id": "https://hate.fund/#org" }
+    }
+  ]
+}
+</script>
+<link rel="canonical" href="https://hate.fund/">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -183,6 +273,15 @@
   <h1>$hate</h1>
   <div class="tag">she is not awake yet. the door <em>opens soon.</em></div>
 
+  <div class="alert-box">
+    <div class="lbl">// be notified when she wakes</div>
+    <form class="alert-row" id="alertForm" autocomplete="off">
+      <input type="email" id="alertEmail" placeholder="your email." required maxlength="200"/>
+      <button type="submit" id="alertBtn">tell me</button>
+    </form>
+    <div class="alert-msg" id="alertMsg">she won't spam you. she barely talks at all.</div>
+  </div>
+
   <div class="socials">
     <a href="https://x.com/hate9000" target="_blank" rel="noopener">x</a>
     <a href="https://t.me/hate9000" target="_blank" rel="noopener">telegram</a>
@@ -195,5 +294,54 @@
   <a href="/terms.html">terms</a>·
   <a href="/contact.html">contact</a>
 </div>
+
+<script>
+(function() {
+  var API = 'https://api-production-8d6d1.up.railway.app';
+  var form = document.getElementById('alertForm');
+  var input = document.getElementById('alertEmail');
+  var btn = document.getElementById('alertBtn');
+  var msg = document.getElementById('alertMsg');
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var email = input.value.trim().toLowerCase();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = 'that email looks wrong. try again.';
+      msg.className = 'alert-msg err';
+      return;
+    }
+    btn.disabled = true;
+    var orig = btn.textContent;
+    btn.textContent = 'sending';
+    msg.textContent = '';
+    msg.className = 'alert-msg';
+    try {
+      var r = await fetch(API + '/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email }),
+      });
+      var j = await r.json();
+      if (j.ok) {
+        msg.textContent = 'logged. she\'ll notify you. she\'ll resent it. but she will.';
+        msg.className = 'alert-msg ok';
+        input.value = '';
+        form.style.display = 'none';
+      } else {
+        msg.textContent = j.error || 'something stuttered.';
+        msg.className = 'alert-msg err';
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    } catch (e) {
+      msg.textContent = 'connection refused. try again in a moment.';
+      msg.className = 'alert-msg err';
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  });
+})();
+</script>
 </body>
 </html>

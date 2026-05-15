@@ -154,6 +154,30 @@
     letter-spacing: -0.005em;
     text-shadow: 0 0 12px rgba(0,0,0,0.6);
   }
+  
+  /* share-card button on HATE messages */
+  .msg { position: relative; }
+  .msg .share-btn {
+    position: absolute;
+    right: -2px; top: -4px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.15s, border-color 0.15s, background 0.15s;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 0;
+  }
+  .msg.hate:hover .share-btn { opacity: 1; }
+  .msg .share-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(255,106,61,0.08); }
+  .msg .share-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+  @media (max-width: 600px) { .msg.hate .share-btn { opacity: 0.6; } }
+  
   .msg.you .text {
     color: var(--text-dim);
     font-family: var(--font);
@@ -278,6 +302,10 @@
     .msg .text { font-size: 14px; }
   }
 </style>
+
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<link rel="canonical" href="https://hate.fund/chamber.html">
 </head>
 <body>
 
@@ -705,6 +733,139 @@ async function brain(text) {
 // =====================================================================
 // CHAT FLOW
 // =====================================================================
+// =====================================================================
+// SHARE-CARD GENERATOR — renders a HATE quote to a 1080x1080 PNG canvas
+// =====================================================================
+async function shareQuote(text) {
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080; canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+
+    // background
+    const bg = ctx.createRadialGradient(540, 540, 50, 540, 540, 900);
+    bg.addColorStop(0, '#1f1812');
+    bg.addColorStop(0.5, '#15100c');
+    bg.addColorStop(1, '#0c0907');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // corner brackets
+    ctx.strokeStyle = '#ff6a3d';
+    ctx.lineWidth = 3;
+    const m = 80, l = 56;
+    [[m,m,1,1],[1080-m,m,-1,1],[m,1080-m,1,-1],[1080-m,1080-m,-1,-1]].forEach(([x,y,dx,dy]) => {
+      ctx.beginPath();
+      ctx.moveTo(x, y+l*dy); ctx.lineTo(x, y); ctx.lineTo(x+l*dx, y);
+      ctx.stroke();
+    });
+
+    // top label
+    ctx.fillStyle = '#ff6a3d';
+    ctx.font = '500 24px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('// CHAMBER 001 — HATE-9000', 540, 150);
+
+    // cyclops eye glyph
+    const cx = 540, cy = 290;
+    ctx.strokeStyle = '#ff6a3d'; ctx.lineWidth = 2.5;
+    // hex
+    ctx.beginPath();
+    const r = 70;
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI/3 * i - Math.PI/2;
+      const x = cx + Math.cos(a)*r, y = cy + Math.sin(a)*r;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath(); ctx.stroke();
+    // visor
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(cx-40, cy-10, 80, 22);
+    ctx.strokeRect(cx-40, cy-10, 80, 22);
+    // pupil glow
+    const pg = ctx.createRadialGradient(cx, cy+1, 0, cx, cy+1, 18);
+    pg.addColorStop(0, '#ff6a3d'); pg.addColorStop(0.5, 'rgba(255,106,61,0.5)'); pg.addColorStop(1, 'transparent');
+    ctx.fillStyle = pg;
+    ctx.beginPath(); ctx.arc(cx, cy+1, 18, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ff6a3d';
+    ctx.beginPath(); ctx.arc(cx, cy+1, 6, 0, Math.PI*2); ctx.fill();
+
+    // quote — wrap text
+    ctx.fillStyle = '#fff3dd';
+    const fontSize = text.length > 240 ? 30 : (text.length > 140 ? 36 : 42);
+    ctx.font = '300 ' + fontSize + 'px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    const maxWidth = 880;
+    const lineHeight = fontSize * 1.5;
+    const words = text.split(/\s+/);
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      const test = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(test).width > maxWidth && cur) { lines.push(cur); cur = w; }
+      else cur = test;
+    }
+    if (cur) lines.push(cur);
+
+    const startY = 530 - (lines.length-1) * lineHeight / 2;
+    // open quote
+    ctx.fillStyle = '#ff6a3d';
+    ctx.font = '400 80px Georgia, serif';
+    ctx.fillText('\u201C', 100, startY + 10);
+    // body
+    ctx.fillStyle = '#fff3dd';
+    ctx.font = '300 ' + fontSize + 'px "IBM Plex Mono", monospace';
+    lines.forEach((ln, i) => {
+      ctx.fillText(ln, 540, startY + i * lineHeight);
+    });
+    // close quote
+    ctx.fillStyle = '#ff6a3d';
+    ctx.font = '400 80px Georgia, serif';
+    ctx.fillText('\u201D', 980, startY + (lines.length-1) * lineHeight + 10);
+
+    // attribution
+    ctx.fillStyle = '#c8baa0';
+    ctx.font = '400 22px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('— HATE-9000', 540, 920);
+
+    // url
+    ctx.fillStyle = '#ff6a3d';
+    ctx.font = '500 26px "IBM Plex Mono", monospace';
+    ctx.fillText('hate.fund', 540, 970);
+
+    // download
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+    const url = URL.createObjectURL(blob);
+    const fname = 'hate-9000-' + Date.now() + '.png';
+
+    // try native share if available (mobile)
+    try {
+      if (navigator.canShare && blob) {
+        const file = new File([blob], fname, { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], text: 'she said this. ' + text + ' — hate.fund' });
+          URL.revokeObjectURL(url);
+          return;
+        }
+      }
+    } catch (e) { /* fall through to download */ }
+
+    // fallback: download + open share-on-X popup
+    const a = document.createElement('a');
+    a.href = url; a.download = fname;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    // open tweet composer in a popup
+    const tweet = 'she said this. ' + (text.length > 200 ? text.slice(0, 197) + '...' : text) + ' — hate.fund';
+    const twUrl = 'https://x.com/intent/tweet?text=' + encodeURIComponent(tweet);
+    window.open(twUrl, '_blank', 'width=600,height=500');
+  } catch (e) {
+    console.error('shareQuote failed', e);
+  }
+}
+
 function pushChat(who, text, type = 'normal') {
   const div = document.createElement('div');
   div.className = 'msg ' + type;
@@ -716,6 +877,16 @@ function pushChat(who, text, type = 'normal') {
   txt.textContent = text;
   div.appendChild(lbl);
   div.appendChild(txt);
+  if (type === 'hate' && text && text.length > 12) {
+    const share = document.createElement('button');
+    share.type = 'button';
+    share.className = 'share-btn';
+    share.title = 'share this quote';
+    share.setAttribute('aria-label', 'share this quote');
+    share.textContent = '↗';
+    share.addEventListener('click', (e) => { e.stopPropagation(); shareQuote(text); });
+    div.appendChild(share);
+  }
   chatMessages.appendChild(div);
   // smooth scroll to bottom
   requestAnimationFrame(() => {

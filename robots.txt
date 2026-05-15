@@ -1,4 +1,7 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /_warden.html
+Disallow: /_landing_full.html
+Disallow: /admin/
 
-# stealth mode — site is hidden until launch
+Sitemap: https://hate.fund/sitemap.xml
