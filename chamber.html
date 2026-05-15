@@ -845,6 +845,17 @@ try {
 
 setTimeout(() => { try { input.focus(); } catch(e){} }, 200);
 
+// auto-send pending message from landing-page redirect
+try {
+  var pending = sessionStorage.getItem('hate.pendingMsg');
+  if (pending && pending.trim()) {
+    sessionStorage.removeItem('hate.pendingMsg');
+    setTimeout(() => {
+      try { input.value = pending; send(pending); } catch(e){}
+    }, 900);
+  }
+} catch (e) {}
+
 // =====================================================================
 // THREE.JS — wrapped, allowed to fail without breaking chat
 // =====================================================================
