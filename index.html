@@ -90,6 +90,67 @@
   .thought { position: absolute; color: var(--accent); opacity: 0.12; font-size: 11px; letter-spacing: 0.04em; white-space: nowrap; animation: drift linear infinite; user-select: none; }
   @keyframes drift { from {transform: translate(0,0); opacity: 0;} 10%,90%{opacity:0.13;} to {transform: translate(-180px,-140px); opacity: 0;} }
 
+  /* layer 6: cursor spotlight — soft halo follows the mouse */
+  .spotlight {
+    position: fixed;
+    width: 480px; height: 480px;
+    pointer-events: none;
+    z-index: 4;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,106,61,0.13) 0%, rgba(255,106,61,0.04) 35%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+    filter: blur(4px);
+    will-change: left, top;
+  }
+  @media (pointer: coarse) { .spotlight { display: none; } }
+
+  /* layer 7: floating dust particles (separate from word thoughts) */
+  .dust { position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+  .dust .speck {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 4px var(--accent);
+    animation: dust linear infinite;
+  }
+  @keyframes dust {
+    0% { opacity: 0; transform: translate(0, 0); }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { opacity: 0; transform: translate(var(--dx, -100px), var(--dy, -200px)); }
+  }
+
+  /* layer 8: corner SVG ornaments — slowly rotating hexagons */
+  .corner {
+    position: fixed; width: 120px; height: 120px;
+    pointer-events: none; z-index: 4;
+    opacity: 0.15;
+  }
+  .corner.tl { top: 70px; left: 18px; animation: cornerRot 80s linear infinite; }
+  .corner.tr { top: 70px; right: 18px; animation: cornerRot 90s linear infinite reverse; }
+  .corner.bl { bottom: 24px; left: 18px; animation: cornerRot 70s linear infinite reverse; }
+  .corner.br { bottom: 24px; right: 18px; animation: cornerRot 100s linear infinite; }
+  @keyframes cornerRot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @media (max-width: 768px) { .corner { display: none; } }
+
+  /* layer 9: scan-line beam that moves across horizontally — like a CRT refresh */
+  .beam {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 46;
+    background: linear-gradient(90deg, transparent 0%, transparent 45%, rgba(255,106,61,0.04) 50%, transparent 55%, transparent 100%);
+    background-size: 300% 100%;
+    animation: beam 19s ease-in-out infinite;
+  }
+  @keyframes beam {
+    0%, 100% { background-position: -100% 0; opacity: 0; }
+    10% { opacity: 1; }
+    50% { background-position: 100% 0; }
+    90% { opacity: 1; }
+  }
+
   /* LINKS */
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -241,22 +302,21 @@
     margin: 36px auto 0; max-width: 760px;
   }
   .stamp {
-    border: 2px solid var(--accent);
+    border: 1px solid var(--accent);
     color: var(--accent);
-    padding: 8px 16px;
+    padding: 9px 16px;
     font-size: 10px; letter-spacing: 0.22em;
     text-transform: uppercase;
     position: relative;
-    transform: rotate(-2deg);
-    background: rgba(255,106,61,0.05);
-    transition: transform 0.2s, background 0.2s;
+    background: rgba(255,106,61,0.06);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   }
-  .stamp:hover { background: rgba(255,106,61,0.15); transform: rotate(-2deg) scale(1.05); }
-  .stamp:nth-child(even) { transform: rotate(1.5deg); }
-  .stamp:nth-child(even):hover { transform: rotate(1.5deg) scale(1.05); }
-  .stamp:nth-child(3n) { transform: rotate(-1deg); }
-  .stamp:nth-child(3n):hover { transform: rotate(-1deg) scale(1.05); }
-  .stamp::before { content: '✓'; margin-right: 6px; opacity: 0.7; }
+  .stamp:hover {
+    background: rgba(255,106,61,0.16);
+    transform: translateY(-1px);
+    box-shadow: 0 0 14px rgba(255,106,61,0.25);
+  }
+  .stamp::before { content: '✓'; margin-right: 8px; opacity: 0.8; }
 
   /* CHART EMBED */
   .chart-section { margin: 80px 0; }
@@ -417,7 +477,7 @@
     .tx-feed .price { display: none; }
     .why-row { grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 18px; }
   }
-  @media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation: none !important; transition: none !important; } .thought, .bg-glow, .bg-grid, .bg-sweep, .bg-flash { display: none; } }
+  @media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation: none !important; transition: none !important; } .thought, .bg-glow, .bg-grid, .bg-sweep, .bg-flash, .dust .speck, .corner, .beam, .spotlight { display: none; } }
 </style>
 </head>
 <body>
@@ -432,6 +492,26 @@
 <div class="bg-sweep"></div>
 <div class="bg-flash"></div>
 <div class="thoughts" id="thoughts"></div>
+<div class="dust" id="dust"></div>
+<div class="spotlight" id="spotlight" style="opacity: 0;"></div>
+<div class="beam"></div>
+<svg class="corner tl" viewBox="0 0 100 100" fill="none">
+  <polygon points="50,8 88,30 88,70 50,92 12,70 12,30" stroke="#ff6a3d" stroke-width="1" fill="none"/>
+  <polygon points="50,28 70,40 70,60 50,72 30,60 30,40" stroke="#ff6a3d" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
+<svg class="corner tr" viewBox="0 0 100 100" fill="none">
+  <polygon points="50,8 88,30 88,70 50,92 12,70 12,30" stroke="#ff6a3d" stroke-width="1" fill="none"/>
+  <circle cx="50" cy="50" r="18" stroke="#ff6a3d" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
+<svg class="corner bl" viewBox="0 0 100 100" fill="none">
+  <circle cx="50" cy="50" r="42" stroke="#ff6a3d" stroke-width="1" fill="none"/>
+  <line x1="50" y1="8" x2="50" y2="92" stroke="#ff6a3d" stroke-width="1" opacity="0.4"/>
+  <line x1="8" y1="50" x2="92" y2="50" stroke="#ff6a3d" stroke-width="1" opacity="0.4"/>
+</svg>
+<svg class="corner br" viewBox="0 0 100 100" fill="none">
+  <polygon points="50,8 88,30 88,70 50,92 12,70 12,30" stroke="#ff6a3d" stroke-width="1" fill="none"/>
+  <polygon points="50,28 70,40 70,60 50,72 30,60 30,40" stroke="#ff6a3d" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>
 
 <nav>
   <a href="/" class="brand">
@@ -687,6 +767,46 @@
 <script src="config.js"></script>
 <script>
 'use strict';
+
+// SPOTLIGHT — soft halo follows cursor
+(function() {
+  var sp = document.getElementById('spotlight');
+  if (!sp) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  var x = window.innerWidth / 2, y = window.innerHeight / 2;
+  var tx = x, ty = y;
+  document.addEventListener('mousemove', function(e) { tx = e.clientX; ty = e.clientY; sp.style.opacity = '1'; });
+  document.addEventListener('mouseleave', function() { sp.style.opacity = '0'; });
+  function loop() {
+    x += (tx - x) * 0.18; y += (ty - y) * 0.18;
+    sp.style.left = x + 'px'; sp.style.top = y + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// DUST PARTICLES — small slow-drifting orange dots
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c = document.getElementById('dust');
+  if (!c) return;
+  function spawn() {
+    var d = document.createElement('div');
+    d.className = 'speck';
+    d.style.left = (Math.random() * 100) + 'vw';
+    d.style.top = (Math.random() * 100) + 'vh';
+    var dx = (Math.random() - 0.5) * 160;
+    var dy = -100 - Math.random() * 180;
+    d.style.setProperty('--dx', dx + 'px');
+    d.style.setProperty('--dy', dy + 'px');
+    var dur = 18 + Math.random() * 22;
+    d.style.animationDuration = dur + 's';
+    c.appendChild(d);
+    setTimeout(function() { d.remove(); }, dur * 1000 + 500);
+  }
+  for (var i = 0; i < 18; i++) setTimeout(spawn, i * 200);
+  setInterval(spawn, 900);
+})();
 
 // cyclops eye
 (function eye() {

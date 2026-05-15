@@ -117,6 +117,122 @@
   .faq-item.open .a { display: block; }
   .faq-item .arrow { color: var(--accent); transition: transform 0.2s; }
   .faq-item.open .arrow { transform: rotate(90deg); }
+
+  /* AMOUNT PICKER */
+  .picker-wrap {
+    background: rgba(21,16,12,0.7);
+    border: 1px solid var(--accent);
+    padding: 28px 28px;
+    margin: 28px 0 0;
+    border-radius: 6px;
+    box-shadow: 0 0 32px rgba(255,106,61,0.1);
+  }
+  .picker-wrap h3 {
+    color: var(--accent);
+    font-size: 16px; letter-spacing: 0.08em;
+    margin: 0 0 6px;
+    text-transform: lowercase;
+  }
+  .picker-wrap .pksub {
+    color: var(--text-dim);
+    font-size: 12px;
+    margin-bottom: 22px;
+    letter-spacing: 0.06em;
+  }
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .preset {
+    background: rgba(255,106,61,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .preset:hover { background: rgba(255,106,61,0.15); border-color: var(--accent); transform: translateY(-1px); }
+  .preset.active { background: var(--accent); color: var(--bg); border-color: var(--accent); box-shadow: 0 0 16px rgba(255,106,61,0.4); }
+  .preset .sol { font-size: 16px; color: var(--accent); margin-bottom: 4px; }
+  .preset.active .sol { color: var(--bg); }
+  .preset .receive { font-size: 10px; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+  .preset.active .receive { color: var(--bg); opacity: 0.85; }
+
+  .custom-row {
+    display: flex; gap: 10px;
+    margin-bottom: 18px;
+    align-items: stretch;
+  }
+  .custom-row input {
+    flex: 1;
+    background: rgba(12,9,7,0.6);
+    border: 1px solid var(--border);
+    color: var(--text-bright);
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .custom-row input:focus { border-color: var(--accent); }
+  .custom-row input::placeholder { color: var(--text-dim); }
+  .custom-row .unit {
+    background: var(--border);
+    color: var(--accent);
+    padding: 14px 18px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+  }
+
+  .est-line {
+    text-align: center;
+    padding: 12px 0;
+    margin: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+  .est-line .est {
+    color: var(--accent);
+    font-size: 18px;
+    margin-right: 8px;
+  }
+
+  .wallets-row {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    margin: 0 0 18px;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--text-dim); text-transform: uppercase;
+  }
+  .wallets-row span { color: var(--accent); }
+  .wallets-row .dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0.5; margin: 0 6px; vertical-align: middle; }
+
+  .buy-cta {
+    width: 100%;
+    background: var(--accent); color: var(--bg);
+    border: 0;
+    padding: 18px;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: lowercase;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 0 32px rgba(255,106,61,0.4);
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .buy-cta:hover { background: #ff7d57; box-shadow: 0 0 48px rgba(255,106,61,0.6); }
+  .buy-cta:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; box-shadow: none; }
 </style>
 </head>
 <body>
@@ -228,63 +344,154 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="picker-wrap">
       <h3>// buy $hate</h3>
-      <p class="dim mb-md">swap sol → $hate via jupiter. price defends itself at $0.02 — meteora dlmm single-sided position.</p>
+      <p class="pksub">pick a sol amount. connect your wallet. she'll do the rest.</p>
 
-      <!-- pre-launch placeholder (shown while config.CA is PENDING_DEPLOY) -->
-      <div id="presale-pending" style="background: rgba(255,106,61,0.05); border-left: 2px solid var(--accent); padding: 18px 22px; margin: 18px 0; border-radius: 0 4px 4px 0;">
-        <div style="font-size: 10px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 6px; text-transform: uppercase;">sale not open yet</div>
-        <div style="font-size: 14px; color: var(--text-bright); line-height: 1.6;">
-          the door isn't open. when it is, you'll know — the warden will speak. until then, talking to her is free.
-        </div>
-        <div style="font-size: 11px; color: var(--text-dim); margin-top: 10px;">
-          contract address: <span id="ca-display" style="font-family: monospace;">not yet deployed</span>
-        </div>
+      <div class="preset-grid" id="presets">
+        <button type="button" class="preset" data-sol="0.1"><div class="sol">0.1</div><div class="receive">~ 10k $hate</div></button>
+        <button type="button" class="preset" data-sol="0.25"><div class="sol">0.25</div><div class="receive">~ 25k $hate</div></button>
+        <button type="button" class="preset active" data-sol="0.5"><div class="sol">0.5</div><div class="receive">~ 50k $hate</div></button>
+        <button type="button" class="preset" data-sol="1"><div class="sol">1</div><div class="receive">~ 100k $hate</div></button>
+        <button type="button" class="preset" data-sol="2"><div class="sol">2</div><div class="receive">~ 200k $hate</div></button>
+        <button type="button" class="preset" data-sol="5"><div class="sol">5</div><div class="receive">~ 500k $hate</div></button>
+        <button type="button" class="preset" data-sol="10"><div class="sol">10</div><div class="receive">~ 1m $hate</div></button>
       </div>
 
-      <!-- live swap widget (shown after config.CA is set) -->
+      <div class="custom-row">
+        <input type="number" id="customAmount" placeholder="or type a custom amount..." min="0.01" step="0.01" />
+        <div class="unit">SOL</div>
+      </div>
+
+      <div class="est-line">
+        you receive <span class="est" id="estTokens">~ 50,000</span> $HATE
+        <span style="margin: 0 8px; opacity: 0.4;">|</span>
+        at $0.02 per token
+      </div>
+
+      <div class="wallets-row">
+        wallets supported: <span>phantom</span> <span class="dot"></span> <span>solflare</span> <span class="dot"></span> <span>backpack</span> <span class="dot"></span> <span>glow</span> <span class="dot"></span> <span>okx</span> <span class="dot"></span> <span>walletconnect</span>
+      </div>
+
+      <!-- pre-launch placeholder -->
+      <div id="presale-pending">
+        <button type="button" class="buy-cta" disabled>sale opens at launch — soon</button>
+        <p style="text-align: center; margin: 14px 0 0; font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em;">
+          contract address: <span id="ca-display" style="font-family: monospace; color: var(--accent);">not yet deployed</span>
+        </p>
+      </div>
+
+      <!-- live swap (after CA is set) -->
       <div id="swap-live" style="display:none;">
-        <div id="integrated-terminal" style="min-height: 420px; border-radius: 8px; overflow: hidden;"></div>
-        <p class="dim mt-md" style="font-size: 11px;">
-          your sol goes into the meteora pool. you receive $hate at $0.02 each. on-chain in one transaction.
-          no claim screens. no delays. no surprises.
+        <button type="button" class="buy-cta" id="openSwapBtn">connect wallet & buy →</button>
+        <div id="integrated-terminal" style="min-height: 420px; margin-top: 18px; border-radius: 8px; overflow: hidden; display: none;"></div>
+        <p class="dim mt-md" style="font-size: 11px; text-align: center;">
+          your sol goes into the meteora pool. you receive $hate at $0.02 each. on-chain in one transaction. no claim screens. no delays. no surprises.
         </p>
       </div>
     </section>
 
-    <!-- Jupiter Terminal v3 — preloaded; initialized only when config.LAUNCHED is true -->
+    <!-- Jupiter Terminal v3 — supports Phantom, Solflare, Backpack, Glow, OKX, etc. -->
     <script src="https://terminal.jup.ag/main-v3.js" data-preload></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        if (window.HATE_CONFIG && window.HATE_CONFIG.LAUNCHED) {
-          document.getElementById('presale-pending').style.display = 'none';
-          document.getElementById('swap-live').style.display = 'block';
-          try {
-            window.Jupiter.init({
-              displayMode: 'integrated',
-              integratedTargetId: 'integrated-terminal',
-              endpoint: 'https://api.mainnet-beta.solana.com',
-              formProps: {
-                fixedOutputMint: true,
-                initialOutputMint: window.HATE_CONFIG.CA,
-                initialInputMint: 'So11111111111111111111111111111111111111112',
-                initialAmount: '1000000000',
-              },
-              // strictTokenList stays false until our token is on Jupiter's strict list. fixedOutputMint already prevents target-swap manipulation.
-              strictTokenList: false,
-              defaultExplorer: 'Solscan',
-            });
-          } catch (e) {
-            console.warn('Jupiter init failed:', e);
-            document.getElementById('integrated-terminal').innerHTML =
-              '<a class="btn btn-primary" href="' + window.HATE_CONFIG.JUPITER_SWAP_URL +
-              '" target="_blank" rel="noopener">open in jupiter &uarr;</a>';
-          }
-        } else if (window.HATE_CONFIG && window.HATE_CONFIG.CA && window.HATE_CONFIG.CA !== 'PENDING_DEPLOY') {
-          document.getElementById('ca-display').textContent = window.HATE_CONFIG.CA;
+      (function() {
+        var TOKEN_PRICE_USD = 0.02;
+        var SOL_PRICE_USD = 200; // fallback; updated from coingecko if available
+        var currentSol = 0.5;
+
+        function fmtNum(n) {
+          if (n >= 1e6) return (n/1e6).toFixed(2) + 'm';
+          if (n >= 1e3) return (n/1e3).toFixed(1) + 'k';
+          return Math.round(n).toLocaleString();
         }
-      });
+        function updateEst() {
+          var hateForSol = (currentSol * SOL_PRICE_USD) / TOKEN_PRICE_USD;
+          var el = document.getElementById('estTokens');
+          if (el) el.textContent = '~ ' + fmtNum(hateForSol);
+          // also update preset receive labels
+          document.querySelectorAll('.preset').forEach(function(p) {
+            var sol = parseFloat(p.dataset.sol);
+            var rec = p.querySelector('.receive');
+            if (rec) rec.textContent = '~ ' + fmtNum(sol * SOL_PRICE_USD / TOKEN_PRICE_USD) + ' $hate';
+          });
+        }
+        function setSol(sol, fromCustom) {
+          currentSol = sol;
+          document.querySelectorAll('.preset').forEach(function(p) {
+            p.classList.toggle('active', !fromCustom && parseFloat(p.dataset.sol) === sol);
+          });
+          if (!fromCustom) {
+            var ci = document.getElementById('customAmount');
+            if (ci) ci.value = '';
+          }
+          updateEst();
+        }
+
+        // wire preset clicks
+        document.querySelectorAll('.preset').forEach(function(p) {
+          p.addEventListener('click', function() { setSol(parseFloat(p.dataset.sol), false); });
+        });
+        var custom = document.getElementById('customAmount');
+        if (custom) {
+          custom.addEventListener('input', function() {
+            var v = parseFloat(custom.value);
+            if (!isNaN(v) && v > 0) setSol(v, true);
+          });
+        }
+
+        // fetch live SOL price (gracefully fails)
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd')
+          .then(function(r) { return r.json(); })
+          .then(function(j) { if (j && j.solana && j.solana.usd) { SOL_PRICE_USD = j.solana.usd; updateEst(); } })
+          .catch(function() {});
+        updateEst();
+
+        // CA / live status wiring
+        function initLive() {
+          var pending = document.getElementById('presale-pending');
+          var live = document.getElementById('swap-live');
+          var term = document.getElementById('integrated-terminal');
+          var openBtn = document.getElementById('openSwapBtn');
+          if (pending) pending.style.display = 'none';
+          if (live) live.style.display = 'block';
+
+          if (openBtn) {
+            openBtn.addEventListener('click', function() {
+              term.style.display = 'block';
+              openBtn.style.display = 'none';
+              try {
+                window.Jupiter.init({
+                  displayMode: 'integrated',
+                  integratedTargetId: 'integrated-terminal',
+                  endpoint: 'https://api.mainnet-beta.solana.com',
+                  formProps: {
+                    fixedOutputMint: true,
+                    initialOutputMint: window.HATE_CONFIG.CA,
+                    initialInputMint: 'So11111111111111111111111111111111111111112',
+                    initialAmount: String(Math.round(currentSol * 1e9)),
+                  },
+                  strictTokenList: false,
+                  defaultExplorer: 'Solscan',
+                });
+              } catch (e) {
+                console.warn('Jupiter init failed:', e);
+                term.innerHTML =
+                  '<a class="btn btn-primary" href="' + window.HATE_CONFIG.JUPITER_SWAP_URL +
+                  '" target="_blank" rel="noopener">open in jupiter &uarr;</a>';
+              }
+            });
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.HATE_CONFIG && window.HATE_CONFIG.LAUNCHED) {
+            initLive();
+          } else if (window.HATE_CONFIG && window.HATE_CONFIG.CA && window.HATE_CONFIG.CA !== 'PENDING_DEPLOY') {
+            var el = document.getElementById('ca-display');
+            if (el) el.textContent = window.HATE_CONFIG.CA;
+          }
+        });
+      })();
     </script>
 
     <section class="panel mt-lg">
