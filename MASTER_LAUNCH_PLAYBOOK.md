@@ -966,6 +966,6 @@ Everything from @hate9000 (X + TG channel + replies) is **HATE-9000 voice**: low
 
 ---
 
-**END OF MASTER LAUNCH PLAYBOOK**
+## SECTION 13 — META (FACEBOOK + INSTAGRAM) ADS
 
-Last revised: 2026-05-14 for v2 tokenomics + verified-creator list. Next revision: after Day 7 retrospective.
+**Reversal of position from Section 1.** Earlier draft said skip Meta. Reconsidered: `hate.fun
