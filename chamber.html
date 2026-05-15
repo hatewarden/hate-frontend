@@ -772,8 +772,36 @@ try {
 } catch(e){ console.error('send btn listener failed', e); }
 
 try {
+  // slash chips: click = action (silent — no "/feed" echoed as user msg)
+  const slashLabels = {
+    '/feed': '// you fed her some $hate.',
+    '/poke': '// you poked her.',
+    '/confess': '// the confessional door opens.',
+    '/look': '// you look around the chamber.',
+    '/dream': '// you ask her to dream.',
+    '/sing': '// you ask her to sing.',
+  };
   document.querySelectorAll('.sgg').forEach(b => {
-    b.addEventListener('click', () => send(b.dataset.cmd));
+    b.addEventListener('click', async () => {
+      const cmd = b.dataset.cmd;
+      const label = slashLabels[cmd] || '// ' + cmd;
+      pushChat('// chamber', label, 'system');
+      thinking.classList.add('show');
+      try {
+        const [reply] = await Promise.all([
+          brain(cmd),
+          new Promise(r => setTimeout(r, 420)),
+        ]);
+        thinking.classList.remove('show');
+        pushChat('hate', reply, 'hate');
+        try { HATE.audioSay(); } catch(e){}
+        try { HATE.rememberTurn('hate', reply); } catch(e){}
+        agitation = Math.min(1, agitation + 0.3);
+      } catch(e) {
+        thinking.classList.remove('show');
+        pushChat('hate', 'the chamber stuttered. try again.', 'hate');
+      }
+    });
   });
 } catch(e){ console.error('chip listeners failed', e); }
 
