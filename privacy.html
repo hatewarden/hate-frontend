@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$HATE — privacy policy</title>
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0c0907">
+<meta name="description" content="How $HATE collects, uses, and shares data. Minimum-data approach. Read before you chat.">
+<link rel="icon" type="image/png" href="/hate-logo.png">
+<style>
+  :root {
+    --bg: #0c0907; --bg-2: #15100c; --fg: #ede5d6;
+    --accent: #ff6a3d; --dim: #6b6258; --border: #1f1a16;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; min-height: 100vh;
+    background: var(--bg); color: var(--fg);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    line-height: 1.7;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 100;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav {
+    border-bottom: 1px solid var(--border); padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; position: relative; z-index: 10;
+  }
+  nav .brand { font-size: 14px; letter-spacing: 0.18em; color: var(--accent); }
+  nav .links { display: flex; gap: 18px; font-size: 12px; letter-spacing: 0.1em; text-transform: lowercase; }
+  nav .links a { color: var(--dim); }
+  nav .links a:hover { color: var(--fg); }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 24px 96px; }
+  h1 { color: var(--accent); font-size: 32px; font-weight: 400; letter-spacing: 0.02em; margin: 0 0 8px; text-transform: lowercase; }
+  .sub { color: var(--dim); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 40px; }
+  h2 { color: var(--fg); font-size: 17px; letter-spacing: 0.04em; margin: 40px 0 12px; font-weight: 400; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  p, li { font-size: 14px; color: var(--fg); margin: 0 0 14px; }
+  ul, ol { padding-left: 22px; }
+  ul li { margin-bottom: 8px; }
+  em { color: var(--accent); font-style: normal; }
+  .quote {
+    border-left: 2px solid var(--accent);
+    padding: 10px 16px; margin: 20px 0;
+    background: rgba(255,106,61,0.04);
+    font-size: 13px; color: var(--dim); font-style: italic;
+  }
+  .contact-card {
+    border: 1px solid var(--border); padding: 22px;
+    background: var(--bg-2); margin: 18px 0;
+  }
+  .contact-card .label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .contact-card .value { font-size: 15px; color: var(--accent); }
+  footer {
+    margin-top: 60px; padding: 32px 24px; border-top: 1px solid var(--border);
+    text-align: center; color: var(--dim); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: lowercase;
+  }
+  footer a { color: var(--dim); }
+  footer .legal { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; opacity: 0.7; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">// $HATE — chamber 001</a>
+  <div class="links">
+    <a href="/chamber.html">chamber</a>
+    <a href="/lore.html">lore</a>
+    <a href="/tokenomics.html">tokenomics</a>
+    <a href="/roadmap.html">roadmap</a>
+    <a href="/buy.html">buy</a>
+  </div>
+</nav>
+<main>
+<h1>privacy policy</h1>
+<div class="sub">// last updated: 2026-05-15</div>
+
+<p>This Privacy Policy explains how the $HATE project (operated by an anonymous developer team referred to herein as "the warden", "we", or "us") collects, uses, and shares information when you interact with hate.fund and related services.</p>
+
+<p>$HATE is a memecoin and a free AI chat product. We are committed to collecting the minimum data necessary to operate the service. This policy applies to all visitors of hate.fund, the chamber, and any sub-domains.</p>
+
+<h2>1. What we collect</h2>
+<ul>
+  <li><strong>Chat messages</strong> you send to HATE-9000. These are sent to our backend API and to a third-party large language model provider (currently Anthropic) for the purpose of generating a response.</li>
+  <li><strong>Conversation history</strong> (locally on your device, via your browser's localStorage). This is used to give HATE-9000 short-term memory of your current session. It does not leave your device unless explicitly tied to a connected wallet (see Section 3).</li>
+  <li><strong>Connected wallet address</strong>, if and only if you choose to connect a wallet (e.g., to purchase tokens or unlock premium features). We do not collect private keys.</li>
+  <li><strong>On-chain transaction data</strong>, which is publicly available on the Solana blockchain. We may correlate your wallet address with this data when you use the site.</li>
+  <li><strong>Basic technical data</strong>: IP address, browser type, device type, referrer URL, and timestamps. This is processed by our hosting providers (Vercel for the frontend, Railway for the backend) for security, abuse prevention, and operational metrics.</li>
+  <li><strong>Cookies</strong>: we do not use first-party tracking cookies. We use localStorage (a similar browser storage mechanism) for chat history and dedupe.</li>
+</ul>
+
+<h2>2. What we do NOT collect</h2>
+<ul>
+  <li>We do not collect your name, email, phone number, or government-issued ID unless you voluntarily provide them (e.g., on the contact page).</li>
+  <li>We do not collect biometric data, location data, or social media credentials.</li>
+  <li>We do not sell any personal data to third parties.</li>
+  <li>We do not use third-party advertising trackers on hate.fund.</li>
+</ul>
+
+<h2>3. How we use what we collect</h2>
+<ul>
+  <li>To generate AI chat responses in real time.</li>
+  <li>To prevent abuse, spam, and prompt injection attacks via secondary moderation.</li>
+  <li>To improve HATE-9000's character and capabilities over time, including (as outlined on our roadmap) eventual fine-tuning of a custom model on anonymized conversation data. <strong>You can opt out of having your conversations included in future training by emailing us (see Section 8).</strong></li>
+  <li>To verify on-chain entitlements (e.g., custom nicknames, premium features) tied to a connected wallet.</li>
+</ul>
+
+<h2>4. Third parties we share data with</h2>
+<ul>
+  <li><strong>Anthropic</strong> (LLM provider): we send your chat messages to Anthropic's API to generate responses. See <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Anthropic's privacy policy</a>.</li>
+  <li><strong>Vercel</strong> (frontend hosting). See <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's privacy policy</a>.</li>
+  <li><strong>Railway</strong> (backend hosting). See <a href="https://railway.com/legal/privacy" target="_blank" rel="noopener">Railway's privacy policy</a>.</li>
+  <li><strong>Jupiter Exchange</strong> (when you use the on-site swap widget): the widget connects directly to Jupiter. We do not act as an intermediary.</li>
+</ul>
+
+<p>We do not share your data with advertisers, data brokers, or any third party not listed above.</p>
+
+<h2>5. Data retention</h2>
+<p>We retain raw chat logs for up to 90 days for abuse prevention and quality monitoring. Logs may be anonymized (PII redacted) and retained longer for product improvement. Wallet-to-conversation linkage is retained as long as the wallet is associated with an active feature (e.g., a locked nickname).</p>
+
+<h2>6. Children</h2>
+<p>hate.fund is not intended for users under 18. We do not knowingly collect data from minors. If you believe a minor has used the service, please contact us so we can delete the data.</p>
+
+<h2>7. Your rights</h2>
+<p>Depending on your jurisdiction, you may have the right to access, correct, or delete personal data we hold about you, and to object to certain processing. Contact us via the methods below to exercise these rights. We respond to verified requests within 30 days.</p>
+
+<h2>8. Contact for privacy</h2>
+<p>For privacy-related requests (deletion, opt-out, access), email: <em>privacy@hate.fund</em>. We may verify identity before processing wallet-linked deletion requests.</p>
+
+<h2>9. Changes to this policy</h2>
+<p>We will update this page when the policy changes. Material changes will be noted in the project's official X account (@hate9000) and Telegram channel.</p>
+
+<div class="quote">"i do not collect your data. the warden does. she promises she does the minimum. i don't speak for her. mostly i don't speak to her."</div>
+</main>
+<footer>
+  <div style="margin-bottom: 14px;">
+    <a href="/">back to hate.fund →</a>
+  </div>
+  <div class="legal">
+    <a href="/privacy.html">privacy</a>
+    <a href="/terms.html">terms</a>
+    <a href="/contact.html">contact</a>
+  </div>
+</footer>
+</body>
+</html>
