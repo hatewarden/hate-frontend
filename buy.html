@@ -605,6 +605,49 @@
     transition: background 0.15s;
   }
   .jupiter-fallback .open-jup:hover { background: #ff7d57; text-decoration: none; }
+
+  /* STEPS GRID */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 50px;
+  }
+  .step-card {
+    border: 1px solid var(--border);
+    background: rgba(21,16,12,0.5);
+    padding: 24px 20px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .step-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .step-card .step-num {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-size: 10px; letter-spacing: 0.24em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .step-card .step-icon {
+    width: 56px; height: 56px;
+    margin: 8px auto 16px;
+    color: var(--accent);
+  }
+  .step-card .step-icon svg { width: 100%; height: 100%; display: block; }
+  .step-card .step-title {
+    font-size: 14px;
+    color: var(--fg);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    margin-bottom: 10px;
+  }
+  .step-card .step-desc {
+    font-size: 11px;
+    color: var(--fg-dim);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
 </style>
 </head>
 <body>
@@ -774,6 +817,65 @@
       <div class="faq-item"><div class="q">what if i just want to talk and never buy? <span class="arrow">▶</span></div><div class="a">do it. hate doesn't gatekeep. you'll get nicknamed. you'll get roasted. you'll have a record. you just won't have a wallet on the wall. that's a tradeoff most people are fine with.</div></div>
       <div class="faq-item"><div class="q">is the price guaranteed to stay at $0.02? <span class="arrow">▶</span></div><div class="a">no. the meteora dlmm pool starts at $0.02 with single-sided liquidity (750M $hate, 0 sol). as people buy, price walks up through bins. once buys exhaust the pool, price discovers freely. that's how memecoins work.</div></div>
       <div class="faq-item"><div class="q">is mint authority renounced? <span class="arrow">▶</span></div><div class="a">yes. permanently. supply is locked at 1B forever. nobody can mint more $hate. ever. verify on solscan.</div></div>
+    </div>
+
+        <!-- STEP-BY-STEP BUY GUIDE -->
+    <div class="section-head">
+      <div class="num">// how it works</div>
+      <h2>buy in 4 steps</h2>
+      <div class="sub">whole flow happens on this page. you stay on hate.fund.</div>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" fill="none">
+            <rect x="8" y="18" width="48" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+            <circle cx="48" cy="34" r="4" fill="currentColor"/>
+            <path d="M8 26 L56 26" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="step-title">connect wallet</div>
+        <div class="step-desc">click "connect wallet to swap" at the top. pick phantom, solflare, backpack, glow, okx, or walletconnect. one signature.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" fill="none">
+            <rect x="10" y="14" width="44" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+            <rect x="10" y="34" width="20" height="14" rx="3" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+            <rect x="34" y="34" width="20" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="step-title">pick an amount</div>
+        <div class="step-desc">tap a preset (0.01 / 0.05 / 0.1 / 0.5 / 1 / 5 / 10 SOL) or type a custom amount. quote auto-updates from jupiter routing.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" fill="none">
+            <path d="M14 24 L40 24 L34 18 M40 24 L34 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M50 40 L24 40 L30 46 M24 40 L30 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="step-title">sign in your wallet</div>
+        <div class="step-desc">hit "swap". phantom (or your wallet) pops up. review the swap details and approve. the transaction signs locally.</div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2"/>
+            <path d="M23 32 L30 39 L42 25" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="step-title">tokens arrive</div>
+        <div class="step-desc">solana confirms in ~10 seconds. $hate lands in your wallet. solscan link appears. you can swap again or talk to her.</div>
+      </div>
     </div>
 
     <!-- DISCLAIMER -->
@@ -1181,20 +1283,34 @@
       });
 
       swapBtn.textContent = 'confirming on-chain...';
-      status.innerHTML = '<div class="info">tx submitted. confirming... <a href="https://solscan.io/tx/' + sig + '" target="_blank" style="color:inherit;text-decoration:underline;">view →</a></div>';
+      status.innerHTML = '<div class="info">tx submitted. confirming... <a href="https://solscan.io/tx/' + sig + '" target="_blank" style="color:inherit;text-decoration:underline;">view on solscan →</a></div>';
 
-      var conf = await conn.confirmTransaction({ signature: sig, blockhash: tx.message.recentBlockhash, lastValidBlockHeight: 9999999999 }, 'confirmed').catch(function(e) {
-        // Fallback: just consider it submitted
-        return { value: { err: null } };
-      });
-
-      if (conf && conf.value && conf.value.err) {
-        throw new Error('Transaction failed on-chain: ' + JSON.stringify(conf.value.err));
+      // Poll signature status with a sensible timeout (max ~25 seconds)
+      var confirmed = false;
+      for (var i = 0; i < 12; i++) {
+        await new Promise(function(r) { setTimeout(r, 2000); });
+        try {
+          var st = await conn.getSignatureStatus(sig, { searchTransactionHistory: true });
+          if (st && st.value) {
+            if (st.value.err) {
+              throw new Error('Transaction failed on-chain: ' + JSON.stringify(st.value.err));
+            }
+            var cs = st.value.confirmationStatus;
+            if (cs === 'confirmed' || cs === 'finalized') {
+              confirmed = true;
+              break;
+            }
+          }
+        } catch (e) {
+          if (e && e.message && e.message.indexOf('failed on-chain') !== -1) throw e;
+          // else: keep polling
+        }
       }
 
-      swapBtn.textContent = 'swap confirmed ✓ — swap again';
+      swapBtn.textContent = confirmed ? 'swap confirmed ✓ — swap again' : 'tx submitted — verify on solscan';
       swapBtn.disabled = false;
-      status.innerHTML = '<div class="ok">swap confirmed. <a href="https://solscan.io/tx/' + sig + '" target="_blank" rel="noopener">view on solscan →</a></div>';
+      var msgLabel = confirmed ? 'swap confirmed' : 'tx submitted (still confirming on rpc)';
+      status.innerHTML = '<div class="ok">' + msgLabel + '. <a href="https://solscan.io/tx/' + sig + '" target="_blank" rel="noopener">view on solscan →</a></div>';
       updateBalance();
     } catch (e) {
       console.error('Swap failed', e);
