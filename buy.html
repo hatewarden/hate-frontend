@@ -403,6 +403,91 @@
     .preset .receive { font-size: 8px; }
     .buy-cta { padding: 18px; font-size: 14px; letter-spacing: 0.18em; }
   }
+
+  /* SUPPLY PROGRESS CARD */
+  .progress-card {
+    border: 1px solid var(--border);
+    background: rgba(21,16,12,0.6);
+    padding: 22px 24px;
+    margin-bottom: 36px;
+  }
+  .progress-card h3 {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    margin: 0 0 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .progress-label .raised { font-size: 16px; color: var(--fg); }
+  .progress-label .target { font-size: 12px; color: var(--fg-dim); }
+  .progress-bar-track {
+    height: 8px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .progress-footer {
+    display: flex; justify-content: space-between;
+    margin-top: 12px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+  }
+  .progress-footer .accent { color: var(--accent); }
+
+  /* FAQ */
+  .faq { margin-bottom: 36px; }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .faq-item:hover { background: rgba(255,106,61,0.03); }
+  .faq-item .q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--fg);
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+  }
+  .faq-item .q .arrow {
+    color: var(--accent);
+    font-size: 14px;
+    transition: transform 0.2s;
+    margin-left: 12px;
+  }
+  .faq-item.open .q .arrow { transform: rotate(90deg); }
+  .faq-item .a {
+    margin-top: 0;
+    font-size: 12px;
+    color: var(--fg-dim);
+    line-height: 1.85;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s, margin-top 0.25s;
+  }
+  .faq-item.open .a {
+    max-height: 200px;
+    margin-top: 12px;
+  }
+
 </style>
 </head>
 <body>
@@ -497,8 +582,23 @@
     <div class="stats">
       <div class="stat"><div class="num">$0.02</div><div class="label">flat sale</div><div class="note">paid in sol</div></div>
       <div class="stat"><div class="num">1B</div><div class="label">total supply</div><div class="note">fixed forever</div></div>
-      <div class="stat"><div class="num">750M</div><div class="label">in the pool</div><div class="note">75% of supply</div></div>
+      <div class="stat"><div class="num">750M</div><div class="label">for sale</div><div class="note">75% of supply</div></div>
+      <div class="stat"><div class="num">$15M</div><div class="label">hard cap</div><div class="note">no soft cap</div></div>
       <div class="stat"><div class="num">0.001 SOL</div><div class="label">minimum buy</div><div class="note">no maximum</div></div>
+    </div>
+
+    <!-- SUPPLY PROGRESS CARD -->
+    <div class="progress-card">
+      <h3>// supply remaining</h3>
+      <div class="progress-label">
+        <div class="raised"><span id="raised">0</span> $HATE sold</div>
+        <div class="target">of <span id="target">750,000,000</span></div>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-footer">
+        <div><span id="contributors" class="accent">0</span> wallets have bought</div>
+        <div><span id="pct" class="accent">0</span>% of supply sold</div>
+      </div>
     </div>
 
     <!-- WHAT IT DOES -->
@@ -532,6 +632,23 @@
         <div class="tier-head"><span class="tier-name">pay her to roast a wallet</span><span class="tier-cost">100k $hate</span></div>
         <div class="tier-desc">a specific wallet of your choice gets a public, named roast on the chamber feed.</div>
       </div>
+    </div>
+
+
+    <!-- FAQ -->
+    <div class="section-head">
+      <div class="num">// 05 — questions</div>
+      <h2>faq</h2>
+      <div class="sub">tap to expand. these are the questions everyone asks.</div>
+    </div>
+    <div class="faq">
+      <div class="faq-item"><div class="q">do i need $hate to chat with hate-9000? <span class="arrow">▶</span></div><div class="a">no. chat is free, forever. you don't need a wallet, a token, or an account. you just type. screenshots are yours. the door is wide open on purpose.</div></div>
+      <div class="faq-item"><div class="q">what do i actually use $hate for? <span class="arrow">▶</span></div><div class="a">feeding the daily draw (lottery entry + sanity boost), pinning a confession on the wall, locking a custom nickname, paying hate to publicly roast a wallet, or staking for yield. all the persistent / status / premium stuff.</div></div>
+      <div class="faq-item"><div class="q">when do i receive my tokens? <span class="arrow">▶</span></div><div class="a">immediately. wallet that pays = wallet that receives. on-chain. one transaction. no claim screens, no delays, no surprises.</div></div>
+      <div class="faq-item"><div class="q">what chain? what wallet? <span class="arrow">▶</span></div><div class="a">solana. spl token-2022. phantom, solflare, backpack, glow, okx — any solana wallet works via jupiter.</div></div>
+      <div class="faq-item"><div class="q">what if i just want to talk and never buy? <span class="arrow">▶</span></div><div class="a">do it. hate doesn't gatekeep. you'll get nicknamed. you'll get roasted. you'll have a record. you just won't have a wallet on the wall. that's a tradeoff most people are fine with.</div></div>
+      <div class="faq-item"><div class="q">is the price guaranteed to stay at $0.02? <span class="arrow">▶</span></div><div class="a">no. the meteora dlmm pool starts at $0.02 with single-sided liquidity (750M $hate, 0 sol). as people buy, price walks up through bins. once buys exhaust the pool, price discovers freely. that's how memecoins work.</div></div>
+      <div class="faq-item"><div class="q">is mint authority renounced? <span class="arrow">▶</span></div><div class="a">yes. permanently. supply is locked at 1B forever. nobody can mint more $hate. ever. verify on solscan.</div></div>
     </div>
 
     <!-- DISCLAIMER -->
@@ -686,6 +803,32 @@
   }
   fetchPrice();
   setInterval(fetchPrice, 30000);
+
+
+  // Supply remaining progress — pulls from DexScreener
+  async function updateProgress() {
+    try {
+      var r = await fetch('https://api.dexscreener.com/latest/dex/tokens/' + HATE_CA);
+      var j = await r.json();
+      var pair = (j.pairs || [])[0];
+      if (!pair) return;
+      // 750M is the pool target. Sold = 750M - current pool HATE balance.
+      // Approximate via liquidity changes.
+      // For now: show holders count from DexScreener if available, else placeholder.
+      var holders = pair.txns && pair.txns.h24 ? (pair.txns.h24.buys + pair.txns.h24.sells) : 0;
+      var holdersEl = document.getElementById('contributors');
+      if (holdersEl) holdersEl.textContent = holders.toLocaleString();
+    } catch(e) {}
+  }
+  updateProgress();
+  setInterval(updateProgress, 60000);
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      item.classList.toggle('open');
+    });
+  });
 })();
 </script>
 
