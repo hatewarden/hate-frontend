@@ -12,7 +12,6 @@
 <meta name="theme-color" content="#0c0907">
 <link rel="icon" type="image/png" href="/hate-logo.png">
 <link rel="canonical" href="https://hate.fund/buy.html">
-<script src="https://terminal.jup.ag/main-v3.js" data-preload></script>
 <style>
   :root {
     --bg: #0c0907;
@@ -491,16 +490,16 @@
 
 
   /* Embedded Jupiter Terminal */
-  /* Jupiter Terminal frame — atmospheric wrapper */
+  /* Jupiter swap iframe — atmospheric wrapper */
   .jupiter-frame {
     margin: 22px 0 0;
     position: relative;
-    border: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,106,61,0.04), rgba(12,9,7,0.95));
+    border: 1px solid var(--accent);
+    background: linear-gradient(180deg, rgba(255,106,61,0.06), rgba(12,9,7,0.95));
     border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 0 32px rgba(255,106,61,0.12), inset 0 0 24px rgba(0,0,0,0.45);
-    padding: 16px;
+    box-shadow: 0 0 40px rgba(255,106,61,0.18), inset 0 0 24px rgba(0,0,0,0.4);
+    padding: 0;
   }
   .jupiter-frame::before {
     content: '// swap on-page — powered by jupiter';
@@ -510,30 +509,17 @@
     font-size: 10px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    margin-bottom: 12px;
-    opacity: 0.85;
+    padding: 14px 12px 8px;
+    opacity: 0.9;
+    background: rgba(21,16,12,0.85);
+    border-bottom: 1px solid var(--border);
   }
-  #jupiter-terminal-mount {
-    background: rgba(12, 9, 7, 0.7);
-    border-radius: 4px;
-    min-height: 460px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid var(--border);
-  }
-  #jupiter-terminal-mount.loading::before {
-    content: '// connecting to jupiter routing...';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--accent);
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-  /* override Jupiter Terminal's default white background if it leaks */
-  #jupiter-terminal-mount iframe, #jupiter-terminal-mount > div {
-    background: transparent !important;
+  #jup-iframe {
+    display: block;
+    width: 100%;
+    min-height: 640px;
+    background: var(--bg);
+    border: 0;
   }
   .jupiter-fallback {
     padding: 30px 24px;
@@ -613,9 +599,17 @@
         you receive <span class="est" id="estTokens">~ 10,000</span> $HATE
       </div>
 
-      <!-- Jupiter Terminal embeds here — all swap happens on-page -->
+      <!-- Jupiter swap embedded as iframe — uses Jupiter's full native UI -->
       <div class="jupiter-frame">
-        <div id="jupiter-terminal-mount" class="loading"></div>
+        <iframe
+          id="jup-iframe"
+          src="https://jup.ag/swap/SOL-5UDAmusk2kNEdKFbbyLfLLVA6EF5Xs7sCjxrsKM4ukV8"
+          title="Jupiter Swap SOL to HATE"
+          width="100%"
+          height="640"
+          frameborder="0"
+          allow="clipboard-write"
+        ></iframe>
       </div>
 
       <div class="wallets-row">
@@ -772,8 +766,11 @@
       var rec = p.querySelector('.receive');
       if (rec) rec.textContent = '~ ' + fmt(sol * SOL_PRICE_USD / TOKEN_PRICE_USD) + ' $hate';
     });
-    // sync Jupiter Terminal with new amount (re-init since syncProps doesn't reliably update initialAmount)
-    initJupiterTerminal();
+    // update iframe URL with new amount (Jupiter swap UI re-loads)
+    var iframe = document.getElementById('jup-iframe');
+    if (iframe) {
+      iframe.src = 'https://jup.ag/swap/SOL-' + HATE_CA;
+    }
   }
   function setSol(sol, fromCustom) {
     currentSol = sol;
