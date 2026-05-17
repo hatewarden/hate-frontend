@@ -1,11 +1,61 @@
+# Claude's edit-access token folder — never commit
+.claude-edit/
+
+# Backend has its own repo
+server/
+
+# Local-only files
+*.log
 .DS_Store
 Thumbs.db
-*.log
 .vscode/
 .idea/
-node_modules/
+*.swp
+*.swo
+
+# Test page (keep local)
+test.html
 
 # orphaned legacy files — kept out of the deploy
 HATE_chamber.html
 test.html
 
+# === SENSITIVE — NEVER COMMIT ===
+CREDENTIALS.md
+HATE_BIBLE.md
+PROJECT_STATUS.md
+CLAUDE_MEMORY_BACKUP.md
+TRAFFIC_TODAY.md
+LISTING_SUBMISSIONS.md
+KOL_OUTREACH_LOG.md
+JOURNALIST_OUTREACH_LOG.md
+BOT_ALERTS.md
+PINATA_URLS.txt
+bot-state.json
+.env
+.env.local
+.env.*.local
+*.env
+
+# === Internal notes — keep local ===
+HATE_master_bible.md
+HATE_mood_oracle.md
+HATE_prelaunch_tweets.md
+CONTACT_SHEET.md
+INFLUENCER_VERIFIED.md
+INFLUENCER_PAYMENT_LIST.md
+INFLUENCER_FULL_LIST.md
+INFLUENCER_DEAL_TEMPLATES.md
+KOL_DM_DRAFTS_BATCH1.md
+KOL_DM_DRAFTS_BATCH2.md
+PRESS_RELEASE_LAUNCH.md
+PRELAUNCH_TWEETS.md
+MASTER_LAUNCH_PLAYBOOK.md
+FUTURE_ROADMAP.md
+VIRAL_PLAYBOOK.md
+POST_LAUNCH_PROMOTION.md
+AD_CREATIVES.md
+SOCIAL_SETUP.md
+CONTRACT_DEPLOY.md
+TONIGHT_LAUNCH.md
+LAUNCH.md
