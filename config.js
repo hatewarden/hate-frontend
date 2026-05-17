@@ -9,13 +9,13 @@
    ============================================================================= */
 window.HATE_CONFIG = {
   // ---- The mint (contract address). Set by deploy.sh mainnet output. ----
-  CA: 'PENDING_DEPLOY',
+  CA: '5UDAmusk2kNEdKFbbyLfLLVA6EF5Xs7sCjxrsKM4ukV8',
 
   // ---- The 2-of-2 Squads multisig holding the 250M team/treasury allocation. ----
-  MULTISIG: 'PENDING_DEPLOY',
+  MULTISIG: '8S4EGr8SxSqfJ7hVSFJdJKbjjC2utGpF3sYJzcuEXCn7',
 
   // ---- The Meteora DLMM pool address (single-sided 750M @ $0.02). ----
-  POOL: 'PENDING_DEPLOY',
+  POOL: 'Bhx1Kf3kzLcG8ZGKB6PtV8btLR1eqz39tSeMwAwLiwJo',
 
   // ---- Convenience: Jupiter swap URL when CA is known. ----
   get JUPITER_SWAP_URL() {
