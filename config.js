@@ -15,7 +15,7 @@ window.HATE_CONFIG = {
   MULTISIG: '8S4EGr8SxSqfJ7hVSFJdJKbjjC2utGpF3sYJzcuEXCn7',
 
   // ---- The Meteora DLMM pool address (single-sided 750M @ $0.02). ----
-  POOL: 'PENDING_DEPLOY',
+  POOL: '6KBMgSzTmb1KqRGqN2Ha6woAdunaWpGqkESGq4vZtEpE',
 
   // ---- Convenience: Jupiter swap URL when CA is known. ----
   get JUPITER_SWAP_URL() {
