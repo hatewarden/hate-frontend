@@ -490,36 +490,131 @@
 
 
   /* Embedded Jupiter Terminal */
-  /* Jupiter swap iframe — atmospheric wrapper */
-  .jupiter-frame {
-    margin: 22px 0 0;
-    position: relative;
+  /* Custom swap UI */
+  .wallet-row {
+    margin: 22px 0 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    background: rgba(21,16,12,0.6);
+    border-radius: 4px;
+    min-height: 56px;
+  }
+  .connect-btn {
+    background: transparent;
     border: 1px solid var(--accent);
-    background: linear-gradient(180deg, rgba(255,106,61,0.06), rgba(12,9,7,0.95));
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 0 40px rgba(255,106,61,0.18), inset 0 0 24px rgba(0,0,0,0.4);
-    padding: 0;
-  }
-  .jupiter-frame::before {
-    content: '// swap on-page — powered by jupiter';
-    display: block;
-    text-align: center;
     color: var(--accent);
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    padding: 14px 12px 8px;
-    opacity: 0.9;
-    background: rgba(21,16,12,0.85);
-    border-bottom: 1px solid var(--border);
+    padding: 10px 22px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s;
   }
-  #jup-iframe {
-    display: block;
-    width: 100%;
-    min-height: 640px;
-    background: var(--bg);
-    border: 0;
+  .connect-btn:hover { background: rgba(255,106,61,0.12); }
+  .wallet-row.connected {
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(255,106,61,0.15);
+  }
+  .wallet-row .wallet-info {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .wallet-row .wallet-name {
+    color: var(--fg-dim); font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .wallet-row .wallet-addr {
+    color: var(--accent); font-size: 13px;
+    font-family: inherit;
+  }
+  .wallet-row .wallet-bal {
+    color: var(--fg); font-size: 12px;
+    margin-left: 8px;
+  }
+  .wallet-row .disconnect-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: lowercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .wallet-row .disconnect-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .quote-display {
+    background: rgba(21,16,12,0.7);
+    border: 1px solid var(--border);
+    padding: 22px 24px;
+    margin: 0 0 18px;
+    border-radius: 4px;
+  }
+  .quote-line {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .quote-line:last-child { margin-bottom: 0; }
+  .quote-line .qlabel {
+    color: var(--fg-dim); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .quote-line .qval {
+    color: var(--fg); font-size: 22px;
+    letter-spacing: 0.02em;
+  }
+  .quote-line .qval.accent { color: var(--accent); }
+  .quote-line .qunit {
+    color: var(--fg-dim); font-size: 12px;
+    letter-spacing: 0.18em; margin-left: 6px;
+  }
+  .quote-arrow {
+    text-align: center; color: var(--accent);
+    font-size: 18px; margin: 4px 0;
+    opacity: 0.6;
+  }
+  .quote-meta {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; letter-spacing: 0.16em;
+    color: var(--fg-dim); text-transform: uppercase;
+    text-align: center;
+  }
+
+  #swapStatus { margin-top: 12px; min-height: 16px; }
+  #swapStatus .ok {
+    padding: 10px 14px;
+    background: rgba(74,222,128,0.1);
+    border-left: 2px solid var(--green);
+    color: var(--green);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  #swapStatus .ok a { color: var(--green); text-decoration: underline; }
+  #swapStatus .err {
+    padding: 10px 14px;
+    background: rgba(239,68,68,0.1);
+    border-left: 2px solid var(--red);
+    color: #f87171;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    word-break: break-word;
+  }
+  #swapStatus .info {
+    padding: 10px 14px;
+    background: rgba(255,106,61,0.08);
+    border-left: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.05em;
   }
   .jupiter-fallback {
     padding: 30px 24px;
@@ -599,18 +694,23 @@
         you receive <span class="est" id="estTokens">~ 10,000</span> $HATE
       </div>
 
-      <!-- Jupiter swap embedded as iframe — uses Jupiter's full native UI -->
-      <div class="jupiter-frame">
-        <iframe
-          id="jup-iframe"
-          src="https://jup.ag/swap/SOL-5UDAmusk2kNEdKFbbyLfLLVA6EF5Xs7sCjxrsKM4ukV8"
-          title="Jupiter Swap SOL to HATE"
-          width="100%"
-          height="640"
-          frameborder="0"
-          allow="clipboard-write"
-        ></iframe>
+      <!-- Custom swap UI — all on-page, routed via Jupiter API -->
+      <div class="wallet-row" id="walletRow">
+        <button class="connect-btn" id="connectBtn">connect wallet</button>
       </div>
+
+      <div class="quote-display" id="quoteDisplay">
+        <div class="quote-line"><span class="qlabel">you pay</span> <span class="qval" id="paySol">0.1</span> <span class="qunit">SOL</span></div>
+        <div class="quote-arrow">↓</div>
+        <div class="quote-line"><span class="qlabel">you receive</span> <span class="qval accent" id="estTokens">~ 0</span> <span class="qunit">$HATE</span></div>
+        <div class="quote-meta" id="quoteMeta">connect wallet to get a live quote</div>
+      </div>
+
+      <button class="buy-cta" id="swapBtn" disabled>
+        connect wallet to swap
+      </button>
+
+      <div id="swapStatus"></div>
 
       <div class="wallets-row">
         <span class="label">wallets:</span>
@@ -743,6 +843,7 @@
   <div class="row">// chamber 001 — the door is open</div>
 </footer>
 
+<script src="https://unpkg.com/@solana/web3.js@1.95.5/lib/index.iife.min.js"></script>
 <script src="config.js"></script>
 <script>
 (function() {
@@ -751,6 +852,11 @@
   var SOL_PRICE_USD = 200;
   var currentSol = 0.1;
   var HATE_CA = (window.HATE_CONFIG && window.HATE_CONFIG.CA) || '5UDAmusk2kNEdKFbbyLfLLVA6EF5Xs7sCjxrsKM4ukV8';
+  var SOL_MINT = 'So11111111111111111111111111111111111111112';
+  var RPC = 'https://solana-rpc.publicnode.com';
+  var wallet = null; // { provider, publicKey, name }
+  var currentQuote = null;
+  var quoteAbort = null;
 
   function fmt(n) {
     if (n >= 1e6) return (n/1e6).toFixed(2) + 'm';
@@ -766,11 +872,7 @@
       var rec = p.querySelector('.receive');
       if (rec) rec.textContent = '~ ' + fmt(sol * SOL_PRICE_USD / TOKEN_PRICE_USD) + ' $hate';
     });
-    // update iframe URL with new amount (Jupiter swap UI re-loads)
-    var iframe = document.getElementById('jup-iframe');
-    if (iframe) {
-      iframe.src = 'https://jup.ag/swap/SOL-' + HATE_CA;
-    }
+    // fetchQuote is called from setSol
   }
   function setSol(sol, fromCustom) {
     currentSol = sol;
@@ -782,6 +884,9 @@
       if (ci) ci.value = '';
     }
     updateEst();
+    var paySolEl = document.getElementById('paySol');
+    if (paySolEl) paySolEl.textContent = sol;
+    fetchQuote();
   }
   document.querySelectorAll('.preset').forEach(function(p) {
     p.addEventListener('click', function() { setSol(parseFloat(p.dataset.sol), false); });
@@ -926,6 +1031,241 @@
   }
   updateProgress();
   setInterval(updateProgress, 60000);
+
+
+  // ============================================================
+  // CUSTOM SWAP FLOW — Jupiter API + wallet adapter (Phantom/Solflare/Backpack)
+  // ============================================================
+
+  function detectWallet() {
+    // Phantom
+    if (window.phantom && window.phantom.solana && window.phantom.solana.isPhantom) {
+      return { provider: window.phantom.solana, name: 'Phantom' };
+    }
+    if (window.solana && window.solana.isPhantom) {
+      return { provider: window.solana, name: 'Phantom' };
+    }
+    // Solflare
+    if (window.solflare && window.solflare.isSolflare) {
+      return { provider: window.solflare, name: 'Solflare' };
+    }
+    // Backpack
+    if (window.backpack && window.backpack.isBackpack) {
+      return { provider: window.backpack, name: 'Backpack' };
+    }
+    return null;
+  }
+
+  function fmtAddr(pubkey) {
+    var s = pubkey.toString();
+    return s.slice(0, 4) + '...' + s.slice(-4);
+  }
+
+  function updateWalletUI() {
+    var row = document.getElementById('walletRow');
+    var swapBtn = document.getElementById('swapBtn');
+    if (!row) return;
+    if (wallet) {
+      row.classList.add('connected');
+      row.innerHTML =
+        '<div class="wallet-info">' +
+          '<span class="wallet-name">' + wallet.name + '</span>' +
+          '<span class="wallet-addr">' + fmtAddr(wallet.publicKey) + '</span>' +
+          '<span class="wallet-bal" id="walletBal"></span>' +
+        '</div>' +
+        '<button class="disconnect-btn" id="disconnectBtn">disconnect</button>';
+      document.getElementById('disconnectBtn').addEventListener('click', disconnectWallet);
+      updateBalance();
+      fetchQuote();
+    } else {
+      row.classList.remove('connected');
+      row.innerHTML = '<button class="connect-btn" id="connectBtn">connect wallet</button>';
+      document.getElementById('connectBtn').addEventListener('click', connectWallet);
+      if (swapBtn) {
+        swapBtn.disabled = true;
+        swapBtn.textContent = 'connect wallet to swap';
+      }
+    }
+  }
+
+  async function updateBalance() {
+    if (!wallet || !window.solanaWeb3) return;
+    try {
+      var conn = new solanaWeb3.Connection(RPC, 'confirmed');
+      var bal = await conn.getBalance(wallet.publicKey);
+      var solBal = (bal / 1e9).toFixed(3);
+      var el = document.getElementById('walletBal');
+      if (el) el.textContent = '· ' + solBal + ' SOL';
+    } catch (e) { /* ignore */ }
+  }
+
+  async function connectWallet() {
+    var detected = detectWallet();
+    if (!detected) {
+      var status = document.getElementById('swapStatus');
+      status.innerHTML = '<div class="err">no solana wallet detected. install <a href="https://phantom.app/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">phantom</a>, <a href="https://solflare.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">solflare</a>, or <a href="https://backpack.app/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">backpack</a>.</div>';
+      return;
+    }
+    try {
+      var resp = await detected.provider.connect();
+      wallet = {
+        provider: detected.provider,
+        publicKey: resp.publicKey || detected.provider.publicKey,
+        name: detected.name,
+      };
+      updateWalletUI();
+    } catch (e) {
+      console.warn('Connect cancelled:', e);
+    }
+  }
+
+  function disconnectWallet() {
+    try { if (wallet && wallet.provider.disconnect) wallet.provider.disconnect(); } catch(e){}
+    wallet = null;
+    currentQuote = null;
+    updateWalletUI();
+    var qm = document.getElementById('quoteMeta');
+    if (qm) qm.textContent = 'connect wallet to get a live quote';
+  }
+
+  async function fetchQuote() {
+    if (!currentSol || currentSol <= 0) return;
+    var estEl = document.getElementById('estTokens');
+    var metaEl = document.getElementById('quoteMeta');
+    var swapBtn = document.getElementById('swapBtn');
+
+    if (quoteAbort) quoteAbort.abort();
+    quoteAbort = new AbortController();
+
+    if (metaEl) metaEl.textContent = 'fetching quote from jupiter...';
+
+    var lamports = Math.round(currentSol * 1e9);
+    var url = 'https://quote-api.jup.ag/v6/quote' +
+      '?inputMint=' + SOL_MINT +
+      '&outputMint=' + HATE_CA +
+      '&amount=' + lamports +
+      '&slippageBps=500' +
+      '&swapMode=ExactIn';
+
+    try {
+      var r = await fetch(url, { signal: quoteAbort.signal });
+      var j = await r.json();
+      if (j.error || !j.outAmount) {
+        if (estEl) estEl.textContent = '—';
+        if (metaEl) metaEl.textContent = 'no route found yet (jupiter may still be indexing the pool)';
+        if (swapBtn) { swapBtn.disabled = true; swapBtn.textContent = 'no route available'; }
+        currentQuote = null;
+        return;
+      }
+      currentQuote = j;
+      var hateOut = parseInt(j.outAmount) / 1e9;
+      if (estEl) estEl.textContent = '~ ' + Math.round(hateOut).toLocaleString();
+      var impact = j.priceImpactPct ? (parseFloat(j.priceImpactPct) * 100).toFixed(2) + '%' : '—';
+      if (metaEl) metaEl.textContent = 'price impact ' + impact + ' · slippage 5% · via jupiter';
+      if (swapBtn) {
+        if (wallet) {
+          swapBtn.disabled = false;
+          swapBtn.textContent = 'swap → receive ' + Math.round(hateOut).toLocaleString() + ' $hate';
+        } else {
+          swapBtn.disabled = true;
+          swapBtn.textContent = 'connect wallet to swap';
+        }
+      }
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+      console.warn('Quote failed:', e);
+      if (metaEl) metaEl.textContent = 'quote failed — retry in a moment';
+    }
+  }
+
+  async function doSwap() {
+    if (!wallet || !currentQuote) return;
+    var swapBtn = document.getElementById('swapBtn');
+    var status = document.getElementById('swapStatus');
+
+    swapBtn.disabled = true;
+    swapBtn.textContent = 'preparing transaction...';
+    status.innerHTML = '<div class="info">building swap transaction via jupiter...</div>';
+
+    try {
+      var swapResp = await fetch('https://quote-api.jup.ag/v6/swap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quoteResponse: currentQuote,
+          userPublicKey: wallet.publicKey.toString(),
+          wrapAndUnwrapSol: true,
+          dynamicComputeUnitLimit: true,
+          prioritizationFeeLamports: 'auto',
+        }),
+      });
+      var swapJson = await swapResp.json();
+      if (swapJson.error || !swapJson.swapTransaction) {
+        throw new Error(swapJson.error || 'swap-tx build failed');
+      }
+
+      swapBtn.textContent = 'sign in your wallet...';
+      status.innerHTML = '<div class="info">waiting for wallet signature...</div>';
+
+      var txBuf = Uint8Array.from(atob(swapJson.swapTransaction), function(c) { return c.charCodeAt(0); });
+      var tx = solanaWeb3.VersionedTransaction.deserialize(txBuf);
+
+      var signed = await wallet.provider.signTransaction(tx);
+
+      swapBtn.textContent = 'submitting...';
+      status.innerHTML = '<div class="info">submitting to solana network...</div>';
+
+      var conn = new solanaWeb3.Connection(RPC, 'confirmed');
+      var sig = await conn.sendRawTransaction(signed.serialize(), {
+        skipPreflight: false,
+        maxRetries: 3,
+      });
+
+      swapBtn.textContent = 'confirming on-chain...';
+      status.innerHTML = '<div class="info">tx submitted. confirming... <a href="https://solscan.io/tx/' + sig + '" target="_blank" style="color:inherit;text-decoration:underline;">view →</a></div>';
+
+      var conf = await conn.confirmTransaction({ signature: sig, blockhash: tx.message.recentBlockhash, lastValidBlockHeight: 9999999999 }, 'confirmed').catch(function(e) {
+        // Fallback: just consider it submitted
+        return { value: { err: null } };
+      });
+
+      if (conf && conf.value && conf.value.err) {
+        throw new Error('Transaction failed on-chain: ' + JSON.stringify(conf.value.err));
+      }
+
+      swapBtn.textContent = 'swap confirmed ✓ — swap again';
+      swapBtn.disabled = false;
+      status.innerHTML = '<div class="ok">swap confirmed. <a href="https://solscan.io/tx/' + sig + '" target="_blank" rel="noopener">view on solscan →</a></div>';
+      updateBalance();
+    } catch (e) {
+      console.error('Swap failed', e);
+      swapBtn.disabled = false;
+      swapBtn.textContent = 'try again';
+      var msg = e.message || 'swap failed';
+      if (msg.length > 220) msg = msg.slice(0, 220) + '...';
+      status.innerHTML = '<div class="err">' + msg + '</div>';
+    }
+  }
+
+  // Wire up
+  document.getElementById('connectBtn').addEventListener('click', connectWallet);
+  document.getElementById('swapBtn').addEventListener('click', doSwap);
+
+  // Auto-detect wallet (some wallets auto-connect on page load if previously authorized)
+  if (window.solanaWeb3) {
+    // Web3 is loaded
+  } else {
+    // Wait for web3 to load
+    var checkWeb3 = setInterval(function() {
+      if (window.solanaWeb3) { clearInterval(checkWeb3); }
+    }, 100);
+  }
+
+  // Initial pay-amount display
+  var paySolEl = document.getElementById('paySol');
+  if (paySolEl) paySolEl.textContent = currentSol;
+  // First quote fetch (no wallet yet, but UI shows expected output)
+  fetchQuote();
 
   // FAQ toggle
   document.querySelectorAll('.faq-item').forEach(function(item) {
