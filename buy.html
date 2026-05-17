@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#0c0907">
 <link rel="icon" type="image/png" href="/hate-logo.png">
 <link rel="canonical" href="https://hate.fund/buy.html">
+<script src="https://terminal.jup.ag/main-v3.js" data-preload></script>
 <style>
   :root {
     --bg: #0c0907;
@@ -488,6 +489,51 @@
     margin-top: 12px;
   }
 
+
+  /* Embedded Jupiter Terminal */
+  #jupiter-terminal-mount {
+    margin: 18px 0 0;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 4px;
+    min-height: 460px;
+    overflow: hidden;
+    position: relative;
+  }
+  #jupiter-terminal-mount.loading::before {
+    content: '// connecting to jupiter routing...';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .jupiter-fallback {
+    padding: 30px 24px;
+    text-align: center;
+    color: var(--fg-dim);
+    font-size: 13px;
+    line-height: 1.85;
+  }
+  .jupiter-fallback strong { color: var(--accent); font-weight: 400; }
+  .jupiter-fallback .open-jup {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: var(--bg);
+    border: 0;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: lowercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .jupiter-fallback .open-jup:hover { background: #ff7d57; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -542,9 +588,8 @@
         you receive <span class="est" id="estTokens">~ 10,000</span> $HATE
       </div>
 
-      <a id="buyBtn" class="buy-cta" target="_blank" rel="noopener">
-        connect wallet & buy<span class="arrow">→</span>
-      </a>
+      <!-- Jupiter Terminal embeds here — all swap happens on-page -->
+      <div id="jupiter-terminal-mount" class="loading"></div>
 
       <div class="wallets-row">
         <span class="label">wallets:</span>
@@ -700,13 +745,8 @@
       var rec = p.querySelector('.receive');
       if (rec) rec.textContent = '~ ' + fmt(sol * SOL_PRICE_USD / TOKEN_PRICE_USD) + ' $hate';
     });
-    // also update buy button URL with amount
-    var btn = document.getElementById('buyBtn');
-    if (btn) {
-      // Jupiter swap URL format: https://jup.ag/swap/SOL-<CA>?inAmount=<lamports>
-      var lamports = Math.round(currentSol * 1e9);
-      btn.href = 'https://jup.ag/swap/SOL-' + HATE_CA + '?inAmount=' + lamports;
-    }
+    // sync Jupiter Terminal with new amount (re-init since syncProps doesn't reliably update initialAmount)
+    initJupiterTerminal();
   }
   function setSol(sol, fromCustom) {
     currentSol = sol;
@@ -729,9 +769,49 @@
       if (!isNaN(v) && v > 0) setSol(v, true);
     });
   }
-  // Initial buy URL
-  var btn = document.getElementById('buyBtn');
-  if (btn) btn.href = 'https://jup.ag/swap/SOL-' + HATE_CA + '?inAmount=' + Math.round(currentSol * 1e9);
+  // Initialize Jupiter Terminal on page load
+  function initJupiterTerminal() {
+    var mount = document.getElementById('jupiter-terminal-mount');
+    if (!mount) return;
+    if (!window.Jupiter) {
+      // script not loaded yet — retry
+      setTimeout(initJupiterTerminal, 500);
+      return;
+    }
+    try {
+      mount.classList.remove('loading');
+      // Clear any existing terminal
+      mount.innerHTML = '';
+      window.Jupiter.init({
+        displayMode: 'integrated',
+        integratedTargetId: 'jupiter-terminal-mount',
+        endpoint: 'https://api.mainnet-beta.solana.com',
+        formProps: {
+          fixedOutputMint: true,
+          initialOutputMint: HATE_CA,
+          initialInputMint: 'So11111111111111111111111111111111111111112',
+          initialAmount: String(Math.round(currentSol * 1e9)),
+        },
+        strictTokenList: false,
+        defaultExplorer: 'Solscan',
+      });
+    } catch (e) {
+      console.warn('Jupiter Terminal init failed:', e);
+      mount.innerHTML =
+        '<div class="jupiter-fallback">' +
+        '<strong>swap routing is initializing.</strong><br>' +
+        'jupiter is indexing the pool — usually takes 5-15 minutes after pool creation.<br>' +
+        'in the meantime you can swap directly on jupiter:' +
+        '<br><a class="open-jup" href="https://jup.ag/swap/SOL-' + HATE_CA + '" target="_blank" rel="noopener">open jup.ag →</a>' +
+        '</div>';
+    }
+  }
+  // Wait for the Jupiter script to load, then init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initJupiterTerminal, 600); });
+  } else {
+    setTimeout(initJupiterTerminal, 600);
+  }
 
   // live SOL price
   fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd')
