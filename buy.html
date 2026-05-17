@@ -491,14 +491,35 @@
 
 
   /* Embedded Jupiter Terminal */
-  #jupiter-terminal-mount {
-    margin: 18px 0 0;
+  /* Jupiter Terminal frame — atmospheric wrapper */
+  .jupiter-frame {
+    margin: 22px 0 0;
+    position: relative;
     border: 1px solid var(--border);
-    background: var(--bg);
+    background: linear-gradient(180deg, rgba(255,106,61,0.04), rgba(12,9,7,0.95));
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 32px rgba(255,106,61,0.12), inset 0 0 24px rgba(0,0,0,0.45);
+    padding: 16px;
+  }
+  .jupiter-frame::before {
+    content: '// swap on-page — powered by jupiter';
+    display: block;
+    text-align: center;
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.85;
+  }
+  #jupiter-terminal-mount {
+    background: rgba(12, 9, 7, 0.7);
     border-radius: 4px;
     min-height: 460px;
     overflow: hidden;
     position: relative;
+    border: 1px solid var(--border);
   }
   #jupiter-terminal-mount.loading::before {
     content: '// connecting to jupiter routing...';
@@ -509,6 +530,10 @@
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+  }
+  /* override Jupiter Terminal's default white background if it leaks */
+  #jupiter-terminal-mount iframe, #jupiter-terminal-mount > div {
+    background: transparent !important;
   }
   .jupiter-fallback {
     padding: 30px 24px;
@@ -589,7 +614,9 @@
       </div>
 
       <!-- Jupiter Terminal embeds here — all swap happens on-page -->
-      <div id="jupiter-terminal-mount" class="loading"></div>
+      <div class="jupiter-frame">
+        <div id="jupiter-terminal-mount" class="loading"></div>
+      </div>
 
       <div class="wallets-row">
         <span class="label">wallets:</span>
@@ -785,7 +812,7 @@
       window.Jupiter.init({
         displayMode: 'integrated',
         integratedTargetId: 'jupiter-terminal-mount',
-        endpoint: 'https://api.mainnet-beta.solana.com',
+        endpoint: 'https://solana-rpc.publicnode.com',
         formProps: {
           fixedOutputMint: true,
           initialOutputMint: HATE_CA,
