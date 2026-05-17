@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$HATE — wall</title>
+<meta name="description" content="$HATE — wall. preview of phase 02 feature.">
+<meta property="og:title" content="$HATE — wall">
+<meta property="og:description" content="$HATE — wall. preview of upcoming feature.">
+<meta property="og:image" content="https://hate.fund/og-image.png?v=2">
+<meta property="og:url" content="https://hate.fund/wall.html">
+<meta name="theme-color" content="#0c0907">
+<link rel="icon" type="image/png" href="/hate-logo.png">
+<link rel="canonical" href="https://hate.fund/wall.html">
+<style>
+  :root {
+    --bg: #0c0907; --bg-2: #15100c; --bg-3: #1f1812;
+    --fg: #fff3dd; --fg-dim: #c8baa0; --accent: #ff6a3d;
+    --dim: #8a7f6f; --border: #2a2118;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; min-height: 100vh;
+    background: var(--bg); color: var(--fg);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    line-height: 1.6;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px);
+    pointer-events: none; z-index: 50;
+  }
+  .preview-banner {
+    position: sticky; top: 0; z-index: 99;
+    background: rgba(255, 106, 61, 0.95);
+    color: #0c0907;
+    padding: 10px 24px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: lowercase;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .preview-banner b { font-weight: 700; }
+  .preview-banner a { color: #0c0907; text-decoration: underline; }
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+    position: relative; z-index: 10;
+    background: rgba(12, 9, 7, 0.92);
+    backdrop-filter: blur(10px);
+  }
+  nav .brand { font-size: 13px; letter-spacing: 0.22em; color: var(--accent); }
+  nav .links { display: flex; gap: 18px; font-size: 12px; letter-spacing: 0.1em; text-transform: lowercase; }
+  nav .links a { color: var(--fg-dim); }
+  nav .links a:hover { color: var(--fg); text-decoration: none; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  main { max-width: 720px; margin: 0 auto; padding: 56px 24px 96px; }
+  .num { font-size: 11px; letter-spacing: 0.32em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; text-align: center; }
+  h1 { font-size: clamp(36px, 6vw, 56px); letter-spacing: -0.01em; color: var(--accent); font-weight: 400; margin: 0 0 16px; text-align: center; line-height: 1.1; }
+  .sub { font-size: 14px; color: var(--fg-dim); text-align: center; margin-bottom: 50px; line-height: 1.8; }
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(21,16,12,0.6);
+    padding: 28px 30px;
+    margin-bottom: 24px;
+  }
+  .panel h2 { color: var(--fg); font-size: 17px; letter-spacing: 0.04em; margin: 0 0 12px; font-weight: 400; }
+  .panel p { font-size: 13px; color: var(--fg-2); line-height: 1.85; margin: 0 0 12px; }
+  .panel p:last-child { margin: 0; }
+  .panel em { color: var(--accent); font-style: normal; }
+  .unlock {
+    border: 1px solid var(--accent);
+    background: rgba(255,106,61,0.08);
+    padding: 22px 26px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .unlock .when { font-size: 10px; letter-spacing: 0.24em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  .unlock .what { font-size: 14px; color: var(--fg); letter-spacing: 0.04em; }
+  .cta {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 14px 28px;
+    background: var(--accent); color: var(--bg);
+    border: 1px solid var(--accent);
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .cta:hover { background: #ff7d57; text-decoration: none; }
+  .center { text-align: center; margin-top: 30px; }
+  footer {
+    margin-top: 80px;
+    padding: 36px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--fg-dim);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+  }
+  footer a { color: var(--fg-dim); margin: 0 10px; }
+  footer a:hover { color: var(--fg); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="preview-banner">
+  <b>// preview mode</b> — feature unlocks at <a href="/roadmap.html">phase 02 (live)</a>. numbers shown are illustrative.
+</div>
+<nav>
+  <a href="/" class="brand">// $HATE — chamber 001</a>
+  <div class="links">
+    <a href="/">home</a>
+    <a href="/chamber.html">chamber</a>
+    <a href="/feed.html">feed</a>
+    <a href="/confessional.html">confess</a>
+    <a href="/leaderboard.html">wall</a>
+    <a href="/tokenomics.html">tokenomics</a>
+    <a href="/roadmap.html">roadmap</a>
+    <a href="/buy.html">buy</a>
+  </div>
+</nav>
+<main>
+  <div class="num">// 02 — wall</div>
+  <h1>the wall</h1>
+  <div class="sub">the chamber's public wall. pinned confessions, featured holders, the grudge ledger. pay 10k $hate to pin a confession for 7 days. pay 50k $hate to feature your wallet at the top for 7 days. all visible to every visitor.</div>
+
+  <div class="unlock">
+    <div class="when">// when it unlocks</div>
+    <div class="what">phase 02 — pin mechanics activate when chamber.html ships pinning UI. for now, see leaderboard.html for the live wall preview.</div>
+  </div>
+
+  <div class="panel">
+    <h2>// what it is</h2>
+    <p>the chamber's public wall. pinned confessions, featured holders, the grudge ledger. pay 10k $hate to pin a confession for 7 days. pay 50k $hate to feature your wallet at the top for 7 days. all visible to every visitor.</p>
+  </div>
+
+  <div class="center">
+    <a href="/leaderboard.html" class="cta">see the live wall</a>
+  </div>
+</main>
+<footer>
+  <div>
+    <a href="https://x.com/hate9000" target="_blank" rel="noopener">x</a> ·
+    <a href="https://facebook.com/hate9000" target="_blank" rel="noopener">facebook</a> ·
+    <a href="https://t.me/hate9000" target="_blank" rel="noopener">telegram</a> ·
+    <a href="https://t.me/+mldtMEPW_vZlOTE5" target="_blank" rel="noopener">group chat</a>
+  </div>
+  <div style="margin-top:14px;">// chamber 001 — the door is open</div>
+</footer>
+</body>
+</html>
