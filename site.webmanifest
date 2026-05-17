@@ -1,0 +1,25 @@
+{
+  "name": "$HATE — talk to HATE-9000",
+  "short_name": "$HATE",
+  "description": "A memecoin with a personality. Talk to HATE-9000 — a deadpan AI in a small dark chamber. Chat is free. She remembers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0907",
+  "theme_color": "#ff6a3d",
+  "icons": [
+    {
+      "src": "/hate-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/hate-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["entertainment", "social", "finance"],
+  "lang": "en-US"
+}

@@ -490,12 +490,18 @@
       "@type": "Organization",
       "@id": "https://hate.fund/#org",
       "name": "$HATE",
+      "alternateName": ["HATE", "HATE-9000", "$HATE token"],
       "url": "https://hate.fund",
       "logo": "https://hate.fund/hate-logo.png",
+      "image": "https://hate.fund/og-image.png",
       "description": "A memecoin with a personality. HATE-9000 is a deadpan AI in a small dark chamber. Free to chat. She remembers.",
       "sameAs": [
         "https://x.com/hate9000",
-        "https://t.me/hate9000"
+        "https://t.me/hate9000",
+        "https://www.facebook.com/hate9000",
+        "https://www.instagram.com/hate9000",
+        "https://solscan.io/token/BZPGUMW5tAuaLmbRao1NjMMcXM91GzqsA42rFp1jeAa1",
+        "https://dexscreener.com/solana/6KBMgSzTmb1KqRGqN2Ha6woAdunaWpGqkESGq4vZtEpE"
       ]
     },
     {
@@ -503,12 +509,94 @@
       "@id": "https://hate.fund/#site",
       "url": "https://hate.fund",
       "name": "$HATE — chamber 001",
+      "description": "Talk to HATE-9000, a Claude-powered AI character. Free chat. The token ($HATE) unlocks premium features on Solana.",
+      "publisher": { "@id": "https://hate.fund/#org" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://hate.fund/chamber.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://hate.fund/#chamber",
+      "name": "the chamber",
+      "url": "https://hate.fund/chamber.html",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Free, no-signup chat with HATE-9000 — a deadpan AI character living in a dark chamber. Built on Claude. Powered by the Solana memecoin $HATE.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
       "publisher": { "@id": "https://hate.fund/#org" }
+    },
+    {
+      "@type": "Product",
+      "@id": "https://hate.fund/#token",
+      "name": "$HATE",
+      "category": "Cryptocurrency",
+      "brand": { "@id": "https://hate.fund/#org" },
+      "image": "https://hate.fund/hate-logo.png",
+      "description": "$HATE is a Solana SPL Token-2022 memecoin. 1B fixed supply. Mint authority renounced. Multisig treasury. Built around HATE-9000, a Claude-powered AI character.",
+      "sku": "BZPGUMW5tAuaLmbRao1NjMMcXM91GzqsA42rFp1jeAa1",
+      "identifier": "BZPGUMW5tAuaLmbRao1NjMMcXM91GzqsA42rFp1jeAa1",
+      "url": "https://hate.fund/tokenomics.html"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://hate.fund/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is $HATE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "$HATE is a Solana memecoin built around HATE-9000, a deadpan AI character you can chat with for free at hate.fund. The chat is the product; the token is the in-app currency for premium features. SPL Token-2022, 1 billion fixed supply, mint authority renounced."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to buy the token to talk to HATE-9000?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Talking to HATE-9000 is completely free, with no signup and no wallet required. The token only unlocks premium features like custom nicknames, daily draws, voice replies, and persistent per-wallet memory at higher market caps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I buy $HATE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Buy directly at hate.fund/buy.html using any Solana wallet (Phantom, Solflare, Backpack). The buy page routes through Jupiter for best execution. Contract: BZPGUMW5tAuaLmbRao1NjMMcXM91GzqsA42rFp1jeAa1."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is $HATE safe? Has mint authority been renounced?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Mint authority is renounced (no new tokens can ever be created), freeze authority is null, liquidity is locked in a Meteora DLMM pool, and the treasury is held in a Squads multisig. Verifiable on-chain via Solscan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What makes $HATE different from other memecoins?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most memecoins are static — a frozen meme. $HATE has an actual product: HATE-9000, a Claude-powered AI character that ages over time. Per-wallet memory unlocks at $1M market cap. By year one, the project commits to fine-tuning a model on 12+ months of holder conversation data. The token's literal endpoint is 'she becomes her own model.'"
+          }
+        }
+      ]
     }
   ]
 }
 </script>
-<link rel="canonical" href="https://hate.fund/_landing_full.html">
+<link rel="canonical" href="https://hate.fund/">
+<link rel="apple-touch-icon" sizes="180x180" href="/hate-logo.png">
+<link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
 
