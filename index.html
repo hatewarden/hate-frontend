@@ -318,70 +318,6 @@
   }
   .stamp::before { content: '✓'; margin-right: 8px; opacity: 0.8; }
 
-  /* CHART EMBED */
-  .chart-section { margin: 80px 0; }
-  .chart-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
-  }
-  .chart-head .lbl { font-size: 11px; letter-spacing: 0.24em; color: var(--accent); text-transform: uppercase; }
-  .chart-head .sub { font-size: 11px; letter-spacing: 0.14em; color: var(--fg-dim); }
-  .chart-frame {
-    border: 1px solid var(--border);
-    background: var(--bg-2);
-    aspect-ratio: 16 / 9;
-    position: relative;
-    overflow: hidden;
-  }
-  .chart-frame iframe { width: 100%; height: 100%; border: 0; }
-  .chart-pending {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 18px; text-align: center; padding: 24px;
-  }
-  .chart-pending .stamp { font-size: 14px; padding: 14px 28px; transform: none; cursor: default; }
-  .chart-pending .copy { font-size: 13px; color: var(--fg-dim); letter-spacing: 0.08em; max-width: 480px; line-height: 1.8; }
-  .chart-pending .copy em { color: var(--accent); font-style: normal; }
-  .chart-pending .live-line { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
-  .chart-pending .live-line::before { content: ''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: livepulse 1.4s ease-in-out infinite; }
-
-  /* LIVE TX FEED */
-  .tx-section { margin: 80px 0; }
-  .tx-feed {
-    border: 1px solid var(--border);
-    background: rgba(21, 16, 12, 0.7);
-    padding: 0;
-  }
-  .tx-feed .row {
-    display: grid;
-    grid-template-columns: 110px 1fr 100px 80px;
-    gap: 16px;
-    padding: 14px 22px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    align-items: center;
-    transition: background 0.2s;
-    animation: txIn 0.4s ease-out;
-  }
-  @keyframes txIn { from {opacity: 0; transform: translateY(-6px);} to {opacity: 1; transform: translateY(0);} }
-  .tx-feed .row:last-child { border-bottom: 0; }
-  .tx-feed .row:hover { background: rgba(255,106,61,0.05); }
-  .tx-feed .when { color: var(--dim); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
-  .tx-feed .who { color: var(--fg-dim); font-family: 'IBM Plex Mono', monospace; }
-  .tx-feed .who .pill {
-    color: var(--accent); background: rgba(255,106,61,0.1);
-    padding: 1px 8px; border-radius: 2px; margin-right: 8px;
-    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  }
-  .tx-feed .amt { color: var(--fg); font-size: 13px; text-align: right; }
-  .tx-feed .price { color: var(--accent); font-size: 11px; text-align: right; }
-  .tx-feed.empty {
-    padding: 50px 24px; text-align: center;
-    color: var(--fg-dim); font-size: 13px; letter-spacing: 0.08em;
-    line-height: 1.9;
-  }
-  .tx-feed.empty em { color: var(--accent); font-style: normal; }
-
   /* SECTION HEADERS */
   .section-head { text-align: center; margin: 90px 0 30px; }
   .section-head .num { font-size: 11px; letter-spacing: 0.32em; color: var(--fg-dim); text-transform: uppercase; margin-bottom: 14px; }
@@ -473,8 +409,6 @@
     nav .links { gap: 12px; font-size: 11px; }
     nav .links .nav-buy { padding: 7px 12px; }
     .price-strip { padding: 12px 16px; gap: 14px; }
-    .tx-feed .row { grid-template-columns: 70px 1fr 80px; padding: 12px 14px; gap: 10px; font-size: 11px; }
-    .tx-feed .price { display: none; }
     .why-row { grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 18px; }
   }
   @media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation: none !important; transition: none !important; } .thought, .bg-glow, .bg-grid, .bg-sweep, .bg-flash, .dust .speck, .corner, .beam, .spotlight { display: none; } }
@@ -702,33 +636,6 @@
         <div class="stamp">no presale</div>
         <div class="stamp">supply 1b fixed</div>
         <div class="stamp">solana native</div>
-      </div>
-    </section>
-
-    <!-- CHART -->
-    <section class="chart-section reveal">
-      <div class="chart-head">
-        <div class="lbl">// the chart</div>
-        <div class="sub" id="chartSub">— powered by dexscreener</div>
-      </div>
-      <div class="chart-frame" id="chartFrame">
-        <div class="chart-pending" id="chartPending">
-          <div class="live-line">chart loading</div>
-          <div class="copy">the mint goes live on launch day. once liquidity lands on meteora, this is where you'll watch <em>the chart try to take you personally.</em></div>
-          <a href="/buy.html" class="stamp">be ready</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIVE TX FEED -->
-    <section class="tx-section reveal">
-      <div class="chart-head">
-        <div class="lbl">// recent transactions</div>
-        <div class="sub" id="txSub">live from the pool</div>
-      </div>
-      <div class="tx-feed empty" id="txFeed">
-        <div>no trades yet. she's been refreshing dexscreener obsessively.</div>
-        <div style="margin-top: 10px; font-size: 11px; color: var(--dim);">when mint goes live, the first buyer's wallet ends up <em>on the wall.</em></div>
       </div>
     </section>
 
@@ -1106,49 +1013,6 @@
   setInterval(fetchPrice, 30000);
 })();
 
-// CHART EMBED — DexScreener iframe when mint is live
-(function chart() {
-  var pending = document.getElementById('chartPending');
-  var frame = document.getElementById('chartFrame');
-  if (!pending || !frame) return;
-  var cfg = window.HATE_CONFIG;
-  if (!cfg || !cfg.LAUNCHED) return;
-  var iframe = document.createElement('iframe');
-  iframe.src = 'https://dexscreener.com/solana/' + cfg.CA + '?embed=1&theme=dark&trades=0&info=0';
-  iframe.title = 'HATE / SOL chart';
-  iframe.loading = 'lazy';
-  pending.remove();
-  frame.appendChild(iframe);
-})();
-
-// TX FEED — DexScreener transactions when mint live
-(function txfeed() {
-  var feed = document.getElementById('txFeed');
-  if (!feed) return;
-  var cfg = window.HATE_CONFIG;
-  if (!cfg || !cfg.LAUNCHED) return;
-
-  async function fetchTxns() {
-    try {
-      var r = await fetch('https://api.dexscreener.com/latest/dex/tokens/' + cfg.CA);
-      var j = await r.json();
-      var pair = (j.pairs || [])[0];
-      if (!pair) return;
-      // Note: dexscreener token-summary endpoint returns aggregated 24h tx counts, not individual trades.
-      // For per-trade feed we'd need a different endpoint or backend proxy.
-      // Display the aggregate buy/sell counts in a sleeker format.
-      feed.classList.remove('empty');
-      var b = pair.txns && pair.txns.h1 && pair.txns.h1.buys || 0;
-      var s = pair.txns && pair.txns.h1 && pair.txns.h1.sells || 0;
-      var bv = pair.volume && pair.volume.h1 || 0;
-      feed.innerHTML =
-        '<div class="row"><span class="when">last 1h</span><span class="who"><span class="pill">buys</span>' + b + ' transactions</span><span class="amt">$' + (bv).toFixed(0) + '</span><span class="price">volume</span></div>' +
-        '<div class="row"><span class="when">last 1h</span><span class="who"><span class="pill">sells</span>' + s + ' transactions</span><span class="amt">net flow</span><span class="price">' + (b>s?'+':'') + (b-s) + '</span></div>';
-    } catch(e) {}
-  }
-  fetchTxns();
-  setInterval(fetchTxns, 30000);
-})();
 </script>
 
 </body>
